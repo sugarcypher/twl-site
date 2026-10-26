@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#060a0f">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; form-action 'none'; connect-src 'none'">
+<title>Experience Quotients calculator — ThinkWell Labs</title>
+<meta name="description" content="Work out two people's Relationship and Sexual Experience and Expectation readings, and how their types complement each other: Complement, Accord, Spread and Together. Runs entirely in your browser; nothing is saved or sent.">
+<meta name="author" content="Briar M. Greenway">
+<link rel="canonical" href="https://twl.today/quotients/">
+<link rel="icon" href="../assets/twl-logo.jpeg" type="image/png">
+<style>
+:root{--bg:#060a0f;--bg-card:#0a1019;--ink:#e9ecef;--ink-soft:#a8b1bc;--ink-faint:#6a7280;--rule:#18202c;--core:#d6a45c;--arch:#6cd2ee;--construct:#b3a1ec;--warn:#e8a07a;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--pad:clamp(16px,4vw,48px)}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:var(--arch)}a:hover{color:#a6e6f7}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:20px var(--pad);border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:13px;color:var(--ink-faint)}
+.top a{color:var(--ink-soft);text-decoration:none}.top a:hover{color:var(--ink)}
+main{max-width:900px;margin:0 auto;padding:40px var(--pad) 80px}
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--core)}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5vw,44px);line-height:1.12;margin:10px 0 12px}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:40px 0 12px}
+h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:22px 0 8px}
+p{margin:0 0 14px}.soft{color:var(--ink-soft)}.faint{color:var(--ink-faint);font-size:14px}
+.notice{border:1px solid var(--rule);background:var(--bg-card);border-radius:8px;padding:14px 16px;margin:20px 0;font-size:15px;color:var(--ink-soft)}
+.notice strong{color:var(--ink)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 18px;position:sticky;top:0;z-index:2;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--rule)}
+.seg{display:inline-flex;border:1px solid #243041;border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-size:15px;min-height:44px;padding:8px 16px;background:transparent;color:var(--ink-soft);border:0;cursor:pointer}
+.seg button[aria-pressed=true]{background:#14202e;color:var(--ink);font-weight:600}
+.btn{font:inherit;font-size:14px;min-height:44px;padding:8px 14px;background:transparent;color:var(--arch);border:1px solid #243041;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--arch)}
+.status{font-size:13px;color:var(--ink-faint)}
+fieldset{border:1px solid var(--rule);border-radius:8px;padding:16px;margin:0 0 18px;min-width:0}
+legend{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);padding:0 6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+label{display:block;font-size:15px;color:var(--ink)}
+label .unit{color:var(--ink-faint);font-size:13px}
+input[type=number],select{width:100%;margin-top:6px;padding:10px 12px;min-height:44px;font:inherit;font-size:15px;color:var(--ink);background:#050810;border:1px solid #243041;border-radius:6px}
+select{margin-top:0;padding:8px 10px}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--arch);outline-offset:1px}
+input[type=number]:disabled{opacity:.45}
+.never{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:14px;color:var(--ink-soft)}
+.never input{width:18px;height:18px}
+.hint{font-size:13px;color:var(--ink-faint);margin-top:6px}
+.rolehead,.role{display:grid;grid-template-columns:minmax(0,1fr) 132px 150px;gap:8px 12px;align-items:center}
+.rolehead{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);padding:0 0 6px}
+.role{padding:8px 0;border-top:1px solid var(--rule)}
+.role.pairstart{border-top:1px solid #2a3647}
+.role .nm{font-size:15px}.role .ds{display:block;font-size:13px;color:var(--ink-faint);line-height:1.35}
+.struct{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:8px 12px;align-items:center;padding:8px 0;border-top:1px solid var(--rule)}
+.struct.wide{grid-template-columns:minmax(0,1fr) 200px}
+.sub{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--core);margin:16px 0 6px}
+.fill{margin-top:12px}
+@media (max-width:600px){.bar{position:static}.rolehead{display:none}.role{grid-template-columns:1fr 1fr}.role .nm{grid-column:1 / -1}.struct,.struct.wide{grid-template-columns:1fr}}
+.problems{color:var(--warn);font-size:15px;margin:0 0 14px;padding-left:20px}
+.result{border:1px solid var(--rule);border-radius:10px;padding:20px;background:var(--bg-card);margin:0 0 18px}
+.pair{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.bp{display:inline-flex;flex-direction:column;align-items:center;font-family:var(--serif);font-size:40px;line-height:1;min-width:64px}
+.bp .rule{width:60px;height:2px;background:var(--ink-faint);margin:6px 0}
+.bp small{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-top:8px}
+.big{font-family:var(--serif);font-size:64px;line-height:1;color:var(--core)}
+.facts{font-size:15px;color:var(--ink-soft)}
+.facts b{color:var(--ink);font-weight:600}
+.tbl{overflow-x:auto;margin:14px 0 4px;border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;background:#080d15}
+th,td{padding:8px 10px;border-bottom:1px solid var(--rule)}tr:last-child td{border-bottom:0}
+td.num,th.num{font-variant-numeric:tabular-nums;text-align:right}
+td.num{color:var(--ink)}
+.bounds{margin:10px 0 0;padding-left:20px;color:var(--warn);font-size:15px}
+.tolset{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--ink-soft);margin:6px 0 0}
+.tolset label{display:inline-flex;gap:6px;align-items:center;font-size:14px;color:var(--ink-soft)}
+footer{border-top:1px solid var(--rule);padding:24px var(--pad);font-family:var(--mono);font-size:12px;color:var(--ink-faint);text-align:center}
+footer a{color:var(--ink-soft)}
+[hidden]{display:none!important}
+@media print{body{background:#fff;color:#111}.top,footer,.bar{display:none}}
+</style>
+</head>
+<body>
+<div class="top"><a href="../index.html">← thinkwell labs</a><a href="../papers/experience-quotients.html">read the white paper</a></div>
+<main>
+<div class="tag">measurement tool · relationships</div>
+<h1>Experience Quotients calculator</h1>
+<p class="soft">Two people each answer for themselves. Each gets a reading: REEQ over SEEQ from their counts, and an experience-over-expectation number for relationships and for sex. Together, the calculator shows how their types <em>complement</em> each other, where they need to <em>agree</em>, how widely their complementarity is spread, and any boundaries one has drawn that the other wants to cross. It does not look for people who are the same. The method is set out in the <a href="../papers/experience-quotients.html">white paper</a>.</p>
+
+<div class="notice"><strong>For adults only (18 and over).</strong> Nothing you type leaves this page and nothing is saved: there is no server, no storage, no cookies and no analytics, and the page is not allowed to make any network request. Closing or reloading the tab erases everything.</div>
+
+<div class="bar">
+<div class="seg" role="group" aria-label="Whose answers"><button type="button" id="showA" aria-pressed="true">Person A</button><button type="button" id="showB" aria-pressed="false">Person B</button><button type="button" id="showT" aria-pressed="false">Together</button></div>
+<button type="button" class="btn" id="example">Load an example pair</button>
+<button type="button" class="btn" id="clear">Clear everything</button>
+<span class="status" id="status" aria-live="polite"></span>
+</div>
+
+<div id="panelA"></div>
+<div id="panelB" hidden></div>
+
+<section id="panelT" hidden>
+<h2>Together</h2>
+<ul class="problems" id="tProblems"></ul>
+<div id="tResult" hidden>
+<div class="result">
+<div class="pair">
+<div><div class="big" id="tTogether">–</div><div class="faint">Together</div></div>
+<div class="bp" aria-label="Complement over Accord"><span id="tC">–</span><span class="rule" aria-hidden="true"></span><span id="tA">–</span><small>complement / accord</small></div>
+<div class="facts">
+<div>Spread <b id="tS"></b> <span class="faint" id="tSk"></span></div>
+<div>Lift <b id="tL"></b> <span class="faint">what one has done that the other wants to try</span></div>
+<div class="faint" id="tNote"></div>
+</div>
+</div>
+<div class="tolset" role="radiogroup" aria-label="How forgiving the appetite comparison is">Appetite comparison:
+<label><input type="radio" name="tol" value="strict"> strict</label>
+<label><input type="radio" name="tol" value="middle" checked> middle</label>
+<label><input type="radio" name="tol" value="loose"> loose</label></div>
+<p class="faint" style="margin:12px 0 0">Together = 100 × √(Complement × Accord) × (1 + Spread) ÷ 2. Complement is how much of what each of you wants in a complementary role the other wants in the counterpart role. Accord is agreement on the things that need to be shared. Spread runs from 0 (all your complementarity sits in one role) to 1 (it is spread evenly across every role and both directions). Boundaries never enter the number; they are listed below so they cannot be averaged away.</p>
+</div>
+
+<h3>Boundaries</h3>
+<ul class="bounds" id="tBounds"></ul>
+<p class="faint" id="tNoBounds">None found in these answers.</p>
+
+<h3>By side</h3>
+<div class="tbl"><table><thead><tr><th>Side</th><th class="num">Complement</th><th class="num">Accord</th><th class="num">Lift</th></tr></thead><tbody id="tSides"></tbody></table></div>
+
+<h3>Complementary roles</h3>
+<p class="faint">Each row is one pair of roles in both directions. A cell is the share of the wish in that direction that is met: 100 when one wants the role and the other wants its counterpart; blank when neither wants it.</p>
+<div class="tbl"><table><thead><tr><th>Pair</th><th class="num">A in the first role</th><th class="num">B in the first role</th></tr></thead><tbody id="tPairs"></tbody></table></div>
+
+<h3>Things to agree on</h3>
+<div class="tbl"><table><thead><tr><th>Item</th><th>A</th><th>B</th><th class="num">Accord</th></tr></thead><tbody id="tAccord"></tbody></table></div>
+</div>
+</section>
+</main>
+<footer>© ThinkWell Labs · Briar M. Greenway · <a href="../papers/experience-quotients.html">white paper</a> · <a href="../privacy.html">privacy</a> · zero trackers, zero external requests</footer>
+
+<script id="formula">
+// Experience Quotients, version 2: complementary alignment.
+// Counts, clocks, rates, score and reference answer: Briar M. Greenway (unchanged from version 1,
+// and the same as Crushhh app/src/domain/quotients.ts).
+// Overlay, complement and mirror lists: Briar M. Greenway, with role lists drafted by Claude and ratified by him.
+// Complement, Accord, Spread, Together and the equal-weight rule: proposed by Claude (2026-10-25), under review.
+var EQ = (function () {
+  'use strict';
+  // ---------- one person's counts ----------
+  var REF = { years: 21, rel: 6, love: 3, hb: 2, longest: 4, partners: 24, perDay: 1, wkPeople: 3, wkOrg: 9 };
+  var REF_RATE = {
+    rel: REF.rel / REF.years, love: REF.love / REF.years, hb: REF.hb / REF.years,
+    longest: REF.longest / REF.years, partners: REF.partners / REF.years,
+    perDay: REF.perDay * 365, wkPeople: REF.wkPeople * 52, wkOrg: REF.wkOrg * 52
+  };
+  var REL = ['rel', 'love', 'hb', 'longest'], SEX = ['partners', 'perDay', 'wkPeople', 'wkOrg'];
+  var LABEL = { rel: 'Relationships', love: 'Times in love', hb: 'Heartbreaks', longest: 'Longest relationship (share of the years)',
+    partners: 'People slept with', perDay: 'Times a day you’d want', wkPeople: 'Different people a week', wkOrg: 'Orgasms a week' };
+  function n(v) { v = Number(v); return isFinite(v) && v > 0 ? v : 0; }
+  function yearsSince(age, start) {
+    var since = typeof start === 'number' ? n(age) - n(start) : n(age);
+    return Math.max(1, since);
+  }
+  function problems(q) {
+    var out = [], age = n(q.age);
+    if (q.age === null) out.push('Give your age.');
+    else if (q.age < 18) out.push('This tool is for adults (18 and over).');
+    if (q.firstRomantic === null) out.push('Say how old you were at your first relationship you chose, or tick Never.');
+    if (q.firstSexual === null) out.push('Say how old you were at your first sexual experience you chose, or tick Never.');
+    REL.concat(SEX).forEach(function (k) {
+      if (q[k] === null) out.push('Answer every question (0 is an answer): ' + LABEL[k].toLowerCase() + '.');
+      else if (q[k] < 0) out.push('No answer can be negative: ' + LABEL[k].toLowerCase() + '.');
+    });
+    if (typeof q.firstRomantic === 'number' && q.firstRomantic > age) out.push('Your first relationship cannot be after your current age.');
+    if (typeof q.firstSexual === 'number' && q.firstSexual > age) out.push('Your first sexual experience cannot be after your current age.');
+    if (q.firstRomantic === 'never' && (n(q.rel) > 0 || n(q.longest) > 0)) out.push('With no relationship yet, relationships and the longest one must be 0.');
+    if (q.firstSexual === 'never' && n(q.partners) > 0) out.push('With no sexual experience, people slept with must be 0.');
+    if (n(q.rel) === 0 && n(q.longest) > 0) out.push('A longest relationship needs at least one relationship.');
+    if (typeof q.firstRomantic === 'number' && n(q.longest) > age - n(q.firstRomantic) + 0.5) out.push('Your longest relationship cannot be longer than the time since your first one began.');
+    return out;
+  }
+  function reading(q) {
+    var yRom = yearsSince(q.age, q.firstRomantic), ySex = yearsSince(q.age, q.firstSexual);
+    var rate = {
+      rel: n(q.rel) / yRom, love: n(q.love) / yRom, hb: n(q.hb) / yRom,
+      longest: Math.min(n(q.longest), yRom) / yRom,
+      partners: n(q.partners) / ySex,
+      perDay: n(q.perDay) * 365, wkPeople: n(q.wkPeople) * 52, wkOrg: n(q.wkOrg) * 52
+    };
+    var score = {};
+    Object.keys(rate).forEach(function (k) { score[k] = rate[k] <= 0 ? 0 : 100 * rate[k] / (rate[k] + REF_RATE[k]); });
+    var mean = function (ks) { return ks.reduce(function (s, k) { return s + score[k]; }, 0) / ks.length; };
+    var r = mean(REL), s = mean(SEX), top = Math.round(r), bottom = Math.round(s), gap = top - bottom;
+    var tilt = gap >= 25 ? 'Strongly relational' : gap >= 10 ? 'Leans relational' : gap >= -9 ? 'Evenly balanced' : gap >= -24 ? 'Leans physical' : 'Strongly physical';
+    return { reeq: top, seeq: bottom, rRaw: r, sRaw: s, eeq: Math.round((r + s) / 2), gap: gap, tilt: tilt, rate: rate, score: score, yRom: yRom, ySex: ySex };
+  }
+
+  // ---------- the overlay: experience and expectation for each role ----------
+  var E_VAL = { never: 0, tried: 0.5, regularly: 1 };
+  var X_VAL = { no: 0, curious: 0.5, yes: 1, notforme: 0 };
+  var S_VAL = { no: 0, open: 0.5, yes: 1 };
+  // [key, name, description, counterpart key, counterpart name, counterpart description]
+  var PAIRS = {
+    rel: [
+      ['planner', 'Planner', 'Makes the plans and keeps things organised', 'free', 'Free spirit', 'Likes plans left open and goes with the flow'],
+      ['caretaker', 'Caretaker', 'Looks after a partner’s comfort and needs', 'caredfor', 'Cared-for', 'Enjoys being looked after'],
+      ['decider', 'Decider', 'Likes to make the call on shared choices', 'goalong', 'Go-along', 'Happy to let a partner decide'],
+      ['initiator', 'Initiator', 'Starts affection and touch', 'receiver', 'Receiver', 'Enjoys affection and touch coming to them'],
+      ['mentor', 'Mentor', 'Enjoys passing on what they know', 'learner', 'Learner', 'Enjoys learning from a partner'],
+      ['talker', 'Talker', 'Does most of the talking and sharing', 'listener', 'Listener', 'Does most of the listening'],
+      ['protector', 'Protector', 'Wants to keep a partner safe', 'protected', 'Protected', 'Feels good being kept safe'],
+      ['adventurer', 'Adventurer', 'Pulls toward new places and plans', 'anchor', 'Anchor', 'Keeps things steady and grounded'],
+      ['connector', 'Social connector', 'Brings people together; likes a full calendar', 'homebody', 'Homebody', 'Prefers time at home']
+    ],
+    sex: [
+      ['dom', 'Dominant', 'Takes control in a scene', 'sub', 'Submissive', 'Hands control to a partner'],
+      ['sadist', 'Sadist', 'Gives pain a partner has agreed to', 'maso', 'Masochist', 'Enjoys pain they have agreed to'],
+      ['rigger', 'Rigger', 'Ties a partner up', 'ropebunny', 'Rope bunny', 'Enjoys being tied'],
+      ['master', 'Master or Mistress', 'Holds authority that lasts beyond a scene', 'slave', 'Slave', 'Serves under authority that lasts beyond a scene'],
+      ['owner', 'Owner', 'Keeps and cares for a partner in a pet role', 'pet', 'Pet', 'Takes on a pet role'],
+      ['tamer', 'Brat tamer', 'Enjoys bringing a cheeky partner into line', 'brat', 'Brat', 'Enjoys pushing back playfully'],
+      ['degrader', 'Degrader', 'Humiliates a partner who has asked for it', 'degradee', 'Degradee', 'Enjoys humiliation they have asked for'],
+      ['caregiver', 'Daddy or Mommy', 'Plays a guiding, caring authority figure, between adults', 'little', 'Boy or Girl', 'Plays the one who is guided and cared for, between adults'],
+      ['hunter', 'Primal hunter', 'Chases, catches and wrestles', 'prey', 'Primal prey', 'Enjoys being chased and caught'],
+      ['exhib', 'Exhibitionist', 'Enjoys being watched', 'voyeur', 'Voyeur', 'Enjoys watching']
+    ]
+  };
+  // Sexual styles that pair like with like (mirrors).
+  var STYLE = [
+    ['switch', 'Switch', 'Enjoys both sides of a dynamic'],
+    ['experimental', 'Experimentalist', 'Likes to try new things'],
+    ['vanilla', 'Vanilla', 'Prefers sex without kink'],
+    ['ageplay', 'Ageplayer', 'Role-play between adults in which they act as other ages']
+  ];
+  // Relationship shapes that pair like with like (mirrors). Expectation only.
+  var STRUCT = [
+    ['mono', 'Monogamous', 'One partner, both ways'],
+    ['open', 'Open or non-monogamous', 'More than one partner, openly'],
+    ['live', 'Living together', ''],
+    ['formal', 'Formal commitment', 'Marriage, civil partnership or the like'],
+    ['kids', 'Children', 'Raising children together'],
+    ['distance', 'Long distance', 'A relationship across a distance']
+  ];
+  var FLAG_STRUCT = { mono: true, kids: true };
+  // Relationship expectation numbers, answered on ordered steps.
+  var NUMBERS = [
+    { key: 'days', label: 'Days a week together', options: ['0', '1', '2', '3', '4', '5', '6', '7'] },
+    { key: 'length', label: 'How long you want your next relationship to last', options: ['A few months', 'About a year', 'A few years', 'Many years', 'For life'] },
+    { key: 'atonce', label: 'Partners at once', options: ['1', '2', '3', '4 or more'] },
+    { key: 'commit', label: 'Time before a commitment', options: ['Under a month', '1 to 3 months', '3 to 6 months', '6 to 12 months', 'Over a year', 'No commitment wanted'] }
+  ];
+  function roleList(side) {
+    var out = [];
+    PAIRS[side].forEach(function (p) { out.push([p[0], p[1], p[2]]); out.push([p[3], p[4], p[5]]); });
+    if (side === 'sex') STYLE.forEach(function (s) { out.push(s); });
+    return out;
+  }
+  function ev(P, k) { return E_VAL[P.roles[k].e]; }
+  function xv(P, k) { return X_VAL[P.roles[k].x]; }
+  function overlayProblems(P) {
+    var out = [];
+    ['rel', 'sex'].forEach(function (side) {
+      var missing = roleList(side).filter(function (r) { var a = P.roles[r[0]]; return !a || !a.e || !a.x; }).length;
+      if (missing) out.push((side === 'rel' ? 'Relationship' : 'Sexual') + ' roles: ' + missing + ' not answered yet.');
+    });
+    var s = STRUCT.filter(function (r) { return !P.struct[r[0]]; }).length;
+    if (s) out.push('Relationship shape: ' + s + ' not answered yet.');
+    var m = NUMBERS.filter(function (x) { return P.numbers[x.key] === null || P.numbers[x.key] === undefined; }).length;
+    if (m) out.push('Relationship numbers: ' + m + ' not answered yet.');
+    return out;
+  }
+  // A person's two double numbers. Experience weighs the counts and the overlay equally;
+  // expectation is the overlay alone.
+  function doubles(P, rd) {
+    function side(s, countScore) {
+      var rs = roleList(s);
+      var e = rs.reduce(function (t, r) { return t + ev(P, r[0]); }, 0) / rs.length;
+      var x = rs.reduce(function (t, r) { return t + xv(P, r[0]); }, 0) / rs.length;
+      return { experience: Math.round((countScore + 100 * e) / 2), expectation: Math.round(100 * x) };
+    }
+    return { rel: side('rel', rd.rRaw), sex: side('sex', rd.sRaw) };
+  }
+
+  // ---------- two people ----------
+  var TOL = {
+    strict: 1,
+    middle: 1 / Math.sqrt(2 * Math.log(1 / 0.8)),
+    loose: 1 / Math.sqrt(2 * Math.log(1 / 0.9))
+  };
+  // Appetite: compare two wanted rates by how many doublings apart they are.
+  function appetiteFit(a, b, T) {
+    a = n(a); b = n(b);
+    if (a === 0 && b === 0) return 1;
+    if (a === 0 || b === 0) return 0;
+    var d = Math.abs(Math.log(a / b)) / Math.LN2;
+    return Math.exp(-(d * d) / (2 * T * T));
+  }
+  function entropy(masses) {
+    var t = masses.reduce(function (s, m) { return s + m; }, 0), h = 0;
+    masses.forEach(function (m) { if (m > 0) { var p = m / t; h -= p * Math.log(p); } });
+    return h;
+  }
+  function sum(xs, f) { return xs.reduce(function (s, x) { return s + f(x); }, 0); }
+  function ratio(a, b) { return b > 0 ? a / b : null; }
+  function perDayText(yearly) { return (Math.round(n(yearly) / 365 * 100) / 100) + ' a day'; }
+  function mean(xs) { return xs.length ? xs.reduce(function (s, x) { return s + x; }, 0) / xs.length : null; }
+
+  function couple(A, B, ra, rb, tolKey) {
+    var T = TOL[tolKey || 'middle'];
+    var dirs = [], bounds = [];
+    ['rel', 'sex'].forEach(function (side) {
+      PAIRS[side].forEach(function (pr, i) {
+        [[A, B, 'A', 'B'], [B, A, 'B', 'A']].forEach(function (o) {
+          var P = o[0], Q = o[1], p = pr[0], q = pr[3];
+          var xp = xv(P, p), xq = xv(Q, q), ep = ev(P, p), eq = ev(Q, q);
+          var rp = Math.max(0, xp - ep), rq = Math.max(0, xq - eq);
+          dirs.push({ side: side, pair: i, first: o[2], met: xp * xq, sought: Math.max(xp, xq),
+            supply: ep * xp * rq + eq * xq * rp, reach: rp + rq });
+          if (P.roles[p].x === 'notforme' && xq >= 0.5) bounds.push(o[3] + ' wants to be ' + pr[4] + ' with a ' + pr[1] + '; ' + o[2] + ' has ruled out being ' + pr[1] + '.');
+          if (Q.roles[q].x === 'notforme' && xp >= 0.5) bounds.push(o[2] + ' wants to be ' + pr[1] + ' with a ' + pr[4] + '; ' + o[3] + ' has ruled out being ' + pr[4] + '.');
+        });
+      });
+    });
+    function cSide(f) {
+      var ds = dirs.filter(f);
+      return { C: ratio(sum(ds, function (d) { return d.met; }), sum(ds, function (d) { return d.sought; })),
+        L: ratio(sum(ds, function (d) { return d.supply; }), sum(ds, function (d) { return d.reach; })) };
+    }
+    var all = cSide(function () { return true; });
+    var bySide = { rel: cSide(function (d) { return d.side === 'rel'; }), sex: cSide(function (d) { return d.side === 'sex'; }) };
+
+    // Spread: the met wishes form a cascade, couple → sides → pairs → directions. At each level,
+    // evenness is how evenly each branch's share splits among its own children (Shannon entropy over
+    // its maximum, Pielou's evenness), averaged over the branches by their share. Spread is the mean
+    // of the three levels: 1 when every split is even, 0 when every split goes one way.
+    var met = function (f) { return sum(dirs.filter(f), function (d) { return d.met; }); };
+    var total = met(function () { return true; }), Dk = null, S = null;
+    function evenness(children) { return entropy(children) / Math.log(children.length); }
+    if (total > 0) {
+      // The two sides are equal halves of a couple (as in Accord), so each side's share is its met
+      // wishes per direction it has room for: 9 relationship pairs and 10 sexual pairs count alike.
+      var sideMass = ['rel', 'sex'].map(function (s) { return met(function (d) { return d.side === s; }); });
+      var sideRoom = ['rel', 'sex'].map(function (s) { return 2 * PAIRS[s].length; });
+      var dens = sideMass.map(function (m, i) { return m / sideRoom[i]; });
+      var densTotal = dens[0] + dens[1];
+      var d1 = evenness(dens), d2 = 0, d3 = 0;
+      ['rel', 'sex'].forEach(function (s, si) {
+        if (sideMass[si] === 0) return;
+        var share = dens[si] / densTotal;
+        var pairMass = PAIRS[s].map(function (_, i) { return met(function (d) { return d.side === s && d.pair === i; }); });
+        d2 += share * evenness(pairMass);
+        pairMass.forEach(function (pm, i) {
+          if (pm === 0) return;
+          var two = dirs.filter(function (d) { return d.side === s && d.pair === i; }).map(function (d) { return d.met; });
+          d3 += share * (pm / sideMass[si]) * evenness(two);
+        });
+      });
+      Dk = [d1, d2, d3];
+      S = mean(Dk);
+    }
+
+    // Accord on the mirrors.
+    var acc = { rel: [], sex: [] }, rows = [];
+    STRUCT.forEach(function (r) {
+      var a = S_VAL[A.struct[r[0]]], b = S_VAL[B.struct[r[0]]], v = 1 - Math.abs(a - b);
+      acc.rel.push(v); rows.push({ side: 'rel', label: r[1], a: A.struct[r[0]], b: B.struct[r[0]], v: v });
+      if (FLAG_STRUCT[r[0]] && Math.abs(a - b) === 1) bounds.push(r[1] + ': one of you said yes and the other no.');
+    });
+    NUMBERS.forEach(function (x) {
+      var ia = A.numbers[x.key], ib = B.numbers[x.key], v = 1 - Math.abs(ia - ib) / (x.options.length - 1);
+      acc.rel.push(v); rows.push({ side: 'rel', label: x.label, a: x.options[ia], b: x.options[ib], v: v });
+    });
+    STYLE.forEach(function (r) {
+      var a = xv(A, r[0]), b = xv(B, r[0]), v = 1 - Math.abs(a - b);
+      acc.sex.push(v); rows.push({ side: 'sex', label: r[1], a: A.roles[r[0]].x, b: B.roles[r[0]].x, v: v });
+      var ra_ = A.roles[r[0]].x, rb_ = B.roles[r[0]].x;
+      if ((ra_ === 'notforme' && rb_ === 'yes') || (rb_ === 'notforme' && ra_ === 'yes')) bounds.push(r[1] + ': one of you wants it and the other has ruled it out.');
+    });
+    var ap = appetiteFit(ra.rate.perDay, rb.rate.perDay, T);
+    acc.sex.push(ap); rows.push({ side: 'sex', label: 'How often you’d want sex', a: perDayText(ra.rate.perDay), b: perDayText(rb.rate.perDay), v: ap });
+    var accRel = mean(acc.rel), accSex = mean(acc.sex), Acc = (accRel + accSex) / 2;
+
+    var together = all.C === null ? null : 100 * Math.sqrt(all.C * Acc) * (1 + (S === null ? 0 : S)) / 2;
+    return { C: all.C, L: all.L, A: Acc, S: S, Dk: Dk, together: together,
+      sides: { rel: { C: bySide.rel.C, L: bySide.rel.L, A: accRel }, sex: { C: bySide.sex.C, L: bySide.sex.L, A: accSex } },
+      dirs: dirs, accord: rows, boundaries: bounds };
+  }
+  return { REF_RATE: REF_RATE, LABEL: LABEL, REL: REL, SEX: SEX, problems: problems, reading: reading, TOL: TOL,
+    PAIRS: PAIRS, STYLE: STYLE, STRUCT: STRUCT, NUMBERS: NUMBERS, roleList: roleList,
+    overlayProblems: overlayProblems, doubles: doubles, couple: couple, appetiteFit: appetiteFit, entropy: entropy };
+})();
+if (typeof module !== 'undefined') module.exports = EQ;
+</script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var el = function (tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { if (k === 'class') e.className = attrs[k]; else e.setAttribute(k, attrs[k]); });
+    if (text !== undefined) e.textContent = text;
+    return e;
+  };
+  var E_OPTS = [['', 'Experience…'], ['never', 'Never'], ['tried', 'Tried'], ['regularly', 'Regularly']];
+  var X_OPTS = [['', 'Expectation…'], ['no', 'No'], ['curious', 'Curious'], ['yes', 'Yes'], ['notforme', 'Not for me']];
+  var S_OPTS = [['', '—'], ['no', 'No'], ['open', 'Open to it'], ['yes', 'Yes']];
+  var X_WORD = { no: 'No', curious: 'Curious', yes: 'Yes', notforme: 'Not for me', open: 'Open to it' };
+  function select(id, opts, label) {
+    var s = el('select', { id: id, 'aria-label': label });
+    opts.forEach(function (o) { var op = el('option', { value: o[0] }, o[1]); s.appendChild(op); });
+    return s;
+  }
+  function numField(p, key, text, unit, step) {
+    var l = el('label');
+    l.appendChild(document.createTextNode(text + ' '));
+    l.appendChild(el('span', { class: 'unit' }, unit));
+    l.appendChild(el('input', { type: 'number', id: p + '-' + key, min: '0', step: step || '1', inputmode: step ? 'decimal' : 'numeric' }));
+    return l;
+  }
+  function startField(p, key, text, hint) {
+    var d = el('div');
+    var l = el('label'); l.appendChild(document.createTextNode(text + ' ')); l.appendChild(el('span', { class: 'unit' }, 'age'));
+    l.appendChild(el('input', { type: 'number', id: p + '-' + key, min: '0', step: '1', inputmode: 'numeric' }));
+    d.appendChild(l);
+    var nv = el('label', { class: 'never' }); nv.appendChild(el('input', { type: 'checkbox', id: p + '-' + key + 'Never' })); nv.appendChild(document.createTextNode(' Never'));
+    d.appendChild(nv); d.appendChild(el('div', { class: 'hint' }, hint));
+    return d;
+  }
+  function roleRows(p, side, fs) {
+    var head = el('div', { class: 'rolehead', 'aria-hidden': 'true' });
+    ['Role', 'Experience', 'Expectation'].forEach(function (t) { head.appendChild(el('span', null, t)); });
+    fs.appendChild(head);
+    function row(r, first) {
+      var d = el('div', { class: 'role' + (first ? ' pairstart' : '') });
+      var nm = el('div', { class: 'nm' }, r[1]); nm.appendChild(el('span', { class: 'ds' }, r[2]));
+      d.appendChild(nm);
+      d.appendChild(select(p + '-e-' + r[0], E_OPTS, r[1] + ': experience'));
+      d.appendChild(select(p + '-x-' + r[0], X_OPTS, r[1] + ': expectation'));
+      fs.appendChild(d);
+    }
+    EQ.PAIRS[side].forEach(function (pr) { row([pr[0], pr[1], pr[2]], true); row([pr[3], pr[4], pr[5]], false); });
+    if (side === 'sex') {
+      fs.appendChild(el('div', { class: 'sub' }, 'Styles that pair like with like'));
+      EQ.STYLE.forEach(function (r, i) { row(r, i === 0); });
+    }
+    var b = el('button', { type: 'button', class: 'btn fill', 'data-fill': p + ':' + side }, 'Set every unanswered row here to Never · No');
+    fs.appendChild(b);
+  }
+  function buildPanel(p) {
+    var root = $('panel' + p);
+    root.appendChild(el('h2', null, 'Person ' + p));
+    var f = el('form', { id: 'f' + p, novalidate: '', autocomplete: 'off' });
+    var fs1 = el('fieldset'); fs1.appendChild(el('legend', null, 'When it started'));
+    var g1 = el('div', { class: 'grid' });
+    var age = el('label'); age.appendChild(document.createTextNode('Age ')); age.appendChild(el('span', { class: 'unit' }, 'years'));
+    age.appendChild(el('input', { type: 'number', id: p + '-age', min: '18', step: '1', inputmode: 'numeric' })); g1.appendChild(age);
+    g1.appendChild(startField(p, 'firstRomantic', 'Age at the first relationship chosen, of any length', 'Relationships, times in love, heartbreaks and the longest relationship are measured from here.'));
+    g1.appendChild(startField(p, 'firstSexual', 'Age at the first sexual experience chosen', 'People slept with is measured from here.'));
+    fs1.appendChild(g1);
+    fs1.appendChild(el('p', { class: 'faint', style: 'margin:12px 0 0' }, 'Relationships and sex are kept separate, each with its own starting point. Neither may be left blank: give an age or tick Never.'));
+    f.appendChild(fs1);
+    var fs2 = el('fieldset'); fs2.appendChild(el('legend', null, 'Relationships (REEQ)'));
+    var g2 = el('div', { class: 'grid' });
+    g2.appendChild(numField(p, 'rel', 'Relationships', 'in total, any length'));
+    g2.appendChild(numField(p, 'love', 'Times in love', 'in total'));
+    g2.appendChild(numField(p, 'hb', 'Heartbreaks', 'in total'));
+    g2.appendChild(numField(p, 'longest', 'Longest one lasted', 'years (a week is 0.02)', '0.01'));
+    fs2.appendChild(g2);
+    fs2.appendChild(el('p', { class: 'faint', style: 'margin:12px 0 0' }, 'A relationship begins when you meet the person and counts at any length, from a day to a decade.'));
+    f.appendChild(fs2);
+    var fs3 = el('fieldset'); fs3.appendChild(el('legend', null, 'Sex (SEEQ)'));
+    var g3 = el('div', { class: 'grid' });
+    g3.appendChild(numField(p, 'partners', 'People slept with', 'in total'));
+    g3.appendChild(numField(p, 'perDay', 'Times a day you’d want', 'per day', '0.1'));
+    g3.appendChild(numField(p, 'wkPeople', 'Different people', 'in a week'));
+    g3.appendChild(numField(p, 'wkOrg', 'Orgasms', 'in a week'));
+    fs3.appendChild(g3); f.appendChild(fs3);
+    var fs4 = el('fieldset'); fs4.appendChild(el('legend', null, 'Relationship roles'));
+    fs4.appendChild(el('p', { class: 'faint' }, 'Each pair is two roles that complete each other. Experience: how much you have been in the role. Expectation: whether you want to be in it. Not for me marks a boundary.'));
+    roleRows(p, 'rel', fs4); f.appendChild(fs4);
+    var fs5 = el('fieldset'); fs5.appendChild(el('legend', null, 'Relationship shape'));
+    fs5.appendChild(el('p', { class: 'faint' }, 'These need to be shared rather than complemented, so they are compared like with like.'));
+    EQ.STRUCT.forEach(function (r) {
+      var d = el('div', { class: 'struct' }); var nm = el('div', { class: 'nm' }, r[1]);
+      if (r[2]) nm.appendChild(el('span', { class: 'ds', style: 'display:block;font-size:13px;color:var(--ink-faint)' }, r[2]));
+      d.appendChild(nm); d.appendChild(select(p + '-s-' + r[0], S_OPTS, r[1])); fs5.appendChild(d);
+    });
+    EQ.NUMBERS.forEach(function (x) {
+      var d = el('div', { class: 'struct wide' }); d.appendChild(el('div', { class: 'nm' }, x.label));
+      d.appendChild(select(p + '-n-' + x.key, [['', '—']].concat(x.options.map(function (o, i) { return [String(i), o]; })), x.label));
+      fs5.appendChild(d);
+    });
+    f.appendChild(fs5);
+    var fs6 = el('fieldset'); fs6.appendChild(el('legend', null, 'Sexual roles'));
+    fs6.appendChild(el('p', { class: 'faint' }, 'The roles are the ones in Crushhh’s role list; the descriptions are our own. If you have a percentage for a role from a kink test, Yes is the closest step to a high one and Curious to a middling one.'));
+    roleRows(p, 'sex', fs6); f.appendChild(fs6);
+    root.appendChild(f);
+    var r = el('div'); r.appendChild(el('h3', null, 'Reading for person ' + p));
+    r.appendChild(el('ul', { class: 'problems', id: p + '-problems' }));
+    var box = el('div', { class: 'result', id: p + '-result', hidden: '' });
+    var pr = el('div', { class: 'pair' });
+    function bp(idTop, idBot, cap) { var b = el('div', { class: 'bp' }); b.appendChild(el('span', { id: idTop }, '–')); b.appendChild(el('span', { class: 'rule', 'aria-hidden': 'true' })); b.appendChild(el('span', { id: idBot }, '–')); b.appendChild(el('small', null, cap)); return b; }
+    pr.appendChild(bp(p + '-reeq', p + '-seeq', 'REEQ / SEEQ'));
+    pr.appendChild(bp(p + '-relE', p + '-relX', 'relationship exp / exp'));
+    pr.appendChild(bp(p + '-sexE', p + '-sexX', 'sexual exp / exp'));
+    box.appendChild(pr);
+    var facts = el('div', { class: 'facts', style: 'margin-top:14px' });
+    facts.appendChild(el('div', { id: p + '-tilt' }));
+    facts.appendChild(el('div', { class: 'faint', id: p + '-years' }));
+    facts.appendChild(el('div', { class: 'faint', id: p + '-dnote' }));
+    box.appendChild(facts);
+    box.appendChild(el('p', { class: 'faint', style: 'margin:12px 0 0' }, 'REEQ and SEEQ: each answer becomes a rate per year and is scored 100 × rate ÷ (rate + reference rate), so 50 is the rate of the one reference answer the scale is set from. Experience over expectation: experience weighs these counts and the roles you have been in equally; expectation is the share of roles you want. No number here is good or bad.'));
+    r.appendChild(box);
+    root.appendChild(r);
+  }
+  buildPanel('A'); buildPanel('B');
+
+  var num = function (id) { var v = $(id).value.trim(); if (v === '') return null; var x = Number(v); return isFinite(x) ? x : null; };
+  function gather(p) {
+    var start = function (k) { return $(p + '-' + k + 'Never').checked ? 'never' : num(p + '-' + k); };
+    var q = { age: num(p + '-age'), firstRomantic: start('firstRomantic'), firstSexual: start('firstSexual') };
+    EQ.REL.concat(EQ.SEX).forEach(function (k) { q[k] = num(p + '-' + k); });
+    var roles = {};
+    EQ.roleList('rel').concat(EQ.roleList('sex')).forEach(function (r) { roles[r[0]] = { e: $(p + '-e-' + r[0]).value, x: $(p + '-x-' + r[0]).value }; });
+    var struct = {}; EQ.STRUCT.forEach(function (r) { struct[r[0]] = $(p + '-s-' + r[0]).value; });
+    var numbers = {}; EQ.NUMBERS.forEach(function (x) { var v = $(p + '-n-' + x.key).value; numbers[x.key] = v === '' ? null : Number(v); });
+    return { q: q, P: { roles: roles, struct: struct, numbers: numbers } };
+  }
+  function list(ul, items) { ul.textContent = ''; items.forEach(function (t) { ul.appendChild(el('li', null, t)); }); }
+  var state = {};
+  function person(p) {
+    ['firstRomantic', 'firstSexual'].forEach(function (k) { $(p + '-' + k).disabled = $(p + '-' + k + 'Never').checked; });
+    var g = gather(p), probs = EQ.problems(g.q), oprobs = EQ.overlayProblems(g.P);
+    list($(p + '-problems'), probs.concat(oprobs));
+    state[p] = { g: g, rd: null, ok: false };
+    if (probs.length) { $(p + '-result').hidden = true; return; }
+    var rd = EQ.reading(g.q); state[p].rd = rd;
+    $(p + '-result').hidden = false;
+    $(p + '-reeq').textContent = rd.reeq; $(p + '-seeq').textContent = rd.seeq;
+    $(p + '-tilt').innerHTML = '';
+    var t = $(p + '-tilt'); t.appendChild(el('b', null, rd.tilt)); t.appendChild(document.createTextNode(' · EEQ (the midpoint) ' + rd.eeq + ' · ' + (rd.gap === 0 ? 'no gap' : Math.abs(rd.gap) + ' apart')));
+    $(p + '-years').textContent = 'Relationship answers measured across ' + rd.yRom + ' year' + (rd.yRom === 1 ? '' : 's') + ', sexual ones across ' + rd.ySex + ' year' + (rd.ySex === 1 ? '' : 's') + '.';
+    if (oprobs.length) {
+      ['relE', 'relX', 'sexE', 'sexX'].forEach(function (k) { $(p + '-' + k).textContent = '–'; });
+      $(p + '-dnote').textContent = 'The experience-over-expectation numbers appear once every role is answered.';
+      return;
+    }
+    var d = EQ.doubles(g.P, rd);
+    $(p + '-relE').textContent = d.rel.experience; $(p + '-relX').textContent = d.rel.expectation;
+    $(p + '-sexE').textContent = d.sex.experience; $(p + '-sexX').textContent = d.sex.expectation;
+    $(p + '-dnote').textContent = '';
+    state[p].ok = true;
+  }
+  var pct = function (v) { return v === null ? '–' : String(Math.round(100 * v)); };
+  function together() {
+    var probs = [];
+    ['A', 'B'].forEach(function (p) { if (!state[p] || !state[p].ok) probs.push('Person ' + p + ' has unanswered or inconsistent answers; see their reading.'); });
+    list($('tProblems'), probs);
+    if (probs.length) { $('tResult').hidden = true; return; }
+    var tol = document.querySelector('input[name=tol]:checked').value;
+    var c = EQ.couple(state.A.g.P, state.B.g.P, state.A.rd, state.B.rd, tol);
+    $('tResult').hidden = false;
+    $('tTogether').textContent = c.together === null ? '–' : String(Math.round(c.together));
+    $('tC').textContent = pct(c.C); $('tA').textContent = pct(c.A);
+    $('tS').textContent = c.S === null ? '–' : c.S.toFixed(2);
+    $('tSk').textContent = c.Dk ? '(sides ' + c.Dk[0].toFixed(2) + ', pairs ' + c.Dk[1].toFixed(2) + ', directions ' + c.Dk[2].toFixed(2) + ')' : '';
+    $('tL').textContent = c.L === null ? 'nothing sought' : pct(c.L);
+    $('tNote').textContent = c.C === null ? 'Neither of you wants any complementary role, so there is nothing for Together to measure; Accord is shown on its own.' : '';
+    list($('tBounds'), c.boundaries);
+    $('tNoBounds').hidden = c.boundaries.length > 0;
+    var ts = $('tSides'); ts.textContent = '';
+    [['Relationship', 'rel'], ['Sexual', 'sex']].forEach(function (s) {
+      var tr = el('tr'); var v = c.sides[s[1]];
+      [s[0], pct(v.C), pct(v.A), v.L === null ? 'nothing sought' : pct(v.L)].forEach(function (x, i) { tr.appendChild(el('td', i ? { class: 'num' } : null, x)); });
+      ts.appendChild(tr);
+    });
+    var tp = $('tPairs'); tp.textContent = '';
+    ['rel', 'sex'].forEach(function (side) {
+      EQ.PAIRS[side].forEach(function (pr, i) {
+        var ds = c.dirs.filter(function (d) { return d.side === side && d.pair === i; });
+        var cell = function (d) { return d.sought > 0 ? String(Math.round(100 * d.met / d.sought)) : ''; };
+        var tr = el('tr');
+        tr.appendChild(el('td', null, pr[1] + ' ⇄ ' + pr[4]));
+        tr.appendChild(el('td', { class: 'num' }, cell(ds.filter(function (d) { return d.first === 'A'; })[0])));
+        tr.appendChild(el('td', { class: 'num' }, cell(ds.filter(function (d) { return d.first === 'B'; })[0])));
+        tp.appendChild(tr);
+      });
+    });
+    var ta = $('tAccord'); ta.textContent = '';
+    c.accord.forEach(function (r) {
+      var tr = el('tr');
+      var word = function (v) { return X_WORD[v] || v; };
+      [r.label, word(r.a), word(r.b), String(Math.round(100 * r.v))].forEach(function (x, i) { tr.appendChild(el('td', i === 3 ? { class: 'num' } : null, x)); });
+      ta.appendChild(tr);
+    });
+  }
+  function update() { person('A'); person('B'); together(); }
+  ['A', 'B'].forEach(function (p) {
+    $('f' + p).addEventListener('input', update);
+    $('f' + p).addEventListener('change', update);
+    $('f' + p).addEventListener('submit', function (e) { e.preventDefault(); });
+  });
+  document.querySelectorAll('input[name=tol]').forEach(function (r) { r.addEventListener('change', together); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-fill]'); if (!b) return;
+    var parts = b.getAttribute('data-fill').split(':');
+    EQ.roleList(parts[1]).forEach(function (r) {
+      var se = $(parts[0] + '-e-' + r[0]), sx = $(parts[0] + '-x-' + r[0]);
+      if (!se.value) se.value = 'never'; if (!sx.value) sx.value = 'no';
+    });
+    update();
+  });
+  function show(which) {
+    ['A', 'B', 'T'].forEach(function (k) { $('panel' + k).hidden = k !== which; $('show' + k).setAttribute('aria-pressed', String(k === which)); });
+    // Keep the new panel's heading in view below the sticky bar.
+    var bar = document.querySelector('.bar'), top = $('panel' + which).getBoundingClientRect().top + window.scrollY - bar.offsetHeight - 8;
+    if (window.scrollY > top) window.scrollTo(0, top);
+  }
+  ['A', 'B', 'T'].forEach(function (k) { $('show' + k).addEventListener('click', function () { show(k); }); });
+
+  // An invented pair, for seeing how the numbers behave. It describes no real person.
+  var EXAMPLE = {
+    A: { q: { age: 31, firstRomantic: 17, firstSexual: 18, rel: 4, love: 2, hb: 1, longest: 3, partners: 9, perDay: 0.7, wkPeople: 1, wkOrg: 4 },
+      roles: 'planner r y, caretaker t c, decider t c, initiator r y, mentor t y, talker r y, protector t y, adventurer r y, connector t c, ' +
+        'dom r y, sub n f, sadist t c, rigger n c, tamer t y, degrader n f, hunter t y, exhib n c, switch n c, experimental t y, vanilla r c',
+      struct: { mono: 'yes', open: 'no', live: 'yes', formal: 'open', kids: 'open', distance: 'no' }, numbers: { days: 4, length: 3, atonce: 0, commit: 2 } },
+    B: { q: { age: 28, firstRomantic: 16, firstSexual: 17, rel: 6, love: 3, hb: 2, longest: 2, partners: 14, perDay: 1, wkPeople: 1, wkOrg: 6 },
+      roles: 'free r y, caredfor t y, goalong r c, receiver r y, learner t y, listener r y, protected t c, anchor t c, homebody r y, ' +
+        'sub r y, maso t y, ropebunny t y, brat r y, degradee n c, prey n c, voyeur t c, switch t c, experimental t y, vanilla t c',
+      struct: { mono: 'yes', open: 'no', live: 'open', formal: 'yes', kids: 'no', distance: 'open' }, numbers: { days: 5, length: 4, atonce: 0, commit: 1 } }
+  };
+  var E_CODE = { n: 'never', t: 'tried', r: 'regularly' }, X_CODE = { n: 'no', c: 'curious', y: 'yes', f: 'notforme' };
+  function load(p, ex) {
+    var q = ex.q;
+    $(p + '-age').value = q.age;
+    ['firstRomantic', 'firstSexual'].forEach(function (k) { $(p + '-' + k + 'Never').checked = q[k] === 'never'; $(p + '-' + k).value = q[k] === 'never' ? '' : q[k]; });
+    EQ.REL.concat(EQ.SEX).forEach(function (k) { $(p + '-' + k).value = q[k]; });
+    EQ.roleList('rel').concat(EQ.roleList('sex')).forEach(function (r) { $(p + '-e-' + r[0]).value = 'never'; $(p + '-x-' + r[0]).value = 'no'; });
+    ex.roles.split(',').forEach(function (s) {
+      var t = s.trim().split(' '); $(p + '-e-' + t[0]).value = E_CODE[t[1]]; $(p + '-x-' + t[0]).value = X_CODE[t[2]];
+    });
+    EQ.STRUCT.forEach(function (r) { $(p + '-s-' + r[0]).value = ex.struct[r[0]]; });
+    EQ.NUMBERS.forEach(function (x) { $(p + '-n-' + x.key).value = String(ex.numbers[x.key]); });
+  }
+  $('example').addEventListener('click', function () {
+    load('A', EXAMPLE.A); load('B', EXAMPLE.B); update(); show('T');
+    $('status').textContent = 'Example answers loaded. They describe no real person.';
+  });
+  $('clear').addEventListener('click', function () {
+    ['A', 'B'].forEach(function (p) { $('f' + p).reset(); });
+    update(); show('A'); $('status').textContent = 'Cleared.';
+  });
+  update();
+})();
+</script>
+</body>
+</html>

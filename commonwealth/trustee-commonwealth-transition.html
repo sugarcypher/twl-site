@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commonwealth Transition Plan</title>
+<style>
+:root{
+  --bg:#f6f4ee; --panel:#fffdf8; --ink:#1c1c1a; --muted:#5d5c57; --line:#cfc9bb;
+  --core:#2e4a6b; --oninv:#ffffff; --p0:#8a8678; --p1:#5f8a4a; --p2:#2a68a0; --p3:#c4824f; --p4:#7a4a8a; --p5:#2e4a6b;
+  --auth:#1c1c1a; --check:#b23a2b; --info:#2a68a0; --group:#f0ebdf;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131311; --panel:#1c1c19; --ink:#ecebe5; --muted:#a6a59d; --line:#3d3c37;
+    --core:#3b5f88; --oninv:#f4f2ec; --p0:#77746a; --p1:#5a8a45; --p2:#3b7ab5; --p3:#b0703f; --p4:#8a5a9a; --p5:#3b5f88;
+    --auth:#ecebe5; --check:#e0675a; --info:#6aa8e0; --group:#23221e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131311; --panel:#1c1c19; --ink:#ecebe5; --muted:#a6a59d; --line:#3d3c37;
+  --core:#3b5f88; --oninv:#f4f2ec; --p0:#77746a; --p1:#5a8a45; --p2:#3b7ab5; --p3:#b0703f; --p4:#8a5a9a; --p5:#3b5f88;
+  --auth:#ecebe5; --check:#e0675a; --info:#6aa8e0; --group:#23221e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55;font-size:16px}
+main{max-width:1040px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;margin:0 0 10px;letter-spacing:-0.01em}
+h2{font-size:22px;margin:56px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:17px;margin:0 0 4px}
+p{margin:0 0 12px}
+a{color:var(--info)}
+.deck{font-size:18px;color:var(--muted);max-width:780px}
+.prov{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding:6px 12px;margin:18px 0 0;max-width:840px}
+figure{margin:20px 0 8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+svg{width:100%;height:auto;display:block}
+.rules{counter-reset:r;list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.rules li{counter-increment:r;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px 12px 50px;position:relative;font-size:14.5px}
+.rules li::before{content:counter(r);position:absolute;left:14px;top:12px;width:24px;height:24px;border-radius:50%;background:var(--core);color:var(--oninv);display:grid;place-items:center;font-weight:700;font-size:13px}
+.phase{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--pc);border-radius:10px;padding:16px 18px;margin-top:16px}
+.phase .yrs{font-size:13px;color:var(--muted);margin-bottom:10px}
+.phase dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 16px;margin:0;font-size:14.5px}
+.phase dt{font-weight:700;color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+.phase dd{margin:0}
+.phase ul{margin:0;padding-left:18px}
+@media (max-width:640px){.phase dl{grid-template-columns:1fr}.phase dt{padding-top:8px}}
+.tablewrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:680px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:600;width:20%}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14.5px}
+.new{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:4px;background:var(--core);color:var(--oninv);vertical-align:2px}
+/* svg */
+.lbl{fill:var(--ink);font-size:14px;font-weight:700}
+.num{fill:var(--muted);font-size:13px;font-weight:700}
+.yt{fill:var(--muted);font-size:12px}
+.gt{fill:var(--ink);font-size:12px;font-weight:600}
+.axis{stroke:var(--line);stroke-width:1.5}
+.grid{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.gate{fill:var(--panel);stroke:var(--ink);stroke-width:2}
+.node{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+.kick{fill:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-anchor:middle}
+.t{fill:var(--ink);font-size:16px;font-weight:700;text-anchor:middle}
+.s{fill:var(--muted);font-size:12.5px;text-anchor:middle}
+.al{font-size:12px;font-weight:600}
+.a-auth{stroke:var(--auth);stroke-width:1.8;fill:none}
+.a-check{stroke:var(--check);stroke-width:1.8;fill:none;stroke-dasharray:6 4}
+.a-info{stroke:var(--info);stroke-width:1.8;fill:none;stroke-dasharray:2 3}
+.l-auth{fill:var(--auth)} .l-check{fill:var(--check)} .l-info{fill:var(--info)}
+.band{fill:var(--core)}
+.bt{fill:var(--oninv);font-size:12px;font-weight:700;letter-spacing:.06em;text-anchor:middle}
+</style>
+</head>
+<body>
+<main>
+
+<h1>The Path to the Trustee Commonwealth&dagger;</h1>
+<p class="deck">A transition plan for adopting the Trustee Commonwealth of Earth: by consent, in stages, with the checks and balances working before the institutions they protect exist.</p>
+<p class="prov">Companion to <a href="trustee-commonwealth.html">The Trustee Commonwealth of Earth</a>. Design proposal, provisional until ratified. Drafted by Claude (Anthropic) on direction, 22 October 2026. Names marked &dagger; are Claude coinages, in play unless struck. Years are planning estimates, not forecasts. Version 2 adds the great-power strategy (section 7). Partner organizations in section 8 were checked as active in this session; other precedents are public record cited from knowledge.</p>
+
+<h2>1. Why the transition is the most dangerous part</h2>
+<p>Every structure loses its protections at the moment it's being built. The people building it hold power that the finished design would deny them, and there is no court, chamber or audit yet to stop them. Revolutions that promised liberty and delivered terror failed in exactly this window. So the plan applies checks and balances to itself <b>before</b> the Commonwealth exists. Those checks are stricter than the finished design's, because the transition has fewer of them to rely on.</p>
+
+<h2>2. Founding rules that bind the transition itself</h2>
+<ol class="rules">
+<li><b>Consent only.</b> Polities join only through their own lawful constitutional process and with their people's consent. No coercion, no violence, no armed wing, ever. Any participant who uses force, bribery or intimidation is expelled and referred to the courts.</li>
+<li><b>Four powers, four bodies.</b> Drafting, ratifying, operating and auditing are held by four separate bodies. No person sits in two of them.</li>
+<li><b>Builders don't rule.</b> Anyone who drafts the charter is barred from holding its offices for ten years. They may advise, without a vote. (Precedent: the French National Constituent Assembly's self-denying ordinance of 1791. It also produced an inexperienced legislature, which is why drafters keep an advisory role here.)</li>
+<li><b>Every transitional body dies on schedule.</b> Its sunset date is written into its founding text. Only the ratifying body can extend it, once, for at most two years. Acts taken after the sunset are void.</li>
+<li><b>Gates, not dates.</b> A phase advances only when an independent audit certifies success criteria that were published in advance. A failed gate means redesign. Twice failed means the module is dropped.</li>
+<li><b>No single owner.</b> No donor may supply more than 2% of annual funds, and no polity more than 15% of a transitional budget. The books are open monthly.</li>
+<li><b>The mirror test at every stage.</b> Every founding body includes members from opposing political camps and from every inhabited continent. A clause advances only if people who disagree with its authors can accept it.</li>
+<li><b>Withdrawal at every phase.</b> Any city, region or polity can leave a pilot, compact or treaty under terms written in advance.</li>
+</ol>
+
+<h2>3. Separation of powers during the transition</h2>
+<figure>
+<svg viewBox="0 0 960 440" role="img" aria-labelledby="sepT">
+  <title id="sepT">Four separate transition bodies: drafting, ratifying, operating and auditing, with the checks between them</title>
+  <defs>
+    <marker id="ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--auth)"/></marker>
+    <marker id="mc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--check)"/></marker>
+    <marker id="mi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--info)"/></marker>
+  </defs>
+  <rect class="node" x="40" y="30" width="380" height="130" rx="12"/>
+  <text class="kick" x="230" y="56">DRAFT</text>
+  <text class="t" x="230" y="82">Founding Convention&#8224;</text>
+  <text class="s" x="230" y="106">proposes text; cannot govern or spend</text>
+  <text class="s" x="230" y="126">thirds: by lot, polity delegates, stewards</text>
+  <text class="s" x="230" y="146">members barred from charter office 10 years</text>
+
+  <rect class="node" x="540" y="30" width="380" height="130" rx="12"/>
+  <text class="kick" x="730" y="56">RATIFY</text>
+  <text class="t" x="730" y="82">Each Polity and Its People</text>
+  <text class="s" x="730" y="106">through its own lawful constitutional process</text>
+  <text class="s" x="730" y="126">can say no; can withdraw on written terms</text>
+  <text class="s" x="730" y="146">the only body that grants power</text>
+
+  <rect class="node" x="540" y="240" width="380" height="130" rx="12"/>
+  <text class="kick" x="730" y="266">OPERATE</text>
+  <text class="t" x="730" y="292">Interim Secretariat&#8224;</text>
+  <text class="s" x="730" y="316">runs approved modules only</text>
+  <text class="s" x="730" y="336">makes no rules; holds no force</text>
+  <text class="s" x="730" y="356">dissolves on its sunset date</text>
+
+  <rect class="node" x="40" y="240" width="380" height="130" rx="12"/>
+  <text class="kick" x="230" y="266">AUDIT</text>
+  <text class="t" x="230" y="292">Transition Audit&#8224;</text>
+  <text class="s" x="230" y="316">rival labs plus a citizen audit jury</text>
+  <text class="s" x="230" y="336">certifies or fails each gate</text>
+  <text class="s" x="230" y="356">can halt any operation pending review</text>
+
+  <path class="a-auth" d="M422,80 H538" marker-end="url(#ma)"/>
+  <text class="al l-auth" x="480" y="72" text-anchor="middle">proposes</text>
+  <path class="a-auth" d="M760,162 V238" marker-end="url(#ma)"/>
+  <text class="al l-auth" x="768" y="204">authorizes</text>
+  <path class="a-info" d="M538,290 H422" marker-end="url(#mi)"/>
+  <text class="al l-info" x="480" y="282" text-anchor="middle">reports, open books</text>
+  <path class="a-check" d="M422,340 H538" marker-end="url(#mc)"/>
+  <text class="al l-check" x="480" y="332" text-anchor="middle">can halt</text>
+  <path class="a-check" d="M400,240 L600,162" marker-end="url(#mc)"/>
+  <text class="al l-check" x="470" y="186" text-anchor="middle">certifies gates</text>
+  <path class="a-info" d="M200,238 V162" marker-end="url(#mi)"/>
+  <text class="al l-info" x="208" y="204">mirror-test results</text>
+
+  <rect class="band" x="40" y="392" width="880" height="36" rx="8"/>
+  <text class="bt" x="480" y="415">NO PERSON SITS IN TWO BOXES &#183; DISPUTES GO TO EXISTING COURTS AND ARBITRATION UNTIL THE COURT OF RIGHTS EXISTS</text>
+</svg>
+<figcaption>Figure 1. Only the ratifying body can grant power. The drafters can't govern, the operators can't make rules, and the auditors can stop operations but can't direct them.</figcaption>
+</figure>
+
+<h2>4. Five phases, five gates</h2>
+<figure>
+<svg viewBox="0 0 960 380" role="img" aria-labelledby="tlT">
+  <title id="tlT">Timeline of five transition phases across roughly fifty years, each ending at an audited gate</title>
+  <line class="grid" x1="160" y1="28" x2="160" y2="300"/>
+  <line class="grid" x1="290" y1="28" x2="290" y2="300"/>
+  <line class="grid" x1="420" y1="28" x2="420" y2="300"/>
+  <line class="grid" x1="550" y1="28" x2="550" y2="300"/>
+  <line class="grid" x1="680" y1="28" x2="680" y2="300"/>
+  <line class="grid" x1="810" y1="28" x2="810" y2="300"/>
+  <line class="grid" x1="940" y1="28" x2="940" y2="300"/>
+
+  <text class="num" x="10" y="57">0</text><text class="lbl" x="28" y="57">Seed</text>
+  <rect x="160" y="38" width="39" height="28" rx="6" style="fill:var(--p0)"/>
+  <rect class="gate" x="192" y="45" width="14" height="14" transform="rotate(45 199 52)"/>
+  <text class="gt" x="214" y="57">years 0 to 3 &#183; Gate A</text>
+
+  <text class="num" x="10" y="103">1</text><text class="lbl" x="28" y="103">Modules</text>
+  <rect x="186" y="84" width="104" height="28" rx="6" style="fill:var(--p1)"/>
+  <rect class="gate" x="283" y="91" width="14" height="14" transform="rotate(45 290 98)"/>
+  <text class="gt" x="305" y="103">years 2 to 10 &#183; Gate B</text>
+
+  <text class="num" x="10" y="149">2</text><text class="lbl" x="28" y="149">Founding Compact</text>
+  <rect x="264" y="130" width="130" height="28" rx="6" style="fill:var(--p2)"/>
+  <rect class="gate" x="387" y="137" width="14" height="14" transform="rotate(45 394 144)"/>
+  <text class="gt" x="409" y="149">years 8 to 18 &#183; Gate C</text>
+
+  <text class="num" x="10" y="195">3</text><text class="lbl" x="28" y="195">Expansion</text>
+  <rect x="355" y="176" width="260" height="28" rx="6" style="fill:var(--p3)"/>
+  <rect class="gate" x="608" y="183" width="14" height="14" transform="rotate(45 615 190)"/>
+  <text class="gt" x="630" y="195">years 15 to 35 &#183; Gate D</text>
+
+  <text class="num" x="10" y="241">4</text><text class="lbl" x="28" y="241">Planetary Convention</text>
+  <rect x="550" y="222" width="260" height="28" rx="6" style="fill:var(--p4)"/>
+  <rect class="gate" x="803" y="229" width="14" height="14" transform="rotate(45 810 236)"/>
+  <text class="gt" x="825" y="241">years 30 to 50</text>
+  <text class="gt" x="825" y="257">Gate E</text>
+
+  <text class="num" x="10" y="287">5</text><text class="lbl" x="28" y="287">Living charter</text>
+  <rect x="810" y="268" width="122" height="28" rx="6" style="fill:var(--p5)"/>
+  <path d="M932,274 L946,282 L932,290 z" style="fill:var(--p5)"/>
+  <text x="871" y="287" style="fill:var(--oninv);font-size:11.5px;font-weight:700;text-anchor:middle">every 25 years</text>
+
+  <line class="axis" x1="160" y1="312" x2="940" y2="312"/>
+  <text class="yt" x="160" y="332" text-anchor="middle">year 0</text>
+  <text class="yt" x="290" y="332" text-anchor="middle">10</text>
+  <text class="yt" x="420" y="332" text-anchor="middle">20</text>
+  <text class="yt" x="550" y="332" text-anchor="middle">30</text>
+  <text class="yt" x="680" y="332" text-anchor="middle">40</text>
+  <text class="yt" x="810" y="332" text-anchor="middle">50</text>
+  <text class="yt" x="940" y="332" text-anchor="end">60</text>
+  <text class="yt" x="160" y="362">Phases overlap on purpose: each starts while the previous one is proving itself. A phase ends only when its gate is certified.</text>
+</svg>
+<figcaption>Figure 2. For scale: the European Union took 58 years to grow from six countries pooling coal and steel (1951) to the Lisbon Treaty (2009). The Montreal Protocol on the ozone layer took 22 years to reach universal ratification (1987 to 2009).</figcaption>
+</figure>
+
+<div class="phase" style="--pc:var(--p0)">
+<h3>Phase 0: Seed</h3>
+<div class="yrs">Years 0 to 3 &#183; ends at Gate A</div>
+<dl>
+<dt>Goal</dt><dd>A charter worth adopting, and early evidence that its parts work at small scale.</dd>
+<dt>Actions</dt><dd><ul>
+<li>Publish the charter under an open license so anyone can copy, test or fork it.</li>
+<li>Form a Founding Trust&dagger; as a nonprofit. A third of its board is chosen by lot, a third are scientists, and a third come from opposing political camps.</li>
+<li>Build a public prototype of the Office of Measurement: a planetary-boundary and social-floor dashboard drawn from open satellite and statistical data.</li>
+<li>Run mirror-test review panels on every inhabited continent.</li>
+<li>Run three or more citizens' assembly pilots, online and local, chosen by verifiable lottery.</li>
+</ul></dd>
+<dt>Checks</dt><dd>Founders are barred from future charter office. The 2% donor cap and open books apply from the first dollar. Every pilot is evaluated by someone who didn't build it.</dd>
+<dt>Gate A</dt><dd>Mirror panels on five or more continents, including opposing camps, accept at least two-thirds of the clauses, and the rest are redrafted. An independent lab reproduces the measurement prototype. Three assembly pilots are completed and evaluated.</dd>
+<dt>Kill criteria</dt><dd>If the panels reject the core after three drafting rounds, the structure is wrong. Redesign from the Ordering Clause up.</dd>
+</dl>
+</div>
+
+<div class="phase" style="--pc:var(--p1)">
+<h3>Phase 1: Modules</h3>
+<div class="yrs">Years 2 to 10 &#183; ends at Gate B</div>
+<dl>
+<dt>Goal</dt><dd>Each organ of the charter proven in real jurisdictions, with no treaty needed.</dd>
+<dt>Actions</dt><dd><ul>
+<li><b>Measurement compact</b> among willing states and regions: shared independent measurement with satellite cross-checks.</li>
+<li><b>Permanent citizens' assemblies</b> in cities and regions.</li>
+<li><b>Commons dividend pilots</b>: resource rent or carbon fees returned to residents in equal shares.</li>
+<li><b>Commons Advocate pilots</b> inside attorney general or ombudsman offices.</li>
+<li><b>Future-generations commissioners</b> on the Welsh model.</li>
+<li><b>Thriving accounts</b> published alongside gross domestic product in willing jurisdictions. Gross domestic product is then removed from their binding rules once the accounts have run for three years.</li>
+<li><b>Gate-test pilots</b>: free water lifelines, open access to publicly funded research, and prize funds for essential medicines.</li>
+<li><b>Repair-justice and healing partnerships</b>, led by the Indigenous nations and communities that choose to run them: repair circles alongside the courts, and traditional healers working with clinics, under benefit-sharing agreements.</li>
+<li><b>Ranch-conversion pilots</b>: willing ranchers paid to convert land to pollinator sanctuary garden farms, native rewilding, agrivoltaics and humane insect farms, with yields, pollinator counts and rancher incomes scored, as the first step toward converting one-third of ranch land.</li>
+<li><b>Provisioning pilots</b>: cancelling medical and student debt, on the model of nonprofits that buy medical debt cheaply and cancel it; time banks for care; fading local currencies on the Chiemgauer model; and provisioning cooperatives taking over one floor sector at a time until it has no price.</li>
+<li><b>Daily-foundation pilots</b>: crisis care teams in place of police for mental health calls, universal fresh school meals sourced from local farms, and right-to-disconnect and shorter-workweek trials, each scored on mental health, diet quality and chronic stress.</li>
+<li><b>Neurochemical freedom pilots</b>: decriminalization only where drug checking, treatment on demand and safe supply are already running, following Portugal's model (2001) and learning from Oregon's reversal (2024).</li>
+<li><b>Contribution Commons Fund pilots</b>: creators who release art, music, tools or knowledge into the commons are paid by use and by how much others build on it, following the public lending right model.</li>
+<li><b>Guardianship pilots for rivers and forests</b> on the Whanganui model, plus an evidence register on animal sentience.</li>
+<li><b>A license club</b>: jurisdictions coordinating "safe before sale" rules, starting with compulsive digital design.</li>
+</ul></dd>
+<dt>Likely early hosts</dt><dd>Cities and regions already running assemblies; small, climate-exposed states such as the Pacific island nations that pushed for the International Court of Justice's 2025 climate opinion; governments already running wellbeing budgets. These are inferences from track records, not commitments.</dd>
+<dt>Checks</dt><dd>Every pilot publishes its success criteria before it starts. Pilots run under the host's existing law and courts, and any host can end its pilot.</dd>
+<dt>Gate B</dt><dd>At least six of the nine organs piloted in 20 or more jurisdictions on four or more continents. At least two-thirds meet their published criteria in independent evaluation. No capture tripwire left unresolved.</dd>
+<dt>Kill criteria</dt><dd>An organ that fails evaluation through two redesign cycles is dropped or replaced, and the charter is amended.</dd>
+</dl>
+</div>
+
+<div class="phase" style="--pc:var(--p2)">
+<h3>Phase 2: Founding Compact&dagger;</h3>
+<div class="yrs">Years 8 to 18 &#183; ends at Gate C</div>
+<dl>
+<dt>Goal</dt><dd>A binding treaty among founding polities that creates the first planetary organs, with narrow, listed powers.</dd>
+<dt>Actions</dt><dd><ul>
+<li>Negotiate the Compact. It contains the Ordering Clause, the Office of Measurement, a Commons Trust over the commons members agree to share, the Commons Advocate, a Court of Rights open to persons in member polities, and all three chambers: the House of Lots, the House of Polities and the Steward Chamber.</li>
+<li>Members apply border charges to non-member imports equal to their embedded ecological cost. Precedent: the Montreal Protocol's trade restrictions against non-parties, which helped bring holdouts in.</li>
+</ul></dd>
+<dt>Entry into force</dt><dd>30 polities representing at least 15% of the world's population, from four or more continents, including at least 8 low-income and 8 high-income polities. Precedent for threshold triggers: the Paris Agreement and the High Seas Treaty.</dd>
+<dt>Checks</dt><dd>Each member ratifies by its own constitutional process. The Compact expires in 20 years unless re-ratified, and any member may withdraw on two years' notice. The House of Lots starts in an advisory role and gains blocking power only after an independent review finds it deliberates well.</dd>
+<dt>Gate C</dt><dd>The Compact is in force, and observers from non-member polities certify the first lottery and the first elections.</dd>
+<dt>Kill criteria</dt><dd>If the threshold isn't reached within ten years of opening for signature, cut the scope and renegotiate.</dd>
+</dl>
+</div>
+
+<div class="phase" style="--pc:var(--p3)">
+<h3>Phase 3: Expansion</h3>
+<div class="yrs">Years 15 to 35 &#183; ends at Gate D</div>
+<dl>
+<dt>Goal</dt><dd>Membership grows until staying out costs more than joining.</dd>
+<dt>Actions</dt><dd><ul>
+<li>Members get the dividend, market access, shared technology and shared disaster plans.</li>
+<li>Non-members face border charges.</li>
+<li>Compact powers expand one listed step at a time as membership crosses set thresholds.</li>
+<li>Seek a United Nations Charter review conference under Article 109 to align or integrate existing institutions.</li>
+<li>Hold the transition jubilee in member polities: household medical, student and consumer debt and mortgages on main homes are cancelled, and the debts of formerly colonized polities are written off. Savings begin converting to exchange credits on a published schedule.</li>
+</ul></dd>
+<dt>Checks</dt><dd><b>The power ratchet runs both ways&dagger;</b> <span class="new">NEW</span>: if membership falls back below a threshold, the powers tied to it retract automatically. Spending is capped as a share of members' combined output. The Steward veto-rate and regional-trust tripwires stay live. No planetary army, at any stage.</dd>
+<dt>Gate D</dt><dd>Members represent at least half the world's population and a majority of polities. An independent audit shows members' floor coverage rising and ecological trends bending faster than in comparable non-members.</dd>
+<dt>Kill criteria</dt><dd>If members don't outperform comparable non-members after ten years, stop expanding and redesign.</dd>
+</dl>
+</div>
+
+<div class="phase" style="--pc:var(--p4)">
+<h3>Phase 4: Planetary Convention</h3>
+<div class="yrs">Years 30 to 50 &#183; ends at Gate E</div>
+<dl>
+<dt>Goal</dt><dd>The full charter, drafted by the people of Earth and ratified by them.</dd>
+<dt>Actions</dt><dd>A Planetary Constitutional Convention drafts the final charter. It sits in thirds: people chosen by worldwide lottery, polity delegates, and stewards (scientists, Indigenous nations, and people under 30). It drafts the final charter from the Compact's track record. It runs the mirror test and submits the draft for ratification.</dd>
+<dt>Ratification</dt><dd>A triple test: two-thirds of polities; polities representing at least 60% of the world's population; and a planetary referendum carried in at least five of the six inhabited continents. The referendum ballot offers three options by ranked vote: ratify, return for amendment, or reject.</dd>
+<dt>Checks</dt><dd>Convention members are barred from charter office for ten years, and the convention dissolves the day it submits its draft. International observers certify the vote. Any polity may decline and remain outside on the exit terms.</dd>
+<dt>Gate E</dt><dd>Ratification succeeds. Every interim body dissolves on a fixed date, and the first full lotteries and elections are observed and certified.</dd>
+<dt>Kill criteria</dt><dd>If ratification fails twice, the Compact continues as it is, and no new attempt is allowed for 15 years.</dd>
+</dl>
+</div>
+
+<div class="phase" style="--pc:var(--p5)">
+<h3>Phase 5: Living charter</h3>
+<div class="yrs">Ongoing</div>
+<dl>
+<dt>Rule</dt><dd>Re-ratification every 25 years. A trust tripwire can trigger an early convention. The charter can lose, and it has to be able to.</dd>
+</dl>
+</div>
+
+<h2>5. Transition tripwires</h2>
+<p>Each tripwire is published in advance and fires automatically. Nobody gets to decide in the moment whether it counts.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Threat</th><th>Tripwire</th><th>Automatic response</th></tr></thead>
+<tbody>
+<tr><td>Founders entrenching themselves</td><td>A drafter seeks charter office within ten years, or a body acts past its sunset date</td><td>The drafter is barred. The late acts are void.</td></tr>
+<tr><td>Money capture</td><td>A donor exceeds 2% of annual funds, or a polity exceeds 15% of a budget</td><td>The excess is refused or returned, and the breach is published</td></tr>
+<tr><td>Great-power capture</td><td>One polity approaches 20% of seats or budget</td><td>Seat and budget caps apply (degressive proportionality)</td></tr>
+<tr><td>Capture by one political camp</td><td>Acceptance on any mirror panel falls below two-thirds</td><td>Redrafting is required before the next gate</td></tr>
+<tr><td>Mission creep</td><td>Transitional spending or rule-making grows faster than its cap</td><td>Automatic review. Powers unused for ten years lapse.</td></tr>
+<tr><td>Coercion</td><td>Credible evidence that a participant used force, bribery or intimidation</td><td>Expulsion and referral to the courts</td></tr>
+<tr><td>Auditors grading their own work</td><td>An auditor was involved in building what it audits</td><td>The finding is void and the audit is re-run</td></tr>
+<tr><td>Foreign interference</td><td>A documented attempt is confirmed by the citizen audit jury</td><td>Published in the Interference Register, and the pre-agreed collective response starts</td></tr>
+<tr><td>Legitimacy loss</td><td>Measured trust in transition bodies stays below threshold for two years in any region</td><td>Expansion pauses, and an early review convenes</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>6. What blocks the path, and how the plan routes around it</h2>
+<div class="cards">
+<div class="card"><h3>United Nations Charter amendment</h3>Amendments need ratification by all five permanent Security Council members (Article 108), so a reformed United Nations can't be the starting point. The plan builds outside the United Nations by treaty among willing polities, then seeks an Article 109 review conference once the Compact has a track record.</div>
+<div class="card"><h3>Great powers</h3>The United States, China, India and Russia are unlikely early members. The plan is built to work without them for decades. Border charges and membership benefits change the math over time, as the Montreal Protocol's trade measures did.</div>
+<div class="card"><h3>National constitutions</h3>Some forbid transferring sovereignty without a referendum. The plan goes through each country's own process. Sovereignty is pooled, as in the European Union, never seized.</div>
+<div class="card"><h3>Fear of "world government"</h3>This fear is reasonable, and the design answers it in structure, not in messaging: a thin planetary layer, nations that persist, no army, a real right of exit, powers that retract, and a dividend people can feel.</div>
+<div class="card"><h3>Incumbent industries</h3>The license club starts in sectors where public coalitions already exist, such as children's digital safety and dangerous chemicals. It reaches the heaviest polluting sectors through Commons Trust fees once the Compact is in force.</div>
+<div class="card"><h3>Time</h3>Fifty years is longer than most careers. The plan survives its founders by design: open license, a rotating Founding Trust, and institutions that outlast any one person.</div>
+</div>
+
+<h2>7. Keeping great powers from interfering</h2>
+<p>No plan can make interference impossible. A nuclear-armed power can crush a small member, and no charter changes that. What the plan can do is make interference <b>unnecessary, unrewarding, costly and visible</b>. Great powers interfere when a project looks more expensive to tolerate than to stop. Every measure below works on one side of that equation.</p>
+<p>History shows both sides of the pattern. Rival great powers have accepted shared regimes when the regime ended a contest neither could win cheaply and gave each side access or predictability. The Antarctic Treaty (1959) demilitarized a continent at the height of the Cold War. The Outer Space Treaty (1967) followed. The Montreal Protocol (1987) won over both superpowers once substitutes for ozone-destroying chemicals existed. Great powers interfere when a project looks like a rival bloc or a threat to their rule: the Cold War coups in Iran (1953), Guatemala (1954) and Chile (1973), and the Soviet invasions of Hungary (1956) and Czechoslovakia (1968).</p>
+
+<div class="cards">
+<div class="card"><h3>1. Don't look like a threat</h3>No army, no alliance, no mutual-defense pact. Members keep their existing defense and alliances. The Commonwealth never funds opposition movements in non-member countries. Great powers get observer seats at every session from the first day. Growth starts with technical, low-profile organs like measurement and citizens' assemblies. Political scientist David Mitrany (1943) argued that cooperation built through technical functions can grow where political unions provoke resistance.</div>
+<div class="card"><h3>2. Give them a stake: the Commons Partner tier&dagger;</h3>Any polity can join the measurement compact, the Commons Trust and the license club as a partner, without accepting the liberties requirement. Partners get market access and a population-based share of commons rents. They don't get seats in any chamber.
+<br><br>The trade-off is stated openly: this lets rivals in without endorsing their governments, at some cost to principle.
+<br><br>Interests each power can see (my inference): stable climate and supply chains for everyone; a large rules-based market for clean-technology producers; per-person dividends and historic-responsibility rents that favor populous developing powers; a funded transition window for fossil exporters.
+<div class="pre" style="font-size:12.5px;color:var(--muted);margin-top:8px">Precedent: the European Economic Area, which brings countries into the single market without full European Union membership.</div></div>
+<div class="card"><h3>3. Remove the prize</h3>A government that takes power by coup, or by foreign-backed overthrow, is not recognized. Its seats are suspended, and the commons revenue owed to that polity's people is held in escrow in each person's name. It is released to the people, never to the regime. No polity holds a veto, unlike the five permanent members of the United Nations Security Council, and seat and budget caps apply. Capturing one member, even a large one, buys very little.
+<div class="pre" style="font-size:12.5px;color:var(--muted);margin-top:8px">Precedent: the African Union's suspension of members after coups; the Inter-American Democratic Charter (2001).</div></div>
+<div class="card"><h3>4. Make interference costly, without weapons</h3>Economic coercion or attack against any member triggers pre-agreed, automatic trade, license and commons measures by every member. Members are drawn from every bloc, so any power that coerces one of them hurts its own partners. Great powers' own companies hold planetary licenses, so those companies share the cost.
+<br><br><b>Escrowed dividends&dagger;</b> <span class="new">NEW</span>: with a non-member polity's consent, the Commons Trust holds dividends in its people's names. That builds a constituency for the project inside every great power. The risk is real: this can itself look like interference. It is done only openly, never covertly, and released only with the polity's consent.
+<div class="pre" style="font-size:12.5px;color:var(--muted);margin-top:8px">Precedent: the European Union's Anti-Coercion Instrument (2023).</div></div>
+<div class="card"><h3>5. Leave nothing to capture or decapitate</h3><b>Lottery works as counterintelligence.</b> A random, verifiable draw can't be targeted in advance: you can't plant an agent in a seat no one can predict. Venice used rounds of lot in choosing its doge from 1268 for exactly this reason, to defeat faction capture.
+<br><br>Short terms, rotation, disclosure of foreign contacts, and financial monitoring during and after service. Each organ is seated in three polities across rival blocs, with plans for continuing if any host is coerced. Records are copied across jurisdictions. Measurement labs sit in rival blocs, and the two-of-three rule means no single power can falsify a finding. Satellite data is checked across independent systems, such as the American Landsat and European Copernicus satellites. Several parties contribute the randomness for each lottery. Votes have paper backups.</div>
+<div class="card"><h3>6. Make interference visible: the Interference Register&dagger;</h3>Documented interference attempts are published with their evidence. Publication happens only after a citizen audit jury reviews the attribution, so that false accusations can't themselves be used as propaganda. All deliberation is public and recorded. Known disinformation lines are answered publicly before they spread. Exposure raises the reputational price of interfering.</div>
+</div>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Threat</th><th>Counter</th><th>Residual risk</th></tr></thead>
+<tbody>
+<tr><td>Military attack on a member</td><td>Members keep their own defense and alliances; collective economic response; organs relocate</td><td>The project cannot defend territory</td></tr>
+<tr><td>Sponsored coup</td><td>No recognition; seats suspended; revenue held in escrow for the people</td><td>The coup still harms that country's people</td></tr>
+<tr><td>Economic coercion</td><td>Pre-committed collective response on the anti-coercion model</td><td>Large economies can outlast small ones</td></tr>
+<tr><td>Infiltration and bribery</td><td>Lottery, rotation, contact disclosure, financial monitoring, parallel panels</td><td>Recruiting members after they're selected</td></tr>
+<tr><td>Data sabotage and cyberattack</td><td>Labs in rival blocs, several satellite systems, copied records, paper trails</td><td>Outages still cause delays</td></tr>
+<tr><td>Disinformation</td><td>Full transparency, the Interference Register, answering false claims before they spread</td><td>Beliefs are slow to correct</td></tr>
+<tr><td>Joining to sabotage from inside</td><td>Entry conditions, suspension rules, no vetoes, seat caps</td><td>A member can still slow processes down</td></tr>
+<tr><td>Being cast as a rival bloc</td><td>A neutrality clause; members from every bloc; observer seats</td><td>Survival depends on staying cheaper to tolerate than to fight</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:14px">Switzerland and the Antarctic Treaty have survived great powers by being more useful to tolerate than worth the cost of destroying, and by offering no single target. If the two largest powers decide at the same moment that the project is a threat, it will likely fail. The sequencing is built to avoid that moment: stay technical, stay open, and become useful before becoming large.</p>
+
+<h2>8. The first 24 months: what a small lab can start</h2>
+<ol class="rules">
+<li>Publish the charter and this plan under an open license, with the provenance record attached.</li>
+<li>Commission the first full costing of the floor, polity by polity, to replace the charter's order-of-magnitude estimates.</li>
+<li>Translate the plain-language version, first into the ten most widely spoken languages, then with Indigenous language partners. Commission artists, musicians and storytellers through an early Contribution Commons Fund, because people come to want a future before they vote for one.</li>
+<li>Build the Office of Measurement prototype from open data. It is the most concrete and fundable piece, and it's useful even if nothing else is adopted.</li>
+<li>Recruit the first mirror-test panels through existing citizens' assembly networks.</li>
+<li>Incorporate the Founding Trust with the three-way board, the donor cap and the self-denying rule written into its bylaws before any money arrives.</li>
+<li>Approach the partners below, starting with practitioners, not funders: evidence first, money second.</li>
+</ol>
+
+<h2>9. Partners to approach in Phase 0</h2>
+<p>All five were confirmed as active in this session.</p>
+<div class="cards">
+<div class="card"><h3>DemocracyNext</h3>An international nonprofit research and action institute that helps cities and regions make citizens' assemblies permanent. It has worked with more than 30 public authorities since 2022. Fit: the House of Lots pilots.</div>
+<div class="card"><h3>Global Challenges Foundation</h3>Funds systemic reform of global governance aimed at catastrophic risks. Its current initiatives include the Earth Commission and an Article 109 initiative on United Nations Charter review. Fit: Measurement prototype funding and the Article 109 route.</div>
+<div class="card"><h3>Iswe Foundation / Global Citizens' Assembly</h3>Convenes the partners developing a global citizens' assembly, building on the 2021 Global Assembly held for the United Nations climate summit in Glasgow. Funders include the Global Challenges Foundation and the Wellcome Trust. Fit: worldwide lottery methods.</div>
+<div class="card"><h3>Democracy Without Borders</h3>Runs the campaign for a United Nations Parliamentary Assembly, backed by more than 1,600 current and former parliamentarians from 150 countries. Fit: the House of Polities and a parliamentary coalition.</div>
+<div class="card"><h3>Doughnut Economics Action Lab</h3>Works with cities applying Kate Raworth's doughnut model, the source of this charter's Ordering Clause. Fit: city-level floor-and-ceiling measurement pilots.</div>
+</div>
+
+<p class="prov" style="margin-top:40px">Provisional until ratified. Drafted by Claude (Anthropic), 22 October 2026. A plan for a lawful, consent-based transition only.</p>
+</main>
+</body>
+</html>

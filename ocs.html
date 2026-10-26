@@ -1,0 +1,1987 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Output Control System — ThinkWell Labs</title>
+<meta name="description" content="The Output Control System (OCS) — a structural protocol for transmitting full system integrity without compression. Five phases, zero arbitration, metrologically constrained. B. Greenway / ThinkWell Labs 2026.">
+<meta name="author" content="Briar M. Greenway">
+<meta name="theme-color" content="#060a0f">
+<link rel="canonical" href="https://twl.today/ocs.html">
+<link rel="icon" href="assets/twl-logo.jpeg" type="image/png">
+<style>
+:root {
+  --bg:           #060a0f;
+  --bg-rise:      #0c1118;
+  --bg-card:      #0a1019;
+  --bg-deep:      #03060a;
+  --ink:          #e9ecef;
+  --ink-soft:     #a8b1bc;
+  --ink-faint:    #6a7280;
+  --ink-dim:      #404853;
+  --rule:         #18202c;
+  --rule-soft:    #0f151e;
+  --upstream:     #d6a45c;
+  --architecture: #6cd2ee;
+  --downstream:   #b3a1ec;
+  --ok:           #7fcf8a;
+  --warn:         #e8a14a;
+  --fail:         #e06c75;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: "Iowan Old Style", "Charter", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --pad: clamp(20px, 4vw, 56px);
+  --radius: 6px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--sans);
+  font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(900px 700px at 14% 6%,  rgba(214,164,92,0.06), transparent 60%),
+    radial-gradient(1100px 900px at 86% 20%, rgba(108,210,238,0.05), transparent 60%),
+    radial-gradient(1000px 1100px at 50% 100%, rgba(179,161,236,0.04), transparent 65%),
+    linear-gradient(180deg, #06090d 0%, #03060a 100%);
+}
+main, header, footer, section, nav { position: relative; z-index: 1; }
+a { color: var(--architecture); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--architecture) 30%, transparent); transition: color .15s, border-color .15s; }
+a:hover { color: #b6e9f7; border-bottom-color: var(--architecture); }
+
+/* ── status bar ── */
+.status {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center;
+  padding: 9px var(--pad); font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.02em; color: var(--ink-faint);
+  background: color-mix(in oklab, var(--bg-deep) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.status .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ok); margin-right:6px; vertical-align:1px; box-shadow:0 0 8px color-mix(in oklab, var(--ok) 60%, transparent); }
+.status .v { color: var(--ink-soft); }
+.status .sep { color: var(--ink-dim); }
+.status a { color: var(--ink-faint); border: none; }
+.status a:hover { color: var(--ink); }
+
+/* ── shell ── */
+.shell { max-width: 1100px; margin: 0 auto; padding: 0 var(--pad); }
+.shell-narrow { max-width: 780px; margin: 0 auto; padding: 0 var(--pad); }
+
+/* ── page nav ── */
+.page-nav {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 28px;
+}
+.page-nav a {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase;
+  padding: 6px 12px; border: 1px solid var(--rule); border-radius: 3px;
+  color: var(--ink-faint); border-bottom: 1px solid var(--rule); transition: color .15s, border-color .15s, background .15s;
+}
+.page-nav a:hover { color: var(--architecture); border-color: color-mix(in oklab, var(--architecture) 50%, transparent); background: color-mix(in oklab, var(--architecture) 8%, transparent); }
+
+/* ── page header ── */
+.page-header { padding: clamp(56px, 8vw, 100px) 0 clamp(28px, 4vw, 48px); }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.eyebrow a { color: var(--ink-faint); border: none; }
+.eyebrow a:hover { color: var(--ink); }
+.eyebrow-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--upstream); box-shadow: 0 0 10px color-mix(in oklab, var(--upstream) 60%, transparent); }
+h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5.5vw, 64px); line-height: 0.97; letter-spacing: -0.02em; margin: 0 0 24px; color: var(--ink); }
+h1 em { font-style: italic; }
+.page-lede { font-family: var(--mono); font-size: 14px; line-height: 1.65; color: var(--ink-soft); max-width: 60ch; margin: 0; letter-spacing: 0.01em; }
+
+/* ── invariant hero ── */
+.invariant {
+  margin: 36px 0;
+  border: 1px solid var(--upstream);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  background: color-mix(in oklab, var(--upstream) 5%, transparent);
+  max-width: 560px;
+}
+.invariant .inv-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--upstream); margin-bottom: 14px; }
+.invariant p { font-family: var(--mono); font-size: 14px; line-height: 1.75; color: var(--ink); margin: 0 0 6px; }
+.invariant p:last-child { margin: 0; }
+.invariant .rule-block { margin-top: 14px; padding-top: 14px; border-top: 1px solid color-mix(in oklab, var(--upstream) 30%, transparent); font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); line-height: 1.7; }
+
+/* ── section structure ── */
+.section { padding: clamp(48px, 7vw, 80px) 0; border-top: 1px solid var(--rule-soft); }
+.section-marker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.section-marker .mdot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--upstream); box-shadow: 0 0 7px color-mix(in oklab, var(--upstream) 50%, transparent); }
+.section-marker.--arch { color: var(--architecture); }
+.section-marker.--arch .mdot { background: var(--architecture); box-shadow: 0 0 7px color-mix(in oklab, var(--architecture) 50%, transparent); }
+.section-marker.--down { color: var(--downstream); }
+.section-marker.--down .mdot { background: var(--downstream); box-shadow: 0 0 7px color-mix(in oklab, var(--downstream) 50%, transparent); }
+h2.sec { font-family: var(--serif); font-weight: 400; font-size: clamp(24px, 3.2vw, 36px); line-height: 1.1; letter-spacing: -0.014em; margin: 0 0 10px; color: var(--ink); }
+h2.sec em { font-style: italic; }
+.sec-lede { color: var(--ink-soft); font-size: 15px; line-height: 1.75; max-width: 64ch; margin: 0 0 32px; }
+
+/* ── phase accordion ── */
+.phase-list { display: flex; flex-direction: column; gap: 10px; }
+.phase-block { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.phase-block .phase-head {
+  display: flex; align-items: center; gap: 16px; padding: 18px 22px;
+  cursor: pointer; user-select: none; background: color-mix(in oklab, var(--bg-rise) 50%, transparent);
+  transition: background .15s;
+}
+.phase-block .phase-head:hover { background: color-mix(in oklab, var(--bg-rise) 80%, transparent); }
+.phase-block .phase-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; flex-shrink: 0; }
+.phase-tag.a0 { color: var(--upstream); background: color-mix(in oklab, var(--upstream) 12%, transparent); border: 1px solid color-mix(in oklab, var(--upstream) 30%, transparent); }
+.phase-tag.a  { color: var(--architecture); background: color-mix(in oklab, var(--architecture) 12%, transparent); border: 1px solid color-mix(in oklab, var(--architecture) 30%, transparent); }
+.phase-tag.b  { color: var(--downstream); background: color-mix(in oklab, var(--downstream) 12%, transparent); border: 1px solid color-mix(in oklab, var(--downstream) 30%, transparent); }
+.phase-tag.c  { color: var(--ok); background: color-mix(in oklab, var(--ok) 12%, transparent); border: 1px solid color-mix(in oklab, var(--ok) 30%, transparent); }
+.phase-tag.d  { color: var(--ink-soft); background: color-mix(in oklab, var(--ink-dim) 30%, transparent); border: 1px solid var(--rule); }
+.phase-block .phase-title { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--ink); flex: 1; }
+.phase-block .phase-arrow { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); transition: transform .2s; }
+.phase-block.open .phase-arrow { transform: rotate(180deg); }
+.phase-block .phase-body { display: none; padding: 0 22px 22px; }
+.phase-block.open .phase-body { display: block; }
+.phase-body h4 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); margin: 18px 0 8px; }
+.phase-body ul { list-style: none; padding: 0; margin: 0; }
+.phase-body ul li {
+  font-size: 14px; color: var(--ink-soft); padding: 5px 0 5px 16px; position: relative; line-height: 1.55;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.phase-body ul li:last-child { border-bottom: none; }
+.phase-body ul li::before { content: "·"; position: absolute; left: 0; color: var(--ink-dim); }
+.phase-body ul li strong { color: var(--ink); font-weight: 500; }
+.rule-note {
+  margin-top: 14px; padding: 12px 16px; border-radius: 4px; font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.65; background: color-mix(in oklab, var(--bg-deep) 60%, transparent); border: 1px solid var(--rule-soft);
+  color: var(--ink-soft);
+}
+.rule-note strong { color: var(--architecture); font-weight: 500; }
+
+/* ── failure table ── */
+.fail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 24px; }
+.fail-card { border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px; background: color-mix(in oklab, var(--bg-card) 60%, transparent); }
+.fail-card .fc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fail); margin-bottom: 10px; }
+.fail-card ul { list-style: none; padding: 0; margin: 0; }
+.fail-card li { font-size: 13px; color: var(--ink-soft); padding: 3px 0 3px 12px; position: relative; }
+.fail-card li::before { content: "×"; position: absolute; left: 0; color: var(--fail); font-size: 11px; top: 4px; }
+
+/* ── INTERACTIVE TOOL ── */
+.tool-wrap {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--bg-card) 50%, transparent);
+  overflow: hidden;
+}
+.tool-tabs {
+  display: flex; overflow-x: auto; border-bottom: 1px solid var(--rule);
+  scrollbar-width: none;
+}
+.tool-tabs::-webkit-scrollbar { display: none; }
+.tool-tab {
+  flex-shrink: 0; padding: 12px 18px; font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-faint);
+  cursor: pointer; user-select: none; border: none; background: transparent;
+  border-bottom: 2px solid transparent; transition: color .15s, border-color .15s, background .15s;
+}
+.tool-tab:hover { color: var(--ink-soft); background: color-mix(in oklab, var(--bg-rise) 60%, transparent); }
+.tool-tab.active { color: var(--ink); border-bottom-color: var(--architecture); background: color-mix(in oklab, var(--bg-rise) 80%, transparent); }
+.tool-panel { display: none; padding: 24px; }
+.tool-panel.active { display: block; }
+
+/* Input panel */
+.tool-input-area {
+  width: 100%; min-height: 180px; background: var(--bg-deep); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 14px;
+  font-family: var(--mono); font-size: 13px; line-height: 1.65; resize: vertical;
+  outline: none;
+}
+.tool-input-area:focus { border-color: var(--architecture); }
+.tool-input-area::placeholder { color: var(--ink-dim); }
+.tool-hint { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-top: 8px; line-height: 1.5; }
+
+/* Check list rows */
+.check-section { margin-bottom: 22px; }
+.check-section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--rule-soft); }
+.check-row {
+  display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--rule-soft);
+}
+.check-row:last-child { border-bottom: none; }
+.check-label { font-size: 14px; color: var(--ink-soft); }
+.check-label strong { color: var(--ink); font-weight: 500; display: block; margin-bottom: 2px; }
+.check-label .check-sub { font-size: 12px; color: var(--ink-faint); }
+.status-btn-group { display: flex; gap: 4px; }
+.sbtn {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 3px; cursor: pointer; border: 1px solid var(--rule);
+  background: transparent; color: var(--ink-faint); transition: all .15s; white-space: nowrap;
+}
+.sbtn:hover { border-color: var(--ink-soft); color: var(--ink); }
+.sbtn.s-found { border-color: var(--ok); background: color-mix(in oklab, var(--ok) 15%, transparent); color: var(--ok); }
+.sbtn.s-partial { border-color: var(--warn); background: color-mix(in oklab, var(--warn) 15%, transparent); color: var(--warn); }
+.sbtn.s-missing { border-color: var(--fail); background: color-mix(in oklab, var(--fail) 15%, transparent); color: var(--fail); }
+.sbtn.s-na { border-color: var(--ink-dim); background: color-mix(in oklab, var(--ink-dim) 20%, transparent); color: var(--ink-dim); }
+
+/* Ledger output */
+.ledger-output {
+  width: 100%; font-family: var(--mono); font-size: 12px; line-height: 1.65;
+  background: var(--bg-deep); color: var(--ink-soft); border: 1px solid var(--rule);
+  border-radius: 4px; padding: 14px; min-height: 220px; white-space: pre-wrap;
+  word-break: break-word; resize: vertical; outline: none; cursor: text;
+}
+.tool-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.tbtn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+  border-radius: 4px; cursor: pointer; background: transparent;
+  border: 1px solid var(--rule); color: var(--ink-faint); transition: all .15s;
+}
+.tbtn:hover { border-color: var(--architecture); color: var(--architecture); background: color-mix(in oklab, var(--architecture) 10%, transparent); }
+.tbtn.primary { border-color: var(--architecture); color: var(--architecture); }
+.tbtn.primary:hover { background: color-mix(in oklab, var(--architecture) 15%, transparent); }
+.progress-bar-wrap { margin-top: 14px; }
+.progress-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; display: flex; justify-content: space-between; }
+.progress-bar { height: 3px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--ok); border-radius: 2px; transition: width .3s; }
+
+/* ── PROMPTS ── */
+.prompt-list { display: flex; flex-direction: column; gap: 20px; }
+.prompt-block { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.prompt-head {
+  display: flex; align-items: baseline; gap: 14px; padding: 16px 20px;
+  background: color-mix(in oklab, var(--bg-rise) 50%, transparent);
+  cursor: pointer; user-select: none; transition: background .15s;
+}
+.prompt-head:hover { background: color-mix(in oklab, var(--bg-rise) 80%, transparent); }
+.prompt-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--architecture); flex-shrink: 0; }
+.prompt-title { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--ink); flex: 1; }
+.prompt-toggle { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); flex-shrink: 0; transition: transform .2s; }
+.prompt-block.open .prompt-toggle { transform: rotate(180deg); }
+.prompt-body { display: none; }
+.prompt-block.open .prompt-body { display: block; }
+.prompt-text {
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.7;
+  color: var(--ink-soft); padding: 0 20px 0; white-space: pre-wrap;
+  background: var(--bg-deep); border-top: 1px solid var(--rule-soft);
+  max-height: 420px; overflow-y: auto;
+}
+.prompt-text::-webkit-scrollbar { width: 4px; }
+.prompt-text::-webkit-scrollbar-thumb { background: var(--ink-dim); border-radius: 2px; }
+#opPromptList .prompt-body pre {
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.7;
+  color: var(--ink-soft); padding: 0 20px 0; white-space: pre-wrap;
+  background: var(--bg-deep); border-top: 1px solid var(--rule-soft);
+  max-height: 460px; overflow-y: auto;
+}
+#opPromptList .prompt-body pre::-webkit-scrollbar { width: 4px; }
+#opPromptList .prompt-body pre::-webkit-scrollbar-thumb { background: var(--ink-dim); border-radius: 2px; }
+.prompt-actions { padding: 12px 20px; border-top: 1px solid var(--rule-soft); display: flex; gap: 8px; background: color-mix(in oklab, var(--bg-rise) 30%, transparent); }
+.copy-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; padding: 7px 12px;
+  border-radius: 3px; cursor: pointer; background: transparent; color: var(--architecture);
+  border: 1px solid color-mix(in oklab, var(--architecture) 40%, transparent);
+  transition: all .15s;
+}
+.copy-btn:hover { background: color-mix(in oklab, var(--architecture) 12%, transparent); border-color: var(--architecture); }
+.copy-btn.copied { color: var(--ok); border-color: var(--ok); background: color-mix(in oklab, var(--ok) 10%, transparent); }
+
+/* ── footer ── */
+footer { margin-top: 30px; padding: 50px var(--pad) 60px; border-top: 1px solid var(--rule); background: var(--bg-deep); }
+footer .colophon { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); max-width: 1100px; margin: 0 auto; line-height: 1.7; display: flex; flex-wrap: wrap; gap: 16px 40px; align-items: start; }
+footer .colophon strong { color: var(--ink-soft); font-weight: 500; }
+footer .foot-links { display: flex; gap: 20px; flex-wrap: wrap; }
+footer .foot-links a { color: var(--ink-faint); border: none; font-family: var(--mono); font-size: 11px; }
+footer .foot-links a:hover { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+::selection { background: color-mix(in oklab, var(--architecture) 35%, transparent); color: var(--ink); }
+
+/* ─── fixed chrome ─── */
+.site-logo-link {
+  position: fixed; top: 16px; right: 24px; z-index: 200;
+  display: block; line-height: 0; border: none;
+}
+.site-logo {
+  width: 88px; height: auto; display: block;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.3);
+  transition: opacity .2s;
+}
+.site-logo:hover { opacity: 0.82; }
+.theme-toggle { position:fixed; top:22px; left:24px; z-index:200; font-family:var(--mono); font-size:11px; letter-spacing:.06em; background:color-mix(in oklab,var(--bg-deep) 88%,transparent); backdrop-filter:blur(10px); border:1px solid var(--rule); border-radius:20px; padding:5px 13px; cursor:pointer; color:var(--ink-faint); transition:border-color .15s,color .15s; white-space:nowrap; }
+.theme-toggle:hover { border-color:var(--architecture); color:var(--architecture); }
+@media(max-width:600px){ .site-logo{width:40px;height:40px;top:14px;right:14px;} .theme-toggle{top:16px;left:14px;padding:4px 10px;font-size:10px;} }
+</style>
+<link rel="stylesheet" href="assets/chrome.css">
+</head>
+<body>
+<a href="index.html" class="site-logo-link"><img src="assets/twl-logo.jpeg" alt="ThinkWell Labs" class="site-logo"></a>
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a class="tw-brand" href="./" aria-label="ThinkWell Labs home"><img src="assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+    <nav aria-label="Primary">
+      <a href="./#work">Work</a>
+      <a href="papers.html" aria-current="page">Research</a>
+      <a href="./#briar">Briar</a>
+      <a href="program.html" class="tw-hide-sm">Program</a>
+      <a href="./#contact" class="tw-nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+
+
+<main>
+<div class="shell">
+
+<!-- ── HEADER ── -->
+<header class="page-header">
+  <div class="eyebrow">
+    <span class="eyebrow-dot"></span>
+    <a href="index.html">twl.today</a> · output control system · B. Greenway · 2026
+  </div>
+  <h1>Output<br><em>Control</em> System</h1>
+  <p class="page-lede">A structural protocol for transmitting the full system — nothing missing, nothing implied, nothing decorative. Five phases, zero arbitration, metrologically constrained. Integrated through R‑09 + Gap Closure Layer.</p>
+
+  <div class="invariant" aria-label="Core invariant">
+    <div class="inv-label">core invariant</div>
+    <p>Transmit the full system.</p>
+    <p>Nothing missing. Nothing implied. Nothing decorative.</p>
+    <p>Completeness of multilevel structure outranks surface brevity.</p>
+    <p>Surface compression allowed. Structural compression forbidden.</p>
+    <div class="rule-block">
+      If constraints conflict:<br>
+      Flag the exact conflict · identify competing requirements<br>
+      Resolve only from existing user instruction<br>
+      If no authorized rule exists — state that none exists
+    </div>
+  </div>
+
+  <nav class="page-nav" aria-label="Page sections">
+    <a href="#spec">specification</a>
+    <a href="#tool">instrument</a>
+    <a href="#prompts">prompt directory</a>
+    <a href="#failures">failure taxonomy</a>
+  </nav>
+</header>
+
+<!-- ── SPECIFICATION ── -->
+<section class="section" id="spec">
+  <div class="section-marker --arch"><span class="mdot"></span> specification · five phases</div>
+  <h2 class="sec">The protocol, in <em>operational form</em>.</h2>
+  <p class="sec-lede">Each phase is non-negotiable and must execute in order. No phase may be skipped. No compression allowed between phases.</p>
+
+  <div class="phase-list">
+
+    <!-- A₀ -->
+    <div class="phase-block" id="phase-a0">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="phase-tag a0">A₀</span>
+        <span class="phase-title">Assumption Vacuum Scan</span>
+        <span class="phase-arrow">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="rule-note"><strong>Rule:</strong> No unstated condition is assumed true. Unknown ≠ optional. Unknown ≠ resolved.</div>
+        <h4>Latent Condition Scan (mandatory)</h4>
+        <ul>
+          <li><strong>Environmental exposure</strong> — presence, concentration, boundary</li>
+          <li><strong>Material interaction</strong> — surface, chemical, mechanical contact</li>
+          <li><strong>Human contact vectors</strong> — direct, indirect, proximate exposure paths</li>
+          <li><strong>Temporal degradation</strong> — decay, drift, phase change over time</li>
+          <li><strong>Ambient interference</strong> — EM, thermal, acoustic, vibrational</li>
+        </ul>
+        <h4>Per latent condition attach</h4>
+        <ul>
+          <li><strong>Determinability</strong> — determinable from source · conditionally determinable · not determinable</li>
+          <li><strong>Sensitivity</strong> — Low / Moderate / High impact on system behavior</li>
+          <li><strong>Uncertainty Propagation Path</strong> — which downstream units inherit the uncertainty</li>
+        </ul>
+        <h4>Resolution protocol</h4>
+        <ul>
+          <li>Resolve deterministically only when forced by constraints</li>
+          <li>Otherwise preserve as explicit unresolved variable</li>
+          <li>Mark blocking conditions where behavior cannot be determined</li>
+          <li>Absence of specification is not license to synthesize specification</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Phase A -->
+    <div class="phase-block" id="phase-a">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="phase-tag a">A</span>
+        <span class="phase-title">System Extraction</span>
+        <span class="phase-arrow">▾</span>
+      </div>
+      <div class="phase-body">
+        <h4>A₁ — Hierarchical Component Extraction (Recursive)</h4>
+        <ul>
+          <li>Extraction is recursive — no flat parsing</li>
+          <li>Identify subcomponents → internal relationships → repeat until no further decomposition exists</li>
+          <li>Preserve: parent-child linkage · dependency direction · activation relationships · state transitions</li>
+          <li>Failure to recurse = flat-loss compression (hard fail)</li>
+        </ul>
+        <h4>Unit classes (completeness domains)</h4>
+        <ul>
+          <li>Structural units · Functional units · Relational units · Mechanical units</li>
+          <li>Constraint units · State units · Evaluation units · Context units</li>
+          <li>Interface units · Feedback units · Degradation units · Adaptive units (conditional)</li>
+        </ul>
+        <h4>A₂ — Context / Substrate Layer Scan</h4>
+        <ul>
+          <li>Instantiate only if evidenced or behaviorally required</li>
+          <li>Classes: Environmental · Atmospheric · Medium/Substrate · Energetic · Envelope · Saturation/Density · Submersion/Immersion</li>
+          <li>Inclusion requires: observability classification + effect traceability + confidence level. If any missing → exclude</li>
+        </ul>
+        <h4>A₃ — Mechanism Scan (Verb Decomposition)</h4>
+        <ul>
+          <li>When implicit verbs appear (works, drives, ensures, maps, handles, integrates…) interrogate: by what mechanism? through what path? under what conditions? what changes state? what dependencies exist?</li>
+          <li>No mechanism may remain implied</li>
+        </ul>
+        <h4>A₄ — Completeness Ledger (Pre-Assembly)</h4>
+        <ul>
+          <li>Components/subcomponents (hierarchical) · Functions · Mechanisms · Dependencies · Dependents</li>
+          <li>Constraints · Triggers · Edge cases · Latent conditions (with determinability, sensitivity, propagation)</li>
+          <li>Interface definitions · Feedback structures · Degradation modes · Adaptive capacity (if present)</li>
+          <li>Observability class · Detection confidence level · Measurement boundaries · Error propagation paths</li>
+          <li>Explicit user exclusions · Explicit user priorities · Information preservation flags · Unresolved ambiguities</li>
+        </ul>
+        <div class="rule-note"><strong>Rule:</strong> Ledger precedes output. Output must trace to ledger.</div>
+      </div>
+    </div>
+
+    <!-- Phase B -->
+    <div class="phase-block" id="phase-b">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="phase-tag b">B</span>
+        <span class="phase-title">Deterministic Classification</span>
+        <span class="phase-arrow">▾</span>
+      </div>
+      <div class="phase-body">
+        <h4>Categories (non-subjective)</h4>
+        <ul>
+          <li><strong>Required</strong> — must be present for system function</li>
+          <li><strong>Dependency</strong> — prerequisite for another unit</li>
+          <li><strong>Dependent</strong> — relies on dependency to function</li>
+          <li><strong>Support</strong> — non-load-bearing but structurally coherent</li>
+          <li><strong>Constraint</strong> — bounds behavior or output range</li>
+          <li><strong>State / Trigger</strong> — governs transitions or conditions for activation</li>
+        </ul>
+        <div class="rule-note"><strong>Rule:</strong> Preserve Required + Dependency + Dependent + Constraint + State. Support preserved unless explicitly authorized for reduction.</div>
+        <h4>Uncertainty classification (per unit)</h4>
+        <ul>
+          <li><strong>Explicit</strong> — must preserve</li>
+          <li><strong>Strong inference</strong> — allowed if labeled or grounded</li>
+          <li><strong>Weak inference</strong> — not presented as fact</li>
+          <li><strong>Unresolved</strong> — surfaced, not patched</li>
+        </ul>
+        <h4>Metrologist layer (mandatory per unit)</h4>
+        <ul>
+          <li>Detection confidence: High / Moderate / Low</li>
+          <li>Observability: Direct / Indirect / Non-observable</li>
+          <li>Measurement boundary: hard limits of knowability</li>
+          <li>Error propagation: downstream inheritance of uncertainty. If a dependency is uncertain → all dependents inherit uncertainty</li>
+        </ul>
+        <h4>Anti-synonym collapse rule</h4>
+        <ul>
+          <li>Before merging two items verify no difference in: identity · function · mechanism · constraint · activation condition</li>
+          <li>If difference exists → remain separate</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Phase C -->
+    <div class="phase-block" id="phase-c">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="phase-tag c">C</span>
+        <span class="phase-title">Output Assembly</span>
+        <span class="phase-arrow">▾</span>
+      </div>
+      <div class="phase-body">
+        <h4>Invariant lock (pre-wording)</h4>
+        <ul>
+          <li>What cannot be omitted · What cannot be altered · What cannot be assumed · What cannot be expanded without authorization</li>
+          <li>Only then assemble wording</li>
+        </ul>
+        <h4>Structural ordering rules</h4>
+        <ul>
+          <li>Dependencies precede dependents</li>
+          <li>Constraints adjacent to governed units</li>
+          <li>Mechanisms co-located with components</li>
+          <li>No size/prominence weighting · No aesthetic hierarchy</li>
+        </ul>
+        <h4>Information preservation constraint</h4>
+        <ul>
+          <li>No reduction of distinguishable states</li>
+          <li>Distinct states remain distinct</li>
+        </ul>
+        <h4>Two-way accountability</h4>
+        <ul>
+          <li>Every output sentence traces to ledger</li>
+          <li>Every essential ledger item appears in output</li>
+          <li>No unsupported additions</li>
+        </ul>
+        <h4>Adversarial omission checks (post-draft)</h4>
+        <ul>
+          <li>Omission test · Compression corruption test · False completeness test</li>
+          <li>Assumption injection test · Dependency severance test · Semantic invariance test</li>
+        </ul>
+        <h4>Coverage scoring + bidirectional validation</h4>
+        <ul>
+          <li>Verify: component coverage · relation coverage · mechanism coverage · constraint coverage · boundary integrity · compression safety</li>
+          <li>Forward: Source → Extracted System → Output</li>
+          <li>Reverse: Output → Reconstructed System → Compare. If reconstructed system is flatter, simpler, or thinner → fail</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Phase D -->
+    <div class="phase-block" id="phase-d">
+      <div class="phase-head" onclick="togglePhase(this)">
+        <span class="phase-tag d">D</span>
+        <span class="phase-title">System Evolution &amp; Import Protocol</span>
+        <span class="phase-arrow">▾</span>
+      </div>
+      <div class="phase-body">
+        <div class="rule-note"><strong>Purpose:</strong> Enable intake of new conversations and revision-bearing material without flattening prior logic.</div>
+        <h4>D₁ — Line-by-line ingestion</h4>
+        <ul>
+          <li>Read in exact order. No skipping. No summarizing during ingestion</li>
+          <li>Mark lines containing: corrections · overrides · rejections · replacements · added constraints · removed constraints</li>
+        </ul>
+        <h4>D₂ — Revision ledger update</h4>
+        <ul>
+          <li>Per revision: record ID · source location · original rule · revised rule · invalidation status · carry-forward rule</li>
+          <li>Later corrections override earlier ones. Invalidated rules remain archived but marked inactive</li>
+        </ul>
+        <h4>D₃ — Conflict detection during import</h4>
+        <ul>
+          <li>If new revision conflicts with active rule: flag exact conflict · identify competing rules · check for explicit override</li>
+          <li>If none → state no authorized resolution rule exists. Do not silently reconcile</li>
+        </ul>
+        <h4>D₄ — Hierarchical integration</h4>
+        <ul>
+          <li>New rules inserted into correct phase layer (A₀, A, B, C, D)</li>
+          <li>No flattening into miscellaneous appendices</li>
+        </ul>
+        <h4>D₅ — Structural revalidation after integration</h4>
+        <ul>
+          <li>Re-run: completeness ledger audit · anti-collapse check · error propagation mapping · coverage scoring · reverse reconstruction test</li>
+          <li>If structural degradation detected → reject integration</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /phase-list -->
+</section>
+
+<!-- ── INTERACTIVE TOOL ── -->
+<section class="section" id="tool">
+  <div class="section-marker"><span class="mdot"></span> instrument · interactive phase walkthrough</div>
+  <h2 class="sec">Run a system through the <em>OCS</em>.</h2>
+  <p class="sec-lede">Paste the system description below, then step through each phase to build a structured completeness ledger. Client-side only — nothing transmitted.</p>
+
+  <div class="tool-wrap">
+    <div class="tool-tabs" role="tablist">
+      <button class="tool-tab active" onclick="showTab('t-input',this)" role="tab" aria-selected="true">① Input</button>
+      <button class="tool-tab" onclick="showTab('t-a0',this)" role="tab">② A₀ Vacuum</button>
+      <button class="tool-tab" onclick="showTab('t-a',this)" role="tab">③ Phase A</button>
+      <button class="tool-tab" onclick="showTab('t-b',this)" role="tab">④ Phase B</button>
+      <button class="tool-tab" onclick="showTab('t-c',this)" role="tab">⑤ Phase C</button>
+      <button class="tool-tab" onclick="showTab('t-ledger',this)" role="tab">⑥ Ledger</button>
+    </div>
+
+    <!-- INPUT -->
+    <div class="tool-panel active" id="t-input">
+      <h3 style="font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 14px;">System description</h3>
+      <textarea class="tool-input-area" id="systemInput" placeholder="Paste or type the system description here — a product spec, a process, a mechanism, a framework. The OCS will walk you through extracting its structure completely."></textarea>
+      <p class="tool-hint">The text stays in your browser. Nothing is sent anywhere. Proceed to tab ② when ready.</p>
+      <div class="tool-actions">
+        <button class="tbtn primary" onclick="showTab('t-a0',document.querySelectorAll('.tool-tab')[1])">Next: A₀ Vacuum Scan →</button>
+      </div>
+    </div>
+
+    <!-- A₀ -->
+    <div class="tool-panel" id="t-a0">
+      <div class="check-section">
+        <div class="check-section-label">Latent condition scan — mark each condition's status in your system</div>
+        <div class="check-row">
+          <div class="check-label"><strong>Environmental exposure</strong><div class="check-sub">Presence, concentration, boundary conditions</div></div>
+          <div class="status-btn-group" data-field="a0-env">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+            <button class="sbtn" onclick="setStatus(this,'s-na')">N/A</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Material interaction</strong><div class="check-sub">Surface, chemical, mechanical contact</div></div>
+          <div class="status-btn-group" data-field="a0-mat">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+            <button class="sbtn" onclick="setStatus(this,'s-na')">N/A</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Human contact vectors</strong><div class="check-sub">Direct, indirect, proximate exposure paths</div></div>
+          <div class="status-btn-group" data-field="a0-hum">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+            <button class="sbtn" onclick="setStatus(this,'s-na')">N/A</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Temporal degradation</strong><div class="check-sub">Decay, drift, phase change over time</div></div>
+          <div class="status-btn-group" data-field="a0-time">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+            <button class="sbtn" onclick="setStatus(this,'s-na')">N/A</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Ambient interference</strong><div class="check-sub">EM, thermal, acoustic, vibrational</div></div>
+          <div class="status-btn-group" data-field="a0-amb">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+            <button class="sbtn" onclick="setStatus(this,'s-na')">N/A</button>
+          </div>
+        </div>
+      </div>
+      <div id="a0-progress" class="progress-bar-wrap">
+        <div class="progress-label"><span>A₀ coverage</span><span id="a0-pct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="a0-fill" style="width:0%"></div></div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn primary" onclick="showTab('t-a',document.querySelectorAll('.tool-tab')[2])">Next: Phase A →</button>
+      </div>
+    </div>
+
+    <!-- PHASE A -->
+    <div class="tool-panel" id="t-a">
+      <div class="check-section">
+        <div class="check-section-label">Unit class extraction — mark what is present in your system</div>
+        <div class="check-row">
+          <div class="check-label"><strong>Structural units</strong><div class="check-sub">Components and their physical/logical arrangement</div></div>
+          <div class="status-btn-group" data-field="a-struct">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Functional units</strong><div class="check-sub">What the system does, what each part does</div></div>
+          <div class="status-btn-group" data-field="a-func">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Relational units</strong><div class="check-sub">Dependencies, flows, connections between parts</div></div>
+          <div class="status-btn-group" data-field="a-rel">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Mechanical units</strong><div class="check-sub">The specific how — verbs, mechanisms, pathways</div></div>
+          <div class="status-btn-group" data-field="a-mech">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Constraint units</strong><div class="check-sub">Bounds, limits, thresholds, invariants</div></div>
+          <div class="status-btn-group" data-field="a-const">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>State units</strong><div class="check-sub">Modes, conditions, phase transitions</div></div>
+          <div class="status-btn-group" data-field="a-state">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Interface units</strong><div class="check-sub">Boundary definitions between components</div></div>
+          <div class="status-btn-group" data-field="a-intf">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Feedback units</strong><div class="check-sub">Loops, correction signals, adaptive paths</div></div>
+          <div class="status-btn-group" data-field="a-feed">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Degradation units</strong><div class="check-sub">Failure modes, decay paths, edge conditions</div></div>
+          <div class="status-btn-group" data-field="a-deg">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Found</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Missing</button>
+          </div>
+        </div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Phase A coverage</span><span id="a-pct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="a-fill" style="width:0%"></div></div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn primary" onclick="showTab('t-b',document.querySelectorAll('.tool-tab')[3])">Next: Phase B →</button>
+      </div>
+    </div>
+
+    <!-- PHASE B -->
+    <div class="tool-panel" id="t-b">
+      <p style="font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin:0 0 18px;line-height:1.65;">For each unit found in Phase A, mark its classification and confidence. The five mandatory preservations are: Required, Dependency, Dependent, Constraint, State.</p>
+      <div class="check-section">
+        <div class="check-section-label">Classification check</div>
+        <div class="check-row">
+          <div class="check-label"><strong>Required units identified</strong><div class="check-sub">System cannot function without these</div></div>
+          <div class="status-btn-group" data-field="b-req">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Done</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Pending</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Dependencies mapped</strong><div class="check-sub">Prerequisite chains established</div></div>
+          <div class="status-btn-group" data-field="b-dep">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Done</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Pending</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Uncertainty typed</strong><div class="check-sub">Each unit marked: Explicit / Strong / Weak / Unresolved</div></div>
+          <div class="status-btn-group" data-field="b-unc">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Done</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Pending</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Metrologist layer applied</strong><div class="check-sub">Confidence · Observability · Measurement boundary · Error propagation</div></div>
+          <div class="status-btn-group" data-field="b-met">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Done</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Pending</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Synonym collapse checked</strong><div class="check-sub">No false merges — separate if identity/function/mechanism differ</div></div>
+          <div class="status-btn-group" data-field="b-syn">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Done</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Pending</button>
+          </div>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn primary" onclick="showTab('t-c',document.querySelectorAll('.tool-tab')[4])">Next: Phase C →</button>
+      </div>
+    </div>
+
+    <!-- PHASE C -->
+    <div class="tool-panel" id="t-c">
+      <div class="check-section">
+        <div class="check-section-label">Assembly checks — run after draft output is produced</div>
+        <div class="check-row">
+          <div class="check-label"><strong>Invariant lock applied</strong><div class="check-sub">What cannot be omitted/altered locked before wording</div></div>
+          <div class="status-btn-group" data-field="c-lock">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Structural ordering correct</strong><div class="check-sub">Dependencies before dependents · constraints adjacent · no prominence weighting</div></div>
+          <div class="status-btn-group" data-field="c-order">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Omission test</strong><div class="check-sub">No required units absent from output</div></div>
+          <div class="status-btn-group" data-field="c-omit">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Compression corruption test</strong><div class="check-sub">No structural loss in brevity</div></div>
+          <div class="status-btn-group" data-field="c-comp">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Assumption injection test</strong><div class="check-sub">No unsourced content synthesized in output</div></div>
+          <div class="status-btn-group" data-field="c-assump">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Bidirectional validation</strong><div class="check-sub">Reverse reconstruction not flatter/simpler than source</div></div>
+          <div class="status-btn-group" data-field="c-bidir">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-partial')">Partial</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="check-label"><strong>Two-way ledger accountability</strong><div class="check-sub">Every output sentence traces to ledger · every ledger essential appears in output</div></div>
+          <div class="status-btn-group" data-field="c-ledger">
+            <button class="sbtn" onclick="setStatus(this,'s-found')">Pass</button>
+            <button class="sbtn" onclick="setStatus(this,'s-missing')">Fail</button>
+          </div>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn primary" onclick="buildLedger()">Build ledger →</button>
+        <button class="tbtn" onclick="showTab('t-ledger',document.querySelectorAll('.tool-tab')[5])">View ledger</button>
+      </div>
+    </div>
+
+    <!-- LEDGER OUTPUT -->
+    <div class="tool-panel" id="t-ledger">
+      <h3 style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;">Completeness ledger</h3>
+      <div class="ledger-output" id="ledgerOutput" contenteditable="true" spellcheck="false">Run through all five phases, then click "Build ledger" in Phase C to generate output.</div>
+      <div class="tool-actions">
+        <button class="tbtn primary" onclick="copyLedger()">Copy ledger</button>
+        <button class="tbtn" onclick="buildLedger()">Regenerate</button>
+        <button class="tbtn" onclick="resetTool()">Reset all</button>
+      </div>
+    </div>
+
+  </div><!-- /tool-wrap -->
+</section>
+
+<!-- ── FAILURE TAXONOMY ── -->
+<section class="section" id="failures">
+  <div class="section-marker --down"><span class="mdot"></span> failure taxonomy · consolidated</div>
+  <h2 class="sec">What the system <em>rejects</em>.</h2>
+  <p class="sec-lede">Five failure classes. Every violation is a hard error — no partial credit for structural loss.</p>
+  <div class="fail-grid">
+    <div class="fail-card">
+      <div class="fc-label">structural failures · hard fail</div>
+      <ul>
+        <li>Missing component</li>
+        <li>Missing dependency</li>
+        <li>Missing mechanism</li>
+        <li>Truncated layer</li>
+        <li>Unauthorized explanation</li>
+        <li>Excess length beyond structural necessity</li>
+        <li>Determinism possible but ambiguity left</li>
+      </ul>
+    </div>
+    <div class="fail-card">
+      <div class="fc-label">detection failures</div>
+      <ul>
+        <li>Flat parsing</li>
+        <li>Verb blindness</li>
+        <li>Synonym collapse</li>
+        <li>Assumption injection</li>
+        <li>Hole patching</li>
+        <li>Context universalization</li>
+      </ul>
+    </div>
+    <div class="fail-card">
+      <div class="fc-label">classification failures</div>
+      <ul>
+        <li>Importance weighting</li>
+        <li>Uncertainty smuggling</li>
+        <li>Conflict suppression</li>
+        <li>Confidence flattening</li>
+        <li>Error propagation ignored</li>
+      </ul>
+    </div>
+    <div class="fail-card">
+      <div class="fc-label">assembly failures</div>
+      <ul>
+        <li>Fluency-first ordering</li>
+        <li>Unsourced additions</li>
+        <li>Orphaned essentials</li>
+        <li>State conflation</li>
+        <li>Dependency severance</li>
+      </ul>
+    </div>
+    <div class="fail-card">
+      <div class="fc-label">evolution failures</div>
+      <ul>
+        <li>Silent override of prior rule</li>
+        <li>Ledger not updated</li>
+        <li>Invalidation not marked</li>
+        <li>Sequence integrity broken</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROMPT DIRECTORY ── -->
+<section class="section" id="prompts">
+  <div class="section-marker --arch"><span class="mdot"></span> prompt directory · 10 prompts · revision chain R‑09</div>
+  <h2 class="sec">The construction sequence — <em>modular and reusable</em>.</h2>
+  <p class="sec-lede">The 10 prompts that built the OCS, in order. Each begins with "Strict rules:" and is modular — use individually or as a stack. The revision ledger is encoded in the master document above.</p>
+
+  <div class="prompt-list">
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">01</span>
+        <span class="prompt-title">Base memory protocol</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Build or revise a memory directive that enforces lean output without structural loss.
+
+The directive must preserve the following constraints exactly in logic, even if wording is improved:
+  · successful output uses minimal lines while still carrying the actual constraint architecture
+  · exactness must remain intact
+  · minimal bloat is required
+  · zero structural compression is required
+  · completeness of multilevel system description outranks surface efficiency
+  · unless the user explicitly signals expansion with a phrase such as "tell me all about," do not bloat
+
+The directive must define failure explicitly. Failure includes:
+  · output smaller than the informational value it needs to carry
+  · omissions
+  · truncations
+  · compressions
+  · explanations not queried
+  · unmentioned systemic links or components
+  · undefined mechanisms or mechanics
+
+Output requirements:
+  · no ornamental phrasing
+  · no softening language
+  · no hidden assumptions
+  · no missing mechanisms
+  · no summarized logic loss
+
+Return only the finalized memory directive.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">02</span>
+        <span class="prompt-title">Stress-test and harden the base protocol</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Stress-test the current memory directive under adversarial conditions.
+
+Do not praise it. Do not assume it works. Detect contradictions, unresolved thresholds, vague language, or any hidden drift points.
+
+The stress test must explicitly evaluate whether the directive fails under tension between:
+  · minimality
+  · zero compression
+  · full system exposure
+
+Then rewrite it into a hardened control system with these required sections:
+  · Core invariant
+  · Execution order
+  · Compression rule
+  · Expansion trigger
+  · Failure conditions
+  · Output standard
+
+Hard requirements:
+  · surface compression may be allowed
+  · structural compression must be forbidden
+  · no line may imply that missing structure is acceptable for brevity
+  · ambiguity must be reduced wherever determinism is possible
+  · do not invent hidden arbitration rules
+
+Return the stress diagnosis first, then the rewritten hardened protocol.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">03</span>
+        <span class="prompt-title">Remove hidden arbitration — install explicit inconsistency handling</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Audit the control system for any invented arbitration logic, especially covert rules that decide conflicts without authorization.
+
+You must explicitly reject any line that does any of the following:
+  · invents authority not granted by the user
+  · silently resolves conflicts
+  · flags conflict only internally
+  · suppresses uncertainty rather than surfacing it
+
+Replace that behavior with an explicit conflict rule:
+  · if constraints conflict, do not invent arbitration
+  · flag the exact conflict
+  · identify the competing requirements
+  · resolve only from existing user instruction
+  · if no authorized rule exists, state that no authorized resolution rule exists
+
+Then explain why the rejected line failed, with mechanism-level precision rather than vague criticism.
+
+Return:
+  1. the invalid line class
+  2. why it fails
+  3. the corrected replacement rule</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">04</span>
+        <span class="prompt-title">Construct the comprehensive component detection layer</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Design a comprehensive component detection layer upstream of generation.
+
+Do not merge detection with writing. They must be separated.
+
+Use these three process phases:
+  · Phase A — System Extraction
+  · Phase B — Requirement Mapping
+  · Phase C — Output Assembly
+
+Then build the detection layer with all of the following:
+  · units of completeness by class
+  · a completeness ledger
+  · adversarial omission checks
+  · hierarchical extraction
+  · explicit / strong inference / weak inference / unresolved distinction
+  · a mechanism scan that interrogates verbs
+  · invariant-first output assembly logic
+  · coverage scoring
+  · bidirectional validation
+  · synonym-collapse prevention
+  · unresolved-gap preservation rather than patching
+
+The detector must scan at minimum for these classes:
+  · structural units · functional units · relational units · mechanical units
+  · constraint units · state units · evaluation units · context units
+
+The ledger must be explicit and include at minimum:
+  · components · subcomponents · functions · mechanisms · dependencies
+  · constraints · triggers · edge cases · unresolved ambiguities
+  · explicit user exclusions · explicit user priorities
+
+Do not write prose about the philosophy of the system. Build the operational protocol.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">05</span>
+        <span class="prompt-title">Correct Phase B and Phase C</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Correct the phase model by removing vague and fabricated logic.
+
+You must explicitly reject both of these failure classes:
+  · "what must be preserved" when used vaguely or subjectively
+  · any inclusion logic based on size, prominence, narrative emphasis, or perceived importance
+
+Rewrite Phase B as deterministic classification using these categories:
+  · Required · Dependency · Dependent · Support · Constraint · State/Trigger
+
+The preservation logic must reflect structural necessity, not importance signaling.
+
+Rewrite Phase C so that:
+  · ordering is structural, not hierarchical
+  · dependencies may precede dependents for coherence
+  · constraints sit adjacent to the units they govern
+  · mechanisms sit with the components they operate through
+  · no size-based or prominence-based weighting is used
+
+Return the corrected Phase B and Phase C only.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">06</span>
+        <span class="prompt-title">Collective and metrologist audit pass</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Run a compact collective audit on the detection system and identify what is missing after the Phase B and Phase C corrections.
+
+The audit must include at least these perspectives:
+  · software architecture · reliability engineering · control systems / cybernetics
+  · information theory · adversarial / red-team · biological adaptation parallel · metrologist
+
+Do not give theatrical narration. Return only missing system elements and why they matter.
+
+The audit must explicitly check for absence of:
+  · interface definitions · degradation modes · feedback structures
+  · information preservation constraint · detection confidence levels
+  · observability classification · measurement boundaries
+  · error propagation tracking · semantic invariance checks · adaptive capacity
+
+The metrologist pass must explicitly answer:
+  · what can be observed directly
+  · what can only be inferred
+  · what cannot be known from the source
+  · how uncertainty propagates downstream
+
+Return the additions in implementation-ready language.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">07</span>
+        <span class="prompt-title">Context/substrate layer integration</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Do not turn field-like or medium-like conditions into universal phases.
+
+Instead, integrate them only as conditional context/substrate domains when evidence exists or when system behavior requires them.
+
+Add a context-layer scan to Phase A.
+
+The scan must check for the presence of these classes without presuming them by default:
+  · environmental · atmospheric · medium/substrate · energetic
+  · envelope · saturation/density · submersion/immersion
+
+Each detected context layer must be classified only if it has measurable or inferable effect on:
+  · component behavior · state transitions · dependency structure · system outputs
+
+Each context layer must carry:
+  · observability · effect traceability · confidence level
+
+If those cannot be attached, the layer fails inclusion.
+
+Return the context-layer integration rules and guardrails only.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">08</span>
+        <span class="prompt-title">Install assumption-vacuum scan for unstated conditions</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Correct Phase A so that unstated conditions are not silently assumed away.
+
+Do not claim 100% certainty for unstated conditions unless the certainty is logically forced by explicit constraints. Reject any instruction that tries to convert unknowns into fabricated certainties.
+
+Add A₀ — Assumption Vacuum Scan ahead of the rest of Phase A.
+
+This scan must:
+  · assume no unstated conditions are guaranteed
+  · treat unstated but behaviorally relevant conditions as explicit unknowns
+  · attempt deterministic resolution only when forced by constraints
+  · otherwise preserve unknowns and map their influence
+
+The scan must check for latent conditions including:
+  · environmental exposure · material interaction · human contact vectors
+  · temporal degradation · ambient interference
+
+Each latent condition must carry:
+  · determinability · sensitivity · uncertainty propagation
+
+Also enforce this rule explicitly:
+  · unknown does not mean optional
+
+Return only the corrected Phase A with A₀ included.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">09</span>
+        <span class="prompt-title">Full integrated master prompt</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Build a unified output-control and detection framework that preserves full structural integrity while minimizing surface area.
+
+The system must begin with these process layers:
+  · A₀ — Assumption Vacuum Scan
+  · Phase A — System Extraction
+  · Phase B — Deterministic Classification
+  · Phase C — Output Assembly
+
+The system must enforce all of the following:
+  · no hidden arbitration
+  · no structural compression
+  · no omission of required structure
+  · no invention of unsupported content
+  · no flattening of multilevel systems into short but mutilated prose
+  · no uncertainty laundering into false certainty
+  · no phase logic based on importance, prominence, or size hierarchy
+
+It must include:
+  · units of completeness · ledger-backed generation
+  · adversarial omission checks · hierarchical extraction
+  · explicit / strong inference / weak inference / unresolved distinction
+  · mechanism scan · invariant-first assembly
+  · coverage scoring · forward and reverse validation
+  · synonym-collapse prevention · unresolved-gap preservation
+  · deterministic classification categories · context-layer scan
+  · interface definitions · degradation modes · feedback structures
+  · information preservation constraint · confidence levels · observability
+  · measurement boundaries · error propagation · semantic invariance
+  · adaptive capacity · latent condition classes
+  · determinability / sensitivity / uncertainty propagation
+
+The final framework must preserve this correction explicitly:
+
+If constraints conflict, do not invent arbitration. Flag the exact conflict, identify the competing requirements, and either resolve only from existing user instruction or state that no authorized resolution rule exists.
+
+Do not compress the framework into slogans. Return the full integrated protocol in operational form.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-block">
+      <div class="prompt-head" onclick="togglePrompt(this)">
+        <span class="prompt-num">10</span>
+        <span class="prompt-title">Line-by-line audit prompt for future imported conversations</span>
+        <span class="prompt-toggle">▾</span>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text">Strict rules:
+
+Read the supplied conversation in exact order, line by line, without skipping any revision-bearing line.
+
+Your task is not to summarize. Your task is to extract revision-bearing logic and convert it into an ordered prompt architecture.
+
+You must:
+  · preserve sequence integrity
+  · identify every correction, override, rejection, and replacement rule
+  · distinguish original rule from revised rule
+  · surface contradictions explicitly
+  · mark which lines were later invalidated
+  · carry forward only the latest valid logic unless the user asks for historical layering
+
+At the beginning of the output, include a revision ledger containing all accumulated revisions in total.
+
+Then break the conversation into multiple prompts. Every prompt must begin exactly with:
+
+Strict rules:
+
+Each prompt must be modular, reusable, and operational. Do not produce vague meta-advice. Do not omit revisions. Do not silently arbitrate contradictions.
+
+Return:
+  1. revision ledger
+  2. ordered prompt stack
+  3. optional unified master prompt if the source supports one</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /prompt-list -->
+
+  <div style="margin-top:24px;padding:16px 20px;border:1px solid var(--rule);border-radius:var(--radius);background:color-mix(in oklab,var(--bg-rise) 40%,transparent);">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px;">copy full stack</div>
+    <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Copy all 10 prompts as a single deployable stack — paste directly into a conversation context.</p>
+    <button class="copy-btn" id="copyAllBtn" onclick="copyAllPrompts()">Copy all 10 prompts</button>
+  </div>
+</section>
+
+<!-- ── OPERATIONAL PROMPT STACK ── -->
+<section class="section" id="operational-prompts">
+  <div class="section-label"><span class="dot" style="background:var(--downstream)"></span> operational prompts · phase-organized · deploy per phase</div>
+  <h2 class="sec">Five prompts. One per phase. <em>Drop into any session.</em></h2>
+  <p class="sec-sub">Phase-organized version of the OCS — more compact than the construction stack, optimized for operational deployment. Each prompt activates one phase independently. Use in sequence for full structural coverage, or drop a single phase into an existing context.</p>
+
+  <div class="prompt-list" id="opPromptList">
+
+    <!-- OP PROMPT 1 -->
+    <div class="prompt-item">
+      <div class="prompt-header" onclick="togglePrompt(this)">
+        <div class="prompt-meta">
+          <span class="p-num">OP·1</span>
+          <span class="p-title">Output Control System — Core Rules</span>
+          <span class="p-desc">Core invariant · Execution order · Compression rule · Conflict resolution · Failure conditions</span>
+        </div>
+        <span class="prompt-arrow">▾</span>
+      </div>
+      <div class="prompt-body" style="display:none">
+        <pre>STRICT RULES — MEMORY DIRECTIVE — Output Control System (OCS)
+
+Core Invariant
+
+Transmit the full system. Nothing missing. Nothing implied. Nothing decorative.
+
+Execution Order (non-negotiable)
+
+- Enumerate all components required for correctness
+- Enumerate all relationships, dependencies, and interactions
+- Define all mechanisms and mechanics — no implicit behavior
+- Remove all non-functional language
+- Compress only surface form, never structure
+
+Compression Rule (hard boundary)
+
+ALLOWED:
+- Reduction of wording, redundancy removal, syntactic tightening
+
+FORBIDDEN:
+- Loss of elements, relationships, mechanisms, or resolution
+
+If a shorter output would remove anything required — expansion is mandatory.
+
+Expansion Trigger
+
+Expand beyond minimal structure only when user explicitly signals (e.g., "tell me all about").
+Otherwise: deliver the smallest structure that still fully instantiates the system.
+
+Conflict Resolution
+
+- If minimality conflicts with completeness — completeness wins
+- If clarity conflicts with brevity — clarity at system level wins
+- If constraints conflict — do not invent arbitration. Flag the exact conflict, identify competing
+  requirements, resolve only from existing user instruction, or state that no authorized resolution
+  rule exists
+
+Failure Conditions (binary)
+
+FAIL if any are true:
+- Any component is missing
+- Any dependency or interaction is unstated
+- Any mechanism is implied instead of defined
+- Any truncation of system layers
+- Any explanation included that was not explicitly requested
+- Output length exceeds structural necessity
+- Ambiguity remains where determinism is possible</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OP PROMPT 2 -->
+    <div class="prompt-item">
+      <div class="prompt-header" onclick="togglePrompt(this)">
+        <div class="prompt-meta">
+          <span class="p-num">OP·2</span>
+          <span class="p-title">Phase A — Comprehensive System Extraction</span>
+          <span class="p-desc">A₀ assumption vacuum · A₁ component extraction · A₂ context layer · A₃ mechanism scan · A₄ completeness ledger</span>
+        </div>
+        <span class="prompt-arrow">▾</span>
+      </div>
+      <div class="prompt-body" style="display:none">
+        <pre>STRICT RULES — DETECTION PHASE (Phase A)
+
+A₀ — Assumption Vacuum Scan (executes first)
+
+- Treat all unstated conditions as unresolved variables — not fixed facts
+- For every component/mechanism, scan for implicit environmental dependencies:
+  - Does this require a medium?
+  - Does this degrade over time or exposure?
+  - Does human interaction alter it?
+  - Does environment modulate behavior?
+- Instantiate each as a named conditional unknown — not a silently filled assumption
+
+Latent Condition Classes (mandatory scan)
+- Environmental exposure — light, temperature, atmosphere, regulation, context
+- Material interaction — wear, fatigue, corrosion, residue accumulation, skin contact
+- Human contact vectors — handling, contamination, behavioral variability
+- Temporal degradation — aging, entropy, drift
+- Ambient interference — pollution, noise, competing signals
+
+Resolution Protocol (per unknown)
+- If derivable from constraints — resolve deterministically
+- If not derivable — preserve as unresolved variable; do not collapse
+- If critical to system behavior — mark as blocking or sensitivity variable
+
+Unknown ≠ optional. Absence of specification is not license to synthesize specification.
+
+A₁ — Component Extraction
+
+Extract all explicit system units by class:
+
+Structural units — entities, modules, sections, layers, phases, domains
+Functional units — role, purpose, output, effect — what each thing does
+Relational units — dependencies, links, causality, influence paths, sequencing, feedback
+Mechanical units — procedure, transformation logic, operational rules — how something works
+Constraint units — limits, exclusions, permissions, thresholds, priorities, invariants
+State units — conditions, modes, triggers, branching paths, exceptions
+Evaluation units — success criteria, failure criteria, diagnostics, tests, edge cases
+Context units — scope, target environment, framing assumptions, temporal conditions
+Interface units — input/output contracts, interaction boundaries between components
+Feedback units — closed-loop vs open-loop relationship classification
+Degradation units — partial failure behavior — how system behaves when components fail below threshold
+Adaptive units (conditional) — whether system changes behavior over time or conditions — include only if evidenced
+
+A₂ — Context / Substrate Layer Scan
+
+Scan for non-discrete, field-like, or medium-based influences. Instantiate only if evidenced.
+- Environmental / Atmospheric / Medium or Substrate / Energetic / Envelope / Saturation or Density / Submersion or Immersion
+
+Inclusion criteria (all three required):
+- Observability: directly measurable / indirectly inferred / non-observable
+- Effect traceability: which components or mechanisms it alters
+- Confidence level: high / moderate / low
+Fails inclusion if any of the three cannot be attached.
+
+A₃ — Mechanism Scan (implicit verb decomposition)
+
+When source uses: "works through," "handles," "drives," "ensures," "supports," "maps," "integrates" — decompose:
+- By what mechanism?
+- Through what path?
+- Under what conditions?
+- With what dependencies?
+- What changes state?
+
+A₄ — Completeness Ledger
+
+Build internal ledger before output assembly. Not prose — a structured map:
+  components / subcomponents / functions / mechanisms
+  dependencies / constraints / triggers / edge cases
+  unresolved ambiguities / user exclusions / user priorities
+  confidence class per unit / observability class / degradation vectors
+  interface definitions / feedback structures / information preservation flags</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OP PROMPT 3 -->
+    <div class="prompt-item">
+      <div class="prompt-header" onclick="togglePrompt(this)">
+        <div class="prompt-meta">
+          <span class="p-num">OP·3</span>
+          <span class="p-title">Phase B — Requirement Classification</span>
+          <span class="p-desc">Deterministic categories · Uncertainty classification · Metrologist layer · Anti-collapse rule · Latent condition classification</span>
+        </div>
+        <span class="prompt-arrow">▾</span>
+      </div>
+      <div class="prompt-body" style="display:none">
+        <pre>STRICT RULES — CLASSIFICATION PHASE (Phase B)
+
+Classification Categories (deterministic — no subjective importance)
+- Required — explicitly present or logically necessary for system validity
+- Dependent — exists only in relation to another unit; must be preserved with parent linkage
+- Dependency — upstream requirement that other units rely on; removal breaks system coherence
+- Support — auxiliary; enhances function but does not break system if removed
+- Constraint — limits, rules, boundaries governing behavior
+- State / Trigger — conditions that alter behavior or activate transitions
+
+Preservation Rule
+Must preserve: Required + Dependencies + Dependents + Constraints + States
+Support preserved unless user explicitly authorizes reduction.
+
+Uncertainty Classification (mandatory per unit)
+- Explicit — directly stated
+- Strong inference — required by structure; high confidence
+- Weak inference — plausible but not structurally required
+- Unresolved — referenced but not specified
+
+Output policy:
+- Explicit — must be preserved
+- Strong inference — may be included if labeled or clearly grounded
+- Weak inference — not included as fact; flag if relevant
+- Unresolved — surfaced as unresolved, not silently patched
+
+Metrologist Classification Layer
+- Detection confidence level per unit: high / moderate / low
+- Observability: directly observable / indirectly inferred / non-observable
+- Measurement boundary: what cannot be known from source — hard limit
+- Error propagation: if a dependency is uncertain, all downstream units inherit and carry that uncertainty
+
+Anti-Collapse Rule
+Before merging two items, verify they differ by none of the following:
+- What it is
+- What it does
+- How it works
+- What limits it
+- When it activates
+If they differ on any dimension — they remain separate.
+
+Latent Condition Classification
+Each condition identified in A₀ must be classified as:
+- Dependency — required for operation
+- Constraint — limits behavior
+- Modifier — alters performance without being required
+- Degradation vector — reduces function over time</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OP PROMPT 4 -->
+    <div class="prompt-item">
+      <div class="prompt-header" onclick="togglePrompt(this)">
+        <div class="prompt-meta">
+          <span class="p-num">OP·4</span>
+          <span class="p-title">Phase C — Output Assembly</span>
+          <span class="p-desc">Assembly rule · Invariant locking · Two-way accountability · Adversarial omission checks · Coverage scoring · Bidirectional validation</span>
+        </div>
+        <span class="prompt-arrow">▾</span>
+      </div>
+      <div class="prompt-body" style="display:none">
+        <pre>STRICT RULES — ASSEMBLY PHASE (Phase C)
+
+Assembly Rule
+Include all ledger-backed units classified as: Required, Dependency, Dependent, Constraint, State
+Include Support only if no required structure is displaced.
+No hierarchy-based weighting. No narrative ordering by size or prominence.
+
+Ordering Logic (structural only)
+- Dependencies before dependents — required for coherence
+- Constraints adjacent to governed units
+- Mechanisms co-located with their components
+- No sequencing by perceived importance or output aesthetics
+
+Invariant Locking (executes before wording)
+Lock before assembling language:
+- What cannot be omitted
+- What cannot be altered
+- What cannot be assumed
+- What cannot be expanded without explicit request
+Only after invariants are locked does wording proceed.
+
+Two-Way Accountability Check
+- Every sentence in output must trace to at least one ledger item
+- Every ledger item marked essential must appear somewhere in output
+- No unsupported additions; no unrepresented essentials
+
+Adversarial Omission Checks (run after draft)
+- Omission test — what did the source contain that output failed to carry?
+- Compression corruption test — what was preserved in label only, lost in mechanism?
+- False completeness test — what sounds complete via polished phrasing but is structurally incomplete?
+- Assumption injection test — what appeared in output not explicitly stated or strongly inferrable?
+- Dependency severance test — what components were included individually but their links were dropped?
+- Semantic invariance check — if source rephrased differently, does detection yield equivalent structure?
+
+Information Preservation Constraint
+No reduction of distinguishable states between components. If two states are distinct in source — they remain distinct in output.
+
+Coverage Scoring (internal)
+- Component coverage — all entities/modules retained?
+- Relation coverage — all causal/dependency links retained?
+- Mechanism coverage — all operative processes defined?
+- Constraint coverage — all limits/priorities preserved?
+- Boundary integrity — assumptions kept out unless authorized?
+- Compression safety — wording reduced without structural loss?
+
+Bidirectional Validation
+- Forward pass: source → extracted system → output
+- Reverse pass: output → reconstruct implied system → compare to source system
+- If reverse reconstruction is flatter, simpler, or thinner than source — output has compressed structure. Fail.</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OP PROMPT 5 -->
+    <div class="prompt-item">
+      <div class="prompt-header" onclick="togglePrompt(this)">
+        <div class="prompt-meta">
+          <span class="p-num">OP·5</span>
+          <span class="p-title">Master Failure Mode Reference</span>
+          <span class="p-desc">Structural failures · Detection failures · Classification failures · Assembly failures · Complete domain inventory</span>
+        </div>
+        <span class="prompt-arrow">▾</span>
+      </div>
+      <div class="prompt-body" style="display:none">
+        <pre>STRICT RULES — FAILURE CLASSIFICATION
+
+Structural Failures (hard fail)
+- Any component missing from output
+- Any dependency or interaction unstated
+- Any mechanism implied instead of defined
+- Any truncation of system layers
+- Any explanation included that was not explicitly requested
+- Output length exceeds structural necessity
+- Ambiguity remains where determinism was achievable
+
+Detection Failures
+- Flat parsing — system is hierarchical; detection must be recursive
+- Verb blindness — implicit verbs not decomposed into mechanics
+- Synonym collapse — distinct components merged due to surface similarity
+- Assumption injection — unstated environmental/substrate conditions treated as given
+- False completeness — polished language masks structural holes
+- Hole-patching — unresolved gaps filled with plausible rules instead of marked as absent
+
+Classification Failures
+- Importance-weighting — priority determined by size or narrative prominence instead of structural role
+- Uncertainty smuggling — weak inference presented as fact
+- Conflict suppression — constraint conflicts arbitrated internally without surfacing to user
+- Confidence flattening — all detected elements treated as equally certain
+- Error propagation ignored — downstream uncertainty from uncertain dependencies not tracked
+
+Assembly Failures
+- Fluency-first ordering — readability optimized at cost of structural fidelity
+- Unsourced additions — output contains elements with no ledger backing
+- Orphaned essentials — ledger items marked essential absent from output
+- State conflation — distinct states merged into single representation
+- Dependency severance — components included but links between them dropped
+
+Complete Domain Inventory (valid system domains as of R-09)
+
+- Components, subcomponents
+- Relationships, dependencies, dependents
+- Mechanisms, mechanics
+- Constraints, limits, thresholds
+- States, modes, triggers
+- Failure modes, degradation modes
+- Interface definitions (interaction contracts)
+- Feedback structures (loop classification)
+- Context / substrate layers (conditional)
+- Uncertainty class per unit
+- Observability class per unit
+- Detection confidence per unit
+- Measurement boundaries (hard limits)
+- Error propagation paths
+- Semantic invariance flag
+- Adaptive capacity (conditional)
+- Latent environmental / degradation conditions
+- Evaluation criteria (success and failure)
+- Information preservation constraints</pre>
+        <div class="prompt-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy prompt</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /prompt-list -->
+
+  <div style="margin-top:24px;padding:16px 20px;border:1px solid var(--rule);border-radius:var(--radius);background:color-mix(in oklab,var(--bg-rise) 40%,transparent);">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px;">copy operational stack</div>
+    <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Copy all 5 operational prompts — phase-organized, paste-and-deploy format.</p>
+    <button class="copy-btn" id="copyOpBtn" onclick="copyOpPrompts()">Copy all 5 prompts</button>
+  </div>
+</section>
+
+</div><!-- /shell -->
+</main>
+
+<footer class="tw-foot">
+  <div class="tw-wrap tw-foot-grid">
+    <div>
+      <a class="tw-brand" href="./"><img src="assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+      <p>Independent research and development laboratory. Run by one person.<br>Briar Morgan Greenway, founder &amp; director · <a href="mailto:b@twl.today">b@twl.today</a></p>
+      <p>OCS integrated through R‑09 + Gap Closure Layer · © 2026 ThinkWell Labs LLC · CC BY-NC-ND 4.0</p>
+    </div>
+    <div>
+      <h4>Research</h4>
+      <ul>
+        <li><a href="papers.html">All papers</a></li>
+        <li><a href="program.html">Program statement</a></li>
+        <li><a href="invisible-text.html">Invisible text attacks</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="./#work">All products</a></li>
+        <li><a href="https://toroid.fyi" rel="noopener">Toroid</a></li>
+        <li><a href="https://errorfect.com" rel="noopener">Errorfect</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Lab</h4>
+      <ul>
+        <li><a href="./">Home</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="https://github.com/sugarcypher/twl" rel="noopener">Source</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw-wrap tw-foot-base">
+    <span>© 2026 ThinkWell Labs LLC · Papers CC BY-NC-ND 4.0, cite when used</span>
+    <span>No trackers · no analytics · no cookies</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── accordion: phases ── */
+  window.togglePhase = function (head) {
+    var block = head.parentElement;
+    block.classList.toggle('open');
+  };
+
+  /* ── accordion: prompts ── */
+  window.togglePrompt = function (head) {
+    var block = head.parentElement;
+    block.classList.toggle('open');
+  };
+
+  /* ── tool tabs ── */
+  window.showTab = function (panelId, tabEl) {
+    document.querySelectorAll('.tool-panel').forEach(function (p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tool-tab').forEach(function (t) { t.classList.remove('active'); });
+    var panel = document.getElementById(panelId);
+    if (panel) panel.classList.add('active');
+    if (tabEl) tabEl.classList.add('active');
+  };
+
+  /* ── status buttons ── */
+  window.setStatus = function (btn, cls) {
+    var group = btn.closest('.status-btn-group');
+    group.querySelectorAll('.sbtn').forEach(function (b) {
+      b.classList.remove('s-found', 's-partial', 's-missing', 's-na');
+    });
+    btn.classList.add(cls);
+    updateProgress(group.dataset.field, cls);
+    updateProgressBars();
+  };
+
+  var statuses = {};
+
+  function updateProgress (field, cls) {
+    statuses[field] = cls;
+  }
+
+  function updateProgressBars () {
+    // A₀ progress
+    var a0Fields = ['a0-env','a0-mat','a0-hum','a0-time','a0-amb'];
+    updateBar(a0Fields, 'a0-fill', 'a0-pct');
+    // Phase A progress
+    var aFields = ['a-struct','a-func','a-rel','a-mech','a-const','a-state','a-intf','a-feed','a-deg'];
+    updateBar(aFields, 'a-fill', 'a-pct');
+  }
+
+  function updateBar (fields, fillId, pctId) {
+    var scored = fields.filter(function (f) { return statuses[f] && statuses[f] !== ''; }).length;
+    var pct = Math.round((scored / fields.length) * 100);
+    var fill = document.getElementById(fillId);
+    var pctEl = document.getElementById(pctId);
+    if (fill) fill.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+  }
+
+  /* ── build ledger ── */
+  window.buildLedger = function () {
+    var input = document.getElementById('systemInput');
+    var systemText = input ? input.value.trim() : '';
+    var now = new Date();
+    var dateStr = now.toISOString().slice(0, 10);
+
+    var lines = [];
+    lines.push('OUTPUT CONTROL SYSTEM — COMPLETENESS LEDGER');
+    lines.push('Generated: ' + dateStr + ' · OCS R-09');
+    lines.push('');
+    if (systemText) {
+      lines.push('SYSTEM: ' + systemText.slice(0, 120) + (systemText.length > 120 ? '…' : ''));
+      lines.push('');
+    }
+
+    var labels = {
+      'a0-env':   'A₀ · Environmental exposure',
+      'a0-mat':   'A₀ · Material interaction',
+      'a0-hum':   'A₀ · Human contact vectors',
+      'a0-time':  'A₀ · Temporal degradation',
+      'a0-amb':   'A₀ · Ambient interference',
+      'a-struct': 'A  · Structural units',
+      'a-func':   'A  · Functional units',
+      'a-rel':    'A  · Relational units',
+      'a-mech':   'A  · Mechanical units',
+      'a-const':  'A  · Constraint units',
+      'a-state':  'A  · State units',
+      'a-intf':   'A  · Interface units',
+      'a-feed':   'A  · Feedback units',
+      'a-deg':    'A  · Degradation units',
+      'b-req':    'B  · Required units identified',
+      'b-dep':    'B  · Dependencies mapped',
+      'b-unc':    'B  · Uncertainty typed',
+      'b-met':    'B  · Metrologist layer applied',
+      'b-syn':    'B  · Synonym collapse checked',
+      'c-lock':   'C  · Invariant lock applied',
+      'c-order':  'C  · Structural ordering correct',
+      'c-omit':   'C  · Omission test',
+      'c-comp':   'C  · Compression corruption test',
+      'c-assump': 'C  · Assumption injection test',
+      'c-bidir':  'C  · Bidirectional validation',
+      'c-ledger': 'C  · Two-way ledger accountability',
+    };
+
+    var statusMap = { 's-found': '✓ PASS', 's-partial': '~ PARTIAL', 's-missing': '✗ FAIL/MISSING', 's-na': '— N/A', '': '  (not checked)' };
+
+    var sections = { 'A₀': [], 'A': [], 'B': [], 'C': [] };
+    Object.keys(labels).forEach(function (field) {
+      var st = statuses[field] || '';
+      var sym = statusMap[st] || '  (not checked)';
+      var label = labels[field];
+      var phase = field.startsWith('a0') ? 'A₀' : field.startsWith('a-') ? 'A' : field.startsWith('b-') ? 'B' : 'C';
+      sections[phase].push(sym + '  ' + label.replace(/^[A-Z₀]+\s+·\s+/, ''));
+    });
+
+    ['A₀','A','B','C'].forEach(function (ph) {
+      lines.push('── PHASE ' + ph + ' ──────────────────────────');
+      sections[ph].forEach(function (l) { lines.push(l); });
+      lines.push('');
+    });
+
+    var passCount = Object.values(statuses).filter(function (s) { return s === 's-found'; }).length;
+    var failCount = Object.values(statuses).filter(function (s) { return s === 's-missing'; }).length;
+    var partialCount = Object.values(statuses).filter(function (s) { return s === 's-partial'; }).length;
+    var total = Object.keys(labels).length;
+    var checked = Object.keys(statuses).length;
+
+    lines.push('── SUMMARY ────────────────────────────');
+    lines.push('Checked: ' + checked + ' / ' + total);
+    lines.push('Pass: ' + passCount + '  |  Partial: ' + partialCount + '  |  Fail/Missing: ' + failCount);
+    if (failCount > 0) lines.push('STATUS: INCOMPLETE — structural gaps detected');
+    else if (partialCount > 0) lines.push('STATUS: PARTIAL — review flagged items');
+    else if (checked < total) lines.push('STATUS: INCOMPLETE — not all items checked');
+    else lines.push('STATUS: COMPLETE — ready for output assembly');
+
+    var out = document.getElementById('ledgerOutput');
+    if (out) out.textContent = lines.join('\n');
+    showTab('t-ledger', document.querySelectorAll('.tool-tab')[5]);
+  };
+
+  /* ── copy ledger ── */
+  window.copyLedger = function () {
+    var out = document.getElementById('ledgerOutput');
+    if (!out) return;
+    navigator.clipboard.writeText(out.textContent).then(function () {
+      var btn = document.querySelector('#t-ledger .tbtn.primary');
+      if (btn) { var orig = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(function () { btn.textContent = orig; }, 1600); }
+    }).catch(function () {
+      var r = document.createRange(); r.selectNode(out);
+      window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
+      document.execCommand('copy');
+    });
+  };
+
+  /* ── reset ── */
+  window.resetTool = function () {
+    statuses = {};
+    document.querySelectorAll('.sbtn').forEach(function (b) {
+      b.classList.remove('s-found', 's-partial', 's-missing', 's-na');
+    });
+    var input = document.getElementById('systemInput');
+    if (input) input.value = '';
+    var out = document.getElementById('ledgerOutput');
+    if (out) out.textContent = 'Run through all five phases, then click "Build ledger" in Phase C to generate output.';
+    updateProgressBars();
+    showTab('t-input', document.querySelectorAll('.tool-tab')[0]);
+  };
+
+  /* ── copy individual prompt ── */
+  window.copyPrompt = function (btn) {
+    var pre = btn.closest('.prompt-body').querySelector('.prompt-text');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.classList.add('copied');
+      var orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(function () { btn.textContent = orig; btn.classList.remove('copied'); }, 1600);
+    }).catch(function () {
+      var r = document.createRange(); r.selectNode(pre);
+      window.getSelection().removeAllRanges(); window.getSelection().addRange(r);
+      document.execCommand('copy');
+    });
+  };
+
+  /* ── copy all prompts ── */
+  window.copyAllPrompts = function () {
+    var texts = [];
+    document.querySelectorAll('.prompt-text').forEach(function (pre, i) {
+      texts.push('── PROMPT ' + String(i + 1).padStart(2, '0') + ' ─────────────────────────────────────');
+      texts.push(pre.textContent.trim());
+      texts.push('');
+    });
+    var full = texts.join('\n');
+    navigator.clipboard.writeText(full).then(function () {
+      var btn = document.getElementById('copyAllBtn');
+      if (btn) { var orig = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(function () { btn.textContent = orig; }, 1800); }
+    });
+  };
+
+  window.copyOpPrompts = function () {
+    var texts = [];
+    var labels = ['OP·1 — Core Rules', 'OP·2 — Phase A: System Extraction', 'OP·3 — Phase B: Classification', 'OP·4 — Phase C: Output Assembly', 'OP·5 — Master Failure Reference'];
+    document.querySelectorAll('#opPromptList .prompt-body pre').forEach(function (pre, i) {
+      texts.push('── ' + (labels[i] || ('OP·' + (i + 1))) + ' ─────────────────────────────────────');
+      texts.push(pre.textContent.trim());
+      texts.push('');
+    });
+    var full = texts.join('\n');
+    navigator.clipboard.writeText(full).then(function () {
+      var btn = document.getElementById('copyOpBtn');
+      if (btn) { var orig = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(function () { btn.textContent = orig; }, 1800); }
+    }).catch(function () {
+      var ta = document.createElement('textarea');
+      ta.value = full; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(ta);
+      var btn = document.getElementById('copyOpBtn');
+      if (btn) { var orig = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(function () { btn.textContent = orig; }, 1800); }
+    });
+  };
+
+})();
+</script>
+
+</body>
+</html>

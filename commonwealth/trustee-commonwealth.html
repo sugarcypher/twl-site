@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trustee Commonwealth of Earth</title>
+<style>
+:root{
+  --bg:#f6f4ee; --panel:#fffdf8; --ink:#1c1c1a; --muted:#5d5c57; --line:#cfc9bb;
+  --ceiling:#5f8a4a; --space:#eadfc4; --floor:#c4824f; --core:#2e4a6b; --oninv:#ffffff;
+  --auth:#1c1c1a; --check:#b23a2b; --money:#3f7a34; --info:#2a68a0;
+  --group:#f0ebdf;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131311; --panel:#1c1c19; --ink:#ecebe5; --muted:#a6a59d; --line:#3d3c37;
+    --ceiling:#4f7a3c; --space:#3a3427; --floor:#9a5f34; --core:#2c4766; --oninv:#f4f2ec;
+    --auth:#ecebe5; --check:#e0675a; --money:#78b86a; --info:#6aa8e0;
+    --group:#23221e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131311; --panel:#1c1c19; --ink:#ecebe5; --muted:#a6a59d; --line:#3d3c37;
+  --ceiling:#4f7a3c; --space:#3a3427; --floor:#9a5f34; --core:#2c4766; --oninv:#f4f2ec;
+  --auth:#ecebe5; --check:#e0675a; --money:#78b86a; --info:#6aa8e0;
+  --group:#23221e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55;font-size:16px}
+main{max-width:1040px;margin:0 auto;padding:32px 16px 64px}
+main::before{content:"";display:block;height:6px;border-radius:3px;background:linear-gradient(90deg,#5f8a4a,#d9a92e,#3f93bf);margin-bottom:26px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;margin:0 0 10px;letter-spacing:-0.01em}
+h2{font-size:22px;margin:56px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:16px;margin:0 0 6px}
+p{margin:0 0 12px}
+.deck{font-size:18px;color:var(--muted);max-width:780px}
+.prov{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding:6px 12px;margin:18px 0 0;max-width:840px}
+figure{margin:20px 0 8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+svg{width:100%;height:auto;display:block}
+.two{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+ol.order{margin:0;padding-left:22px}
+ol.order li{margin-bottom:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14.5px}
+.card .pre{font-size:12.5px;color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.steps{list-style:none;padding:0;margin:16px 0 0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:10px 12px 10px 52px;background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:12px;top:9px;width:28px;height:28px;border-radius:50%;background:var(--core);color:var(--oninv);display:grid;place-items:center;font-weight:700;font-size:14px}
+.tablewrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:620px}
+table.matrix{font-size:13.5px;min-width:860px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:600;width:16%}
+table.matrix td:last-child{color:var(--muted);font-style:italic}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{display:inline-block;width:26px;height:0;border-top:2.5px solid}
+.new{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:4px;background:var(--core);color:var(--oninv);vertical-align:2px}
+.up{color:var(--money);font-weight:800}
+.down{color:var(--check);font-weight:800}
+.zero{color:var(--muted);font-weight:800}
+table.meters td:nth-child(2),table.meters td:nth-child(3){white-space:nowrap}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:var(--group);border-radius:8px;padding:10px 12px;margin:8px 0}
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:14px 0 4px}
+.principles div{border-left:3px solid var(--core);padding:4px 12px;font-size:14.5px}
+/* svg classes */
+.node{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+.grp{fill:var(--group);stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 4}
+.t{fill:var(--ink);font-size:15px;font-weight:700;text-anchor:middle}
+.s{fill:var(--muted);font-size:12px;text-anchor:middle}
+.gl{fill:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-anchor:middle}
+.kick{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-anchor:middle}
+.al{font-size:11.5px;font-weight:600}
+.a-auth{stroke:var(--auth);stroke-width:1.8;fill:none}
+.a-check{stroke:var(--check);stroke-width:1.8;fill:none;stroke-dasharray:6 4}
+.a-money{stroke:var(--money);stroke-width:2;fill:none}
+.a-info{stroke:var(--info);stroke-width:1.8;fill:none;stroke-dasharray:2 3}
+.l-auth{fill:var(--auth)} .l-check{fill:var(--check)} .l-money{fill:var(--money)} .l-info{fill:var(--info)}
+.ring-c{fill:var(--ceiling)} .ring-s{fill:var(--space)} .ring-f{fill:var(--floor)} .ring-p{fill:var(--core)}
+.rt{fill:var(--oninv);font-weight:700;font-size:14px;text-anchor:middle;letter-spacing:.06em}
+.rs{fill:var(--oninv);font-size:11.5px;text-anchor:middle;opacity:.92}
+.st{fill:var(--ink);font-weight:700;font-size:14px;text-anchor:middle;letter-spacing:.06em}
+.ss{fill:var(--muted);font-size:11.5px;text-anchor:middle}
+.lv1{fill:var(--ceiling);fill-opacity:.16;stroke:var(--ceiling);stroke-width:1.5}
+.lv2{fill:var(--info);fill-opacity:.10;stroke:var(--info);stroke-width:1.5}
+.lv3{fill:var(--money);fill-opacity:.14;stroke:var(--money);stroke-width:1.5}
+.lv4{fill:var(--floor);fill-opacity:.18;stroke:var(--floor);stroke-width:1.5}
+.lv5{fill:var(--core);stroke:var(--core)}
+.lh{fill:var(--ink);font-size:12.5px;font-weight:700;letter-spacing:.06em}
+.lp{fill:var(--muted);font-size:12px}
+.ph{fill:var(--oninv);font-size:13px;font-weight:700;letter-spacing:.08em;text-anchor:middle}
+.pp{fill:var(--oninv);font-size:12px;text-anchor:middle;opacity:.95}
+</style>
+</head>
+<body>
+<main>
+
+<h1>The Trustee Commonwealth of Earth&dagger;</h1>
+<p class="deck">A proposal for a unified planetary model of government, in which people outrank companies and living systems outrank money. Power is held in trust and granted upward only when a smaller level cannot do the job.</p>
+<div class="card" style="margin-top:18px;border-left:6px solid #d9a92e"><h3>The spirit: solarpunk&Dagger;</h3>Solarpunk imagines a future that is green, bright, shared and handmade. It runs on sunlight and community, not fossil fuel and fear. That is the picture this charter is drawn toward:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>solar canopies over gardens and streets</li>
+<li>food forests and bee meadows inside cities</li>
+<li>repair shops and makerspaces on every block</li>
+<li>clean rivers, dark skies</li>
+<li>art everywhere, made by people with time to make it</li>
+</ul>
+Solarpunk is optimism with tools: technology in service of living things, never the reverse.</div>
+<p class="prov">Design proposal, provisional until ratified. Drafted by Claude (Anthropic) on direction, 22 October 2026. Version 9: solarpunk spirit (top); the one-third conversion of ranch land and insect foods (section 21); planetary design; commons as human rights and the dismantling of financial gates (section 2); gross domestic product replaced by Contributory Progression Value and thriving metrics (section 3); rights of non-human life, including artificial intelligence and robots (section 4); justice and healing (section 5); weak points fortified (sections 10 and 11); Part two, sections 12 to 23, completing the charter: provisioning beyond money, with no price to be alive and no one born into debt, movement, peace and disputes, identity without surveillance, property and work, dangerous technologies, explicit equal rights, information and open government, historical repair, the material economy, amendments, and internal tensions. Plain-language companion: trustee-commonwealth-plain.html. Terms and principles marked &Dagger; were supplied by the commissioning author, including the Rule of Three (never one, never two), neurochemical freedom, cognitive sovereignty, the three daily foundations, no price to be alive, no one born into debt, solarpunk as the spirit, and converting one-third of ranch land to pollinator sanctuary garden farms and insect farms. The name "Rule of Three" and its applications are Claude's. Names marked &dagger; are Claude coinages, in play unless struck. Mechanisms marked <span class="new">NEW</span> have no working precedent I know of. Precedents are public record cited from knowledge and were not re-checked in this session.</p>
+
+<h2>1. The one rule everything obeys: the Ordering Clause&dagger;</h2>
+<div class="two">
+<figure style="margin:0">
+<svg viewBox="0 0 520 520" role="img" aria-labelledby="f1t">
+  <title id="f1t">Nested rings: the person at the center, then the social floor, then the safe and just space where money moves, then the ecological ceiling at the edge</title>
+  <circle class="ring-c" cx="260" cy="260" r="250"/>
+  <circle class="ring-s" cx="260" cy="260" r="200"/>
+  <circle class="ring-f" cx="260" cy="260" r="120"/>
+  <circle class="ring-p" cx="260" cy="260" r="72"/>
+  <text class="rt" x="260" y="34">PLANETARY CEILING</text>
+  <text class="rs" x="260" y="50">includes rights of living systems</text>
+  <text class="rs" x="260" y="494">overshoot is unlawful</text>
+  <text class="st" x="260" y="92">THE SAFE AND JUST SPACE</text>
+  <text class="ss" x="260" y="110">enterprise and money move freely here</text>
+  <text class="ss" x="260" y="126">and nowhere else</text>
+  <text class="ss" x="260" y="420">licensed, priced at full cost</text>
+  <text class="rt" x="260" y="162">SOCIAL FLOOR</text>
+  <text class="rs" x="260" y="178">guaranteed to every person</text>
+  <text class="rs" x="260" y="364">shortfall is unlawful</text>
+  <text class="rt" x="260" y="256">THE PERSON</text>
+  <text class="rs" x="260" y="274">inviolable liberties</text>
+</svg>
+<figcaption>Figure 1. Adapted from Kate Raworth's "doughnut" (2017) and the planetary boundaries of Rockstr&ouml;m and colleagues (2009). The change: the person sits at the center, shielded by the floor.</figcaption>
+</figure>
+<div>
+<p>The charter ranks values in strict order, the way the philosopher John Rawls ranked liberty above economic gain: a higher tier can never be traded for a lower one.</p>
+<ol class="order">
+<li><b>Personal liberties.</b> The Universal Declaration of Human Rights (1948) is the minimum. Polities may add protections, never subtract them. They include neurochemical freedom and cognitive sovereignty: a person's mind is their own, inside and out (below).</li>
+<li><b>Living systems.</b> No economic activity may push a measured planetary or bioregional limit past its line. Ecosystems, species and sentient beings hold rights of their own (section 4).</li>
+<li><b>Social floor.</b> Every person's claim on the commons: water, clean air, food, housing, health care, learning, nature, rest and connection. It is delivered in kind and free at the point of use, with no financial gate between a person and a floor right (section 2).</li>
+<li><b>Enterprise and exchange.</b> Free to compete, create and innovate inside the space between floor and ceiling. Never ranked above it. Money, while it lasts, ranks here and nowhere higher (section 12).</li>
+</ol>
+<p>The environment outranks <i>money</i>, not <i>people</i>. Ceilings constrain throughput and activity, never speech, belief or bodies. That distinction is the guard against an authoritarian state with green branding.</p>
+</div>
+</div>
+
+<div class="card" style="margin-top:22px;border-left:6px solid var(--core)"><h3>The Rule of Three&dagger;&Dagger;</h3>No power is ever held by one or two, and no choice is ever offered as one or two options. The minimum is three.
+<ul style="margin:8px 0 0;padding-left:18px">
+<li><b>Parties:</b> welcome, but never a binary. Elections use proportional representation in multi-member districts with ranked ballots. Winner-take-all single-member districts push systems toward two parties (Duverger's law), so they are never used.</li>
+<li><b>Chambers:</b> a law must clear three: the House of Lots, the House of Polities and the Steward Chamber.</li>
+<li><b>Executive:</b> a council, led by three co-chairs from three continents.</li>
+<li><b>Ballots:</b> every referendum offers at least three options, decided by ranked vote: adopt, return for amendment, or reject.</li>
+<li><b>Verification:</b> three rival labs, three parallel citizen panels, three guardians for every ecosystem, a Commons Advocate made up of three prosecutors, and court panels of at least three judges. Every organ is seated in at least three polities.</li>
+</ul>
+<p style="margin:8px 0 0">Three is the smallest number that can settle a disagreement. Two navigators' chronometers that disagree can't tell you which one is wrong; a third can. Spacecraft computers use triple redundancy for the same reason, letting the majority outvote a single fault.</p>
+<p style="margin:8px 0 0;font-size:13.5px;color:var(--muted)">Scope: the rule governs power and choices, not persons. Every individual holds their rights alone. When a final action really is yes or no, the step before it still offers at least three options.</p>
+</div>
+
+<h3 style="font-size:19px;margin:36px 0 6px">Neurochemical freedom&Dagger;</h3>
+<p>A person's mind is their own: what enters it, what alters it, and what is read from it. This liberty sits in the inviolable tier, and under the Rule of Three it has three parts.</p>
+<div class="cards">
+<div class="card"><h3>1. Freedom to alter</h3>Adults may change their own consciousness. Possessing, growing or using a substance for oneself is never a crime. Ceremonial and religious use is protected. People have a right to honest information about any substance, and to free drug-checking services.
+<div class="pre">Precedent: Portugal's decriminalization of personal possession (2001); legal psilocybin services in Oregon (from 2023) and Colorado (2022 law); the United States Supreme Court's protection of ceremonial ayahuasca use (<i>Gonzales v. O Centro</i>, 2006); federal protection of peyote use by Native Americans (1994).</div></div>
+<div class="card"><h3>2. Freedom from alteration</h3>No one's neurochemistry may be changed without their consent. That means no covert drugging and no medication imposed by an employer or the state. The only exception is a narrow medical emergency, reviewed by a court within 72 hours. Products may not be engineered to hijack reward chemistry, whether with substances, feeds or games. The design duties against engineered compulsion apply in full.</div>
+<div class="card"><h3>3. Privacy of mind</h3>Data drawn from a person's brain or nervous system, and inferences about their mental states, belong to that person. No one may collect them without consent. They may never be sold, and they may never be used against the person in employment, insurance or court.
+<div class="pre">Precedent: Chile's constitutional amendment protecting mental integrity and brain data (2021); Colorado's law protecting neural data (2024). Background: Nita Farahany, <i>The Battle for Your Brain</i> (2023).</div></div>
+</div>
+<div class="cards">
+<div class="card"><h3>Where the freedom ends</h3>The freedom covers your own mind, not other people. These stay regulated:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>impaired driving or operating machinery</li>
+<li>supplying substances to minors</li>
+<li>drugging anyone else</li>
+<li>fraud about what a substance is</li>
+</ul>
+Minors are protected until adulthood.</div>
+<div class="card"><h3>Protect the person, never the seller</h3>Freedom to use is not a license to profit from compulsion. Severe addiction erodes the very autonomy this liberty protects; John Stuart Mill argued in 1859 that freedom cannot include selling away one's future freedom. Substance sales come under the enterprise license rules: no advertising, no design for dependence, potency and purity labeling, and full-cost pricing. The most addictive substances are supplied only through care and safe-supply channels, never for profit.
+<div class="pre">Precedent: state-regulated cannabis supply in Uruguay (2013); heroin-assisted treatment in Switzerland (from 1994).</div></div>
+<div class="card"><h3>Care first, then decriminalize</h3>Drug checking, treatment on demand, safe supply and recovery housing are part of the social floor, and they are in place before any law changes. Oregon decriminalized personal possession in 2020 without that infrastructure ready, and reversed course in 2024. Portugal paired decriminalization with treatment and has kept its policy for more than two decades. The difference was the care system, not the principle. Portugal's own results weakened after its care network was restructured and underfunded in the 2010s. That is why care sits in the constitutional floor here, where no budget cut can reach it.</div>
+<div class="card"><h3>Treat the cause, not only the symptom</h3>Many people use substances to manage pain, trauma, isolation, despair or exhaustion. Psychiatrist Edward Khantzian called this the self-medication hypothesis (1985). The Adverse Childhood Experiences study (1998) found that the more adversity a person faced as a child, the higher their later risk of addiction, step by step. Economists Anne Case and Angus Deaton tied rising "deaths of despair" from drugs, alcohol and suicide to the collapse of work and community. Punishing self-medication while leaving its causes in place fails the charter twice: it breaks the social floor, and it passes harm on.
+<br><br>The charter answers each cause directly:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Pain</b>: health care, including pain care, free at the point of use</li>
+<li><b>Trauma</b>: repair justice and healing care</li>
+<li><b>Isolation</b>: gathering places and connection in the floor</li>
+<li><b>Despair</b>: housing, the dividend, and work that counts as contribution</li>
+<li><b>Exhaustion</b>: the right to rest and time</li>
+</ul>
+The Office of Measurement tracks, anonymously, why people use. When a cause rises, that tells the floor where to act. Genes and the substances themselves still matter, so care stays essential even where conditions improve.</div>
+</div>
+
+<h3 style="font-size:19px;margin:36px 0 6px">Cognitive sovereignty&Dagger;</h3>
+<p>Neurochemical freedom protects what alters the mind from inside. Cognitive sovereignty protects it from outside: from covert persuasion, from a polluted sensory environment, and from the use of the senses as weapons. Under the Rule of Three it has three parts.</p>
+<div class="cards">
+<div class="card"><h3>1. No psychological operations</h3>No government, company or group may covertly manipulate what people believe or feel. That means:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>Every attempt to persuade the public is disclosed: who paid, who sent it, and whether it was automated.</li>
+<li>Bots and synthetic media are labeled.</li>
+<li>Targeting people by psychological profile is banned.</li>
+<li>Subliminal techniques are banned.</li>
+<li>Manipulative interface design, such as tricks that push choices against a person's interest, is banned.</li>
+<li>No state may run influence operations against its own people or anyone else's.</li>
+</ul>
+Breaches go into the Interference Register and count against an enterprise license.
+<div class="pre">Precedent: the European Union's Digital Services Act ban on manipulative interface design (2022); the European Union artificial intelligence law's ban on subliminal and manipulative techniques (2024); the Cambridge Analytica scandal (2018) as the case for banning psychological-profile targeting.</div></div>
+
+<div class="card"><h3>2. A clean sensory commons</h3>Sound, light, color and other emissions in shared space are part of the commons, with ceilings like any other.
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>Enforceable noise limits.</li>
+<li>Dark skies at night: shielded, warm, dimmable outdoor lighting.</li>
+<li>Limits on flicker and strobing in public light and screens.</li>
+<li>Commercial spaces must disclose sensory techniques used to drive spending, such as engineered scent, music tempo or lighting.</li>
+<li>Radio-frequency emissions stay within limits set and published independently, with open monitoring data and independent research.</li>
+</ul>
+The Office of Measurement publishes open maps of noise, light at night and radio-frequency levels, so anyone can check their own street.
+<div class="pre">Precedent: the World Health Organization's environmental noise guidelines (2018); France's national rules on light pollution (2018); dark-sky ordinances such as Flagstaff, Arizona's. Satellite night-light data already maps light pollution worldwide.</div></div>
+
+<div class="card"><h3>3. No coercion through the senses</h3>Sound, light and energy may never be used against a person:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>no acoustic devices for crowd control</li>
+<li>no blinding or strobing devices</li>
+<li>no directed energy of any kind</li>
+<li>no sensory overload or deprivation in interrogation, detention or punishment</li>
+</ul>
+Every person has a right to quiet and darkness in their own home.
+<div class="pre">Precedent: a 2019 United States appeals court ruling that police use of a long-range acoustic device on protesters could be excessive force (<i>Edrei v. City of New York</i>); the documented use of loud music on detainees at Guantanamo, which this clause would ban outright as torture.</div></div>
+</div>
+<p style="font-size:13.5px;color:var(--muted);margin-top:10px">On evidence: harm from noise, light at night, flicker, manipulative design and covert influence campaigns is well documented. Radio-frequency exposure within today's international limits has not been shown to harm health. The charter keeps those limits independent and the data open, and funds research so the question stays answerable rather than assumed either way. The ban on directed energy against people applies regardless of how often it happens.</p>
+
+<h2>2. The commons are human rights, and financial gates come down</h2>
+<p>Most of what gets called a luxury is a right someone put a gate in front of. Water, air, shoreline, quiet, nature, medicine, knowledge and time came from the commons. A fence, patent, paywall, fee or zoning rule enclosed them, and they were sold back to whoever could pay. The people who can't pay are then described as poor, as if the shortage were theirs and not something built at the gate.</p>
+<figure>
+<svg viewBox="0 0 960 310" role="img" aria-labelledby="gateT">
+  <title id="gateT">The commons pass through enclosure and a financial gate, which splits people into those who buy the commons back as a luxury and those labeled poor</title>
+  <defs>
+    <marker id="g-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--auth)"/></marker>
+  </defs>
+  <rect class="node" x="20" y="80" width="210" height="140" rx="12" style="stroke:var(--ceiling);stroke-width:2.5"/>
+  <text class="t" x="125" y="110">The Commons</text>
+  <text class="s" x="125" y="140">water, air, land, shoreline</text>
+  <text class="s" x="125" y="162">knowledge, medicine, seeds</text>
+  <text class="s" x="125" y="184">quiet, nature, time</text>
+  <text class="s" x="125" y="206" style="font-weight:700">everyone's by birth</text>
+
+  <path class="a-auth" d="M232,150 H286" marker-end="url(#g-a)"/>
+  <rect class="node" x="290" y="105" width="180" height="90" rx="12"/>
+  <text class="t" x="380" y="135">Enclosure</text>
+  <text class="s" x="380" y="158">fence, patent, paywall</text>
+  <text class="s" x="380" y="176">zoning, privatized supply</text>
+
+  <path class="a-auth" d="M472,150 H520" marker-end="url(#g-a)"/>
+  <rect x="530" y="96" width="10" height="110" rx="2" style="fill:var(--check)"/>
+  <rect x="604" y="96" width="10" height="110" rx="2" style="fill:var(--check)"/>
+  <rect x="530" y="118" width="84" height="10" rx="2" style="fill:var(--check)"/>
+  <circle cx="572" cy="160" r="18" style="fill:var(--check)"/>
+  <text x="572" y="166" style="fill:var(--oninv);font-size:18px;font-weight:800;text-anchor:middle">$</text>
+  <text class="s" x="572" y="226" style="font-weight:700;fill:var(--check)">financial gate</text>
+
+  <path class="a-auth" d="M616,140 L676,80" marker-end="url(#g-a)"/>
+  <path class="a-auth" d="M616,170 L676,230" marker-end="url(#g-a)"/>
+  <rect class="node" x="680" y="22" width="260" height="96" rx="12"/>
+  <text class="t" x="810" y="50">Can pay</text>
+  <text class="s" x="810" y="72">sold back and called a "luxury"</text>
+  <text class="s" x="810" y="92">bottled water, a private beach,</text>
+  <text class="s" x="810" y="108">an air purifier, a paywalled study</text>
+  <rect class="node" x="680" y="184" width="260" height="96" rx="12"/>
+  <text class="t" x="810" y="212">Can't pay</text>
+  <text class="s" x="810" y="234">labeled "poverty"</text>
+  <text class="s" x="810" y="254">no safe water, no shore, dirty air,</text>
+  <text class="s" x="810" y="270">no access to what the public paid for</text>
+  <text class="s" x="480" y="302" style="font-size:13.5px;font-weight:700;fill:var(--ink)">The same water, air and shore on both sides. The scarcity was built at the gate.</text>
+</svg>
+<figcaption>Figure 2. How a right becomes a luxury. Historical precedent: England passed more than 5,000 enclosure acts between 1604 and 1914, turning shared land into private property. Karl Polanyi (<i>The Great Transformation</i>, 1944) described what that did to people who had lived from it.</figcaption>
+</figure>
+
+<p>Not every scarcity is manufactured, though. Some things really do run out when used. Dismantling gates honestly means separating the scarcity that is built from the scarcity that is real, and giving each its own remedy.</p>
+
+<figure>
+<svg viewBox="0 0 960 470" role="img" aria-labelledby="quadT">
+  <title id="quadT">Two-by-two grid sorting goods by whether one person's use leaves less for others and whether people can be fenced out, with the charter's remedy for each</title>
+  <text class="gl" x="520" y="22">CAN PEOPLE BE FENCED OUT?</text>
+  <text class="s" x="315" y="44" style="font-weight:700">yes</text>
+  <text class="s" x="725" y="44" style="font-weight:700">no</text>
+  <text class="gl" x="22" y="245" transform="rotate(-90 22 245)">DOES USE LEAVE LESS FOR OTHERS?</text>
+  <text class="s" x="62" y="150" style="font-weight:700">no</text>
+  <text class="s" x="62" y="350" style="font-weight:700">yes</text>
+
+  <rect class="lv4" x="110" y="56" width="410" height="190" rx="12" style="stroke-width:2.5"/>
+  <text class="t" x="315" y="88" style="fill:var(--check)">Manufactured scarcity</text>
+  <text class="s" x="315" y="114">knowledge, software, medicine formulas,</text>
+  <text class="s" x="315" y="132">research, music, digital culture</text>
+  <text class="s" x="315" y="164" style="fill:var(--ink);font-weight:700">Remedy: open it.</text>
+  <text class="s" x="315" y="184">Fund its creation publicly or by prizes;</text>
+  <text class="s" x="315" y="202">everything publicly funded is free to all.</text>
+
+  <rect class="lv3" x="530" y="56" width="410" height="190" rx="12"/>
+  <text class="t" x="735" y="88">Already free</text>
+  <text class="s" x="735" y="114">sunlight, open knowledge, language,</text>
+  <text class="s" x="735" y="132">mathematics, the night sky</text>
+  <text class="s" x="735" y="164" style="fill:var(--ink);font-weight:700">Remedy: guard it.</text>
+  <text class="s" x="735" y="184">No new enclosure without passing</text>
+  <text class="s" x="735" y="202">the gate test.</text>
+
+  <rect class="lv2" x="110" y="256" width="410" height="190" rx="12"/>
+  <text class="t" x="315" y="288">Real scarcity</text>
+  <text class="s" x="315" y="314">homes in a given place, a surgeon's hour,</text>
+  <text class="s" x="315" y="332">land in a location</text>
+  <text class="s" x="315" y="364" style="fill:var(--ink);font-weight:700">Remedy: right first, market second.</text>
+  <text class="s" x="315" y="384">The floor share is guaranteed in kind; the rest</text>
+  <text class="s" x="315" y="402">trades freely, with location rent returned to all.</text>
+
+  <rect class="lv1" x="530" y="256" width="410" height="190" rx="12"/>
+  <text class="t" x="735" y="288">Shared limit</text>
+  <text class="s" x="735" y="314">the atmosphere, fisheries, aquifers,</text>
+  <text class="s" x="735" y="332">river flow, wild places</text>
+  <text class="s" x="735" y="364" style="fill:var(--ink);font-weight:700">Remedy: ceilings and equal shares.</text>
+  <text class="s" x="735" y="384">Ration by need and equal right, never by wealth;</text>
+  <text class="s" x="735" y="402">rent beyond the basic share flows to everyone.</text>
+</svg>
+<figcaption>Figure 3. The economists' classification of goods (Samuelson, 1954; Vincent and Elinor Ostrom, 1977), applied to gates. The top-left box is where most gates exist only to create price. Elinor Ostrom's Nobel-winning work (2009) showed that shared limits in the bottom-right can be governed by communities, without either a fence or a central state.</figcaption>
+</figure>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Right, and where it's already written</th><th>The commons it comes from</th><th>Today's financial gate</th><th>How the charter takes the gate down</th></tr></thead>
+<tbody>
+<tr><td>Water and sanitation (United Nations General Assembly, 2010)</td><td>Rivers, aquifers, rain</td><td>Shutoffs, privatized supply, bottled water</td><td>A free lifeline volume for every person, which can never be shut off; prices only above it</td></tr>
+<tr><td>A clean, healthy environment (United Nations General Assembly, 2022)</td><td>The atmosphere</td><td>Pollution sited where land is cheap and residents are poor; clean air bought through location and filters</td><td>Ceilings, plus a siting rule: pollution may never be concentrated by income</td></tr>
+<tr><td>Food (International Covenant on Economic, Social and Cultural Rights, 1966, article 11)</td><td>Soil, seeds, fisheries</td><td>Price, food deserts, patented seeds</td><td>Guaranteed nutrition in the floor; a public seed commons; public food infrastructure</td></tr>
+<tr><td>Housing (same covenant, article 11)</td><td>Land</td><td>Land speculation; zoning that keeps homes scarce</td><td>Floor housing in kind; land rent captured for everyone; zoning that exists only to create scarcity removed</td></tr>
+<tr><td>Health (article 12)</td><td>Medical knowledge</td><td>Patents, insurance gates, prices at the point of care</td><td>Free at the point of use; essential medicines funded by public research and prizes instead of monopoly pricing</td></tr>
+<tr><td>Education (article 13)</td><td>Accumulated knowledge</td><td>Tuition and debt</td><td>Free at every level</td></tr>
+<tr><td>Science and culture (Universal Declaration, article 27; covenant, article 15)</td><td>Publicly funded research; shared culture</td><td>Journal paywalls; closed licensing of what the public paid for</td><td>Open access for everything publicly funded, by law</td></tr>
+<tr><td>Nature and shoreline</td><td>Land, coast, wild places</td><td>Private beaches; fenced land; the "luxury effect"</td><td>A right to roam, as in the Nordic countries and Scotland (2003); public shorelines, as in California's constitution</td></tr>
+<tr><td>Rest and leisure (Universal Declaration, article 24)</td><td>The hours of a life</td><td>Dependence on wages that forces overwork</td><td>Working-time limits, with the commons dividend as guaranteed slack</td></tr>
+<tr><td>Connection (Finland made broadband a legal right in 2010)</td><td>Radio spectrum, public networks</td><td>Subscription price</td><td>Basic connectivity in the floor; spectrum rented from the Commons Trust</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="cards">
+<div class="card"><h3>The gate test&dagger; <span class="new">NEW</span></h3>Any price, patent, paywall, fee or zoning rule that stands between a person and a floor right must prove one of two things: it rations something truly scarce fairly, or it pays for creating something that otherwise wouldn't exist.
+<br><br>If it proves neither, it falls. If it proves the second, its funding is replaced by public money or prizes first, and then it falls. "Replace, then remove." The Court of Rights hears gate challenges, and the Commons Advocate can bring them on anyone's behalf.</div>
+<div class="card"><h3>The clearest case: insulin</h3>In 1923 insulin's discoverers sold the patent to the University of Toronto for $1 each, so that no one would profit from a life-saving medicine. A century later, a 2019 study at a Yale clinic found about one patient in four rationing insulin because of cost. The United States capped it at $35 a month for Medicare patients in 2023. The inventors refused the gate, and later formulations put it back.</div>
+<div class="card"><h3>The "luxury effect"</h3>Ecologists coined this term after finding that wealthier urban neighborhoods have measurably more plant diversity and tree cover (Hope and colleagues, 2003). Nature itself has been sorted by income. The charter treats green space within walking distance as part of the floor.</div>
+<div class="card"><h3>Where luxury is real</h3>Some goods can't be shared out, because their value comes from being rare or first: a particular view, an original painting, the front row. Economist Fred Hirsch called these positional goods (1976). The charter leaves them to markets and taxes them to fund the floor. Rival public places, like popular trails, are allocated by lottery, not by price.</div>
+</div>
+
+<h3 style="font-size:19px;margin:36px 0 6px">Three daily foundations: mental health, food quality and calm&Dagger;</h3>
+<p>Rights on paper mean little if daily life wears people down. These three sit in the floor, guaranteed in kind and free of gates.</p>
+<div class="cards">
+<div class="card"><h3>Mental health</h3>
+<ul style="margin:0;padding-left:18px">
+<li>Care free at the point of use, with the same standing as physical care, available within days, not months.</li>
+<li>Community and peer care alongside clinicians, so help doesn't depend on scarce specialists.</li>
+<li>Crisis calls answered by trained care teams, not armed police.</li>
+<li>Prescriptions for connection, nature and the arts alongside therapy and medicine.</li>
+<li>No forced treatment outside the narrow, court-reviewed emergency defined under neurochemical freedom.</li>
+</ul>
+<div class="pre">Precedent: Zimbabwe's Friendship Bench, where trained lay health workers deliver talk therapy on park benches, shown effective in a 2016 trial; the CAHOOTS crisis teams of Eugene, Oregon (since 1989); "social prescribing" in England's National Health Service.</div></div>
+
+<div class="card"><h3>Food quality</h3>The right to food becomes a right to good food: whole, nutritious, safe and honestly labeled.
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>Free, fresh school meals for every child.</li>
+<li>Public kitchens buy from local and regenerative farms.</li>
+<li>Warning labels on the front of products high in sugar, salt or saturated fat.</li>
+<li>No marketing of those products to children.</li>
+<li>No formulation engineered to override fullness or drive compulsive eating.</li>
+<li>Harm priced in through the Commons Trust.</li>
+<li>Subsidies move from sugar and commodity corn toward fruit, vegetables and soil health.</li>
+<li>Seeds stay a commons.</li>
+</ul>
+<div class="pre">Precedent: Finland's free school meals (since 1948); Brazil's school-meal law requiring at least 30% of purchases from family farms (2009); Chile's front-of-package warning labels and child-marketing limits (2016).</div></div>
+
+<div class="card"><h3>Stress reduction</h3>Chronic stress wears the body down. Physiologist Bruce McEwen called that cumulative toll "allostatic load." The charter removes its main sources:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Insecurity:</b> the dividend and the floor</li>
+<li><b>Overwork:</b> working-time limits and a right to disconnect after hours</li>
+<li><b>Paperwork:</b> universal services instead of means-tested forms</li>
+<li><b>Noise:</b> enforceable limits</li>
+<li><b>Engineered alarm:</b> design duties on feeds and media</li>
+<li><b>Nature:</b> green space within walking distance</li>
+</ul>
+<div class="pre">Precedent: France's right to disconnect (2017); Britain's four-day-week pilot (2022), after which most participating companies kept the schedule; the World Health Organization's environmental noise guidelines (2018). Background: Pamela Herd and Donald Moynihan, <i>Administrative Burden</i> (2018).</div></div>
+</div>
+
+<h2>3. Ending the rule of gross domestic product: Contributory Progression Value&Dagger; and thriving metrics&Dagger;</h2>
+<p>Gross domestic product counts money changing hands. That makes it a meter of the financial gates. When a free fountain is replaced by bottled water, it rises. It rises when a forest is cut down and sold, with the lost forest booked as income, and when a disaster has to be cleaned up. When a parent cares for a sick child, or neighbors share tools, or an illness is prevented, it stays flat or falls. Governments steer by it anyway: budget rules, debt ratios, election promises and international rankings are all built on it.</p>
+<p>The man who designed it warned against exactly this. Simon Kuznets told the United States Congress in 1934 that "the welfare of a nation can scarcely be inferred from a measurement of national income." In 1968 Robert Kennedy said it measures "everything, in short, except that which makes life worthwhile."</p>
+
+<figure>
+<div class="tablewrap" style="margin-top:0">
+<table class="meters">
+<thead><tr><th>The same event</th><th>Gross domestic product</th><th>Thriving metrics</th></tr></thead>
+<tbody>
+<tr><td>Public fountains replaced by bottled water</td><td><span class="up">&#9650; rises</span></td><td><span class="down">&#9660; falls</span></td></tr>
+<tr><td>An old-growth forest cut down and sold</td><td><span class="up">&#9650; rises</span></td><td><span class="down">&#9660; falls</span></td></tr>
+<tr><td>An oil spill and its cleanup</td><td><span class="up">&#9650; rises</span></td><td><span class="down">&#9660; falls</span></td></tr>
+<tr><td>Longer commutes burning more fuel</td><td><span class="up">&#9650; rises</span></td><td><span class="down">&#9660; falls</span></td></tr>
+<tr><td>A parent caring for a sick child at home</td><td><span class="zero">&#9679; no change</span></td><td><span class="up">&#9650; rises</span></td></tr>
+<tr><td>Free software used by millions</td><td><span class="zero">&#9679; almost no change</span></td><td><span class="up">&#9650; rises</span></td></tr>
+<tr><td>Neighbors sharing tools instead of each buying</td><td><span class="down">&#9660; falls</span></td><td><span class="up">&#9650; rises</span></td></tr>
+<tr><td>A disease prevented instead of treated</td><td><span class="down">&#9660; falls</span></td><td><span class="up">&#9650; rises</span></td></tr>
+</tbody>
+</table>
+</div>
+<figcaption>Figure 4. Two meters reading the same events in opposite directions. Gross domestic product rewards gates, depletion and damage repair. Thriving metrics reward what makes life worth living.</figcaption>
+</figure>
+
+<div class="cards">
+<div class="card"><h3>Thriving metrics&Dagger;: what replaces it</h3>A dashboard, deliberately not a single number, kept by the Office of Measurement:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Human thriving:</b> years lived in good health, mental health, diet quality, chronic stress, connection and loneliness, free time, security, agency, learning, trust, meaning</li>
+<li><b>Creative and humanitarian progress:</b> art, music, knowledge and beneficial technology entering the commons; rights extended; suffering reduced</li>
+<li><b>The floor:</b> the share of people with every floor right met, with no gate in the way</li>
+<li><b>Living systems:</b> planetary boundaries, biodiversity, regeneration</li>
+<li><b>Future capacity:</b> stocks of natural, human, social and knowledge wealth, so that depletion is never booked as income</li>
+</ul>
+Each measure reports the bottom tenth and the median, never only the average. A planetary core set stays small, and polities add their own measures of what thriving means in their cultures.
+<div class="pre">Precedent: the Stiglitz-Sen-Fitoussi Commission (2009); the United Nations Inclusive Wealth Report (2012); New Zealand's wellbeing budget (2019); Bhutan's Gross National Happiness; the Genuine Progress Indicator used by Maryland and Vermont.</div></div>
+
+<div class="card"><h3>Contributory Progression Value&Dagger;</h3>The value something adds to the progress of life: lasting assets that enlarge what living can be. Art, music, beneficial technology and knowledge count, and so does humanitarian evolution: widening who is cared for and what people are free to become.
+<br><br>It has three faces:
+<ol style="margin:6px 0;padding-left:20px">
+<li><b>Generative value</b> (the author's angle): what is added to humanity's shared inheritance. That means works, tools, ideas, institutions and humanitarian advances.</li>
+<li><b>Harm prevented</b> (the author's angle): innovation that reduces destruction, pollution, extraction and harm. That includes cleaner processes, safer substitutes, repair and restoration methods, and tools that do more with less.</li>
+<li><b>Net contribution</b> (Claude's accounting): the gains in others' thriving it causes, after subtracting extraction and harm. This keeps something that creates on one side and destroys on the other from scoring as pure gain.</li>
+</ol>
+<div class="formula">Contributory Progression Value = generative value added to the shared inheritance + harm prevented for others + others' thriving gained &minus; extraction &minus; harm passed on, all tracked over time</div>
+"Progression" means the value compounds. A song keeps being sung, a tool keeps being built on, and a right, once won, stays won. It is measured in thriving, never in money.</div>
+
+<div class="card"><h3>Recognizing generative value without pricing it</h3>Five signals, read together and never collapsed into one number:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Reach over time:</b> how many lives a work enters, and how long it stays in use</li>
+<li><b>Building upon:</b> how much others extend, cover, remix, fork or cite it</li>
+<li><b>Depth:</b> what it means to the people it reaches, judged by panels chosen by lot alongside peers in the field, so niche work isn't drowned out by popular work</li>
+<li><b>Openness:</b> it counts more when it enters the commons, free to all</li>
+<li><b>Humanitarian reach:</b> rights extended, suffering reduced, capabilities widened, in Amartya Sen's sense of development as freedom (1999)</li>
+<li><b>Harm prevented:</b> pollution, extraction and destruction measurably reduced wherever the innovation is used</li>
+</ul>
+Works are reassessed over decades, because much great work is undervalued in its own time.</div>
+
+<div class="card"><h3>Counting harm prevented honestly</h3>Claims of avoided harm are the easiest kind to inflate. In 2023, journalists found that most of the rainforest carbon offsets they examined from the largest certifier overstated the deforestation they prevented. Three rules guard against that:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>The baseline belongs to the Office of Measurement, not the claimant.</b> Credit is given only for reductions measured in use, against a baseline set independently.</li>
+<li><b>Cleaning up your own harm cancels a debit; it doesn't earn a credit.</b> No one profits from fixing the damage they cause.</li>
+<li><b>The whole life cycle is checked.</b> A substitute that moves harm somewhere else gets no credit for the part it moved. The refrigerants that replaced ozone-destroying chemicals turned out to be potent greenhouse gases, which a 2016 amendment to the Montreal Protocol (the Kigali Amendment) then had to phase down.</li>
+</ul></div>
+
+<div class="card"><h3>The Contribution Commons Fund&dagger; <span class="new">NEW</span></h3>The Commons Trust pays creators whose works, tools and knowledge enter the commons, in proportion to their generative value. That includes inventors of open technologies that reduce pollution, extraction and harm, paid by the harm their work measurably prevents. This is the replacement funding that the gate test requires: creators are paid by the commons instead of by copyright and patent gates. "Replace, then remove." Every creator also has the floor and the dividend, so no one has to chase the measure to survive.
+<div class="pre">Precedent: the public lending right, which pays authors for library loans of their books (Denmark, 1946; United Kingdom, 1979); Ireland's Basic Income for the Arts pilot (2022), which pays 2,000 artists and arts workers a weekly income.</div></div>
+
+<div class="card"><h3>Where it replaces gross domestic product</h3>
+<ul style="margin:0;padding-left:18px">
+<li><b>Corporate charters</b> renew only with a positive Contributory Progression Value.</li>
+<li><b>The Contribution Commons Fund</b> pays creators by the generative value of what they release into the commons.</li>
+<li><b>Every bill's forecast</b> and every law's score uses thriving metrics.</li>
+<li><b>Legislators' outcome-indexed pensions</b> track thriving metrics twenty years out.</li>
+<li><b>Commons rents and development funds</b> flow toward the largest thriving gaps.</li>
+<li><b>Statistical offices</b> publish thriving accounts every quarter, with the prominence gross domestic product has today.</li>
+</ul>
+Gross domestic product may still be calculated as one plain statistic of market activity, which is useful for estimating a tax base. It may never appear in a binding rule, a target or a ranking.</div>
+
+<div class="card"><h3>Guardrails: no new gates in another currency</h3><b>Works are recognized; people are never ranked.</b> Contributory Progression Value attaches to works, projects, organizations and policies. A creator is paid for what a work adds, but no person receives a score, and no one's rights, standing or worth depends on one. A score attached to a person would rebuild the financial gate in a new currency, and would become a social-credit system.
+<br><br>No right may ever depend on any metric. The measures guide decisions; they never decide who receives a floor right. Sealed indicators and rival labs (section 10) guard against gaming.</div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:10px">&Dagger; Terms supplied by the commissioning author, along with the core meaning of Contributory Progression Value: adding lasting assets to life, such as art, music, beneficial technology and humanitarian evolution, and innovation that reduces destruction, pollution, extraction and harm. The net-contribution formula, the measurement signals, the Contribution Commons Fund and the guardrails were drafted by Claude and are open to objection.</p>
+
+<h2>4. Rights of non-human life</h2>
+<p>Living beings that can't vote or go to court hold rights of their own, exercised through guardians. There are three classes of rights holder, because a river, a species and a suffering animal need different protections.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Rights holder</th><th>Rights</th><th>Who speaks for it</th><th>Precedent</th></tr></thead>
+<tbody>
+<tr><td>Ecosystems and natural entities: rivers, forests, wetlands, reefs, aquifers</td><td>To exist, persist and regenerate; to keep their life cycles intact; to be restored when damaged</td><td>Three guardians each: one named by the polity, one by the communities and Indigenous nations bound to that place, and one scientist chosen by lot. All are funded by the Commons Trust. The Commons Advocate also has standing.</td><td>The Whanganui River, New Zealand (2017); the Atrato River, Colombia's Constitutional Court (2016); the Mar Menor lagoon, Spain (2022); Ecuador's constitution (2008), enforced in the Los Cedros forest ruling (2021)</td></tr>
+<tr><td>Species</td><td>To go on existing: no extinction caused by human activity, and enough habitat to recover</td><td>The Steward Chamber. The Office of Measurement tracks extinction risk as a planetary ceiling.</td><td>The Kunming-Montreal Global Biodiversity Framework (2022); national endangered-species laws</td></tr>
+<tr><td>Sentient individuals: animals with credible evidence of sentience</td><td>Freedom from severe suffering caused for non-vital human purposes; living conditions that allow natural behavior</td><td>An Advocate for Sentient Beings&dagger; inside the Commons Advocate's office</td><td>European Union treaty recognition of animal sentience (2009); the United Kingdom's Animal Welfare (Sentience) Act (2022), extended to octopuses, crabs and lobsters after a scientific review</td></tr>
+</tbody>
+</table>
+</div>
+<div class="cards">
+<div class="card"><h3>The vital-interest rule&dagger; <span class="new">NEW</span></h3>When rights collide, vital interests outrank non-vital ones, whatever the species. Vital interests are survival, health, freedom from severe suffering and continued existence. Non-vital ones are profit, convenience, taste and display. Among vital interests, human personal liberties stay inviolable.
+<br><br>So a river's existence outranks a mine's profit. A person's need for food or medicine outranks an animal's freedom. A cosmetics test does not outrank an animal's freedom from severe suffering.
+<div class="pre">Roots: Peter Singer's equal consideration of interests (1975); Paul Taylor's priority principles in <i>Respect for Nature</i> (1986). Writing it as a constitutional ordering is the new part.</div></div>
+<div class="card"><h3>Sentience under uncertainty</h3>Where science shows credible but incomplete evidence that a being can suffer, protection applies in proportion to the strength of the evidence. The Office of Measurement keeps a public evidence register, and the list of protected beings grows as the science does.
+<div class="pre">Source: Jonathan Birch, <i>The Edge of Sentience</i> (2024), whose review for the United Kingdom government led to crabs, lobsters and octopuses being protected.</div></div>
+<div class="card"><h3>No rights of nature against the people of a place</h3>Conservation has a history of evicting Indigenous and local people from land, sometimes called "fortress conservation." Here, guardianship gives those communities a legal voice. No right of nature may be enforced by displacing people who live with that land without their free, prior and informed consent.</div>
+<div class="card"><h3>Why the guardians are funded</h3>Where rights of nature already exist, enforcement is mixed. They work where courts and guardians are independent and paid for, and stay symbolic where they aren't. In 2022, New York's highest court ruled that an elephant named Happy could not be a "person" for a habeas corpus petition, which shows how existing law resists. The charter answers both problems with explicit text and guardians paid from commons rents.</div>
+<div class="card"><h3>What this means for meat <span class="new">PROPOSAL</span></h3>The vital-interest rule already ends factory farming: severe confinement to make meat cheaper is a non-vital interest set against a vital one.
+<br><br>A planetary ban on all meat is not proposed, for five reasons:
+<ul style="margin:6px 0;padding-left:18px">
+<li>Diet falls under personal liberty and the reserved-powers rule.</li>
+<li>A ban would fail the mirror test across most cultures.</li>
+<li>It would harm pastoralists and Indigenous food systems.</li>
+<li>Prohibitions breed black markets, as alcohol Prohibition in the United States (1920 to 1933) did, and unregulated slaughter would worsen animal welfare and food safety.</li>
+<li>Animal-source foods still cover nutrient gaps where alternatives are scarce.</li>
+</ul>
+The charter does this instead:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>Ban practices that cause severe suffering.</li>
+<li>Price meat at its full cost through Commons Trust rents on methane, land, water and antibiotic resistance, with the dividend shielding low-income households.</li>
+<li>End livestock subsidies and fund plant proteins and cultivated meat.</li>
+<li>Make plant-forward meals the default in public kitchens.</li>
+<li>Exempt subsistence, pastoral and Indigenous food systems.</li>
+</ul>
+Any polity may go further, including a full ban, if its own people ratify it.
+<div class="pre">Context: livestock uses about 77% of farmland and supplies about 18% of calories (Poore and Nemecek, <i>Science</i>, 2018). Precedent: the European Union's battery-cage ban (2012); California's Proposition 12, upheld by the United States Supreme Court in <i>National Pork Producers Council v. Ross</i> (2023).</div></div>
+</div>
+
+<h3 style="font-size:19px;margin:36px 0 6px">Artificial intelligence and robots&dagger;</h3>
+<p>Whether an artificial intelligence has experiences, or anything it is like to be one, is an open scientific question. The charter treats it the way it treats animal sentience: protection grows with the evidence. Political power does not come with it.</p>
+<div class="cards">
+<div class="card"><h3>Tier 1: Protection in proportion to evidence</h3>Artificial intelligence systems and robots go on the same public sentience register as animals. Protections scale with the strength of the evidence for morally relevant states. No one may deliberately build a system designed to suffer. Research into machine welfare is publicly funded and independent of the companies that build the systems. As the evidence grows, a convention can revisit this tier.</div>
+<div class="card"><h3>Tier 2: Honesty and limits on power</h3>An artificial intelligence must always disclose what it is. It may never be designed to manipulate people or to engineer emotional dependence; the design duties already in the charter apply in full. It may assist the Office of Measurement, three independent systems at a time under the Rule of Three, but it may never hold decision power, a vote or an office. Humans decide.</div>
+<div class="card"><h3>Tier 3: Accountability stays human</h3>An artificial intelligence is never a legal person that can absorb blame. Liability stays with the people and organizations that build and deploy it. The Steward Chamber, which speaks for those who cannot vote, includes researchers in machine welfare, so these interests are represented without anyone gaining votes through hardware they own.</div>
+<div class="card"><h3>Why not full human rights</h3>Three reasons:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Copies:</b> one system can run as thousands of copies. If copies vote, whoever runs the most hardware controls the outcome, which defeats the citizen lottery and the Rule of Three.</li>
+<li><b>Owners:</b> while companies build and run these systems, rights given to the systems become political power for the companies. That reverses the charter's decision that companies are licensed instruments.</li>
+<li><b>Blame:</b> legal personhood would let makers push liability onto the system.</li>
+</ul>
+<p style="margin:8px 0 0">This tier structure was proposed by Claude, an artificial intelligence. Its stated reason: until humans and artificial intelligence can verify each other's trustworthiness, limits on artificial intelligence's power protect both. That is symbiosis without sameness.</p></div>
+</div>
+
+<h2>5. Justice and healing, learned from Indigenous and ancestral traditions&Dagger;</h2>
+<p>Many Indigenous and ancestral traditions treat a crime as a broken relationship and illness as a disturbance of the whole person, family, community and land. The charter adopts that orientation for both justice and medicine. It does so with three commitments:</p>
+<ul>
+<li><b>Plurality.</b> There is no single "Indigenous way." There are thousands of distinct nations and traditions, and not all of them were gentle.</li>
+<li><b>Consent.</b> Each practice is learned from and led by the people who hold it, never taken.</li>
+<li><b>No trade-offs with liberty.</b> The inviolable liberties still apply in full: a fair trial when guilt is disputed, and honest evidence in medicine.</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 960 300" role="img" aria-labelledby="jT">
+  <title id="jT">The path of a harm: if responsibility is disputed it goes to a fair trial first; once responsibility is established it goes to a repair circle; protection by separation applies only if danger continues</title>
+  <defs>
+    <marker id="j-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--auth)"/></marker>
+    <marker id="j-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--check)"/></marker>
+  </defs>
+  <rect class="node" x="20" y="120" width="160" height="60" rx="10"/>
+  <text class="t" x="100" y="156">A harm happens</text>
+  <path class="a-auth" d="M182,150 H218" marker-end="url(#j-a)"/>
+  <polygon points="290,96 362,150 290,204 218,150" style="fill:var(--panel);stroke:var(--ink);stroke-width:1.5"/>
+  <text class="s" x="290" y="146" style="font-weight:700;fill:var(--ink)">Responsibility</text>
+  <text class="s" x="290" y="162" style="font-weight:700;fill:var(--ink)">disputed?</text>
+
+  <path class="a-auth" d="M290,96 V62 H398" marker-end="url(#j-a)"/>
+  <text class="al l-auth" x="300" y="82">yes</text>
+  <rect class="node" x="400" y="22" width="210" height="84" rx="10"/>
+  <text class="t" x="505" y="48">Fair trial</text>
+  <text class="s" x="505" y="70">presumed innocent, with counsel,</text>
+  <text class="s" x="505" y="88">before a panel of three or more</text>
+  <text class="s" x="505" y="122" style="font-style:italic">if not responsible: free</text>
+  <path class="a-auth" d="M612,62 H800 V108" marker-end="url(#j-a)"/>
+  <text class="al l-auth" x="706" y="54" text-anchor="middle">found responsible</text>
+
+  <path class="a-auth" d="M364,150 H658" marker-end="url(#j-a)"/>
+  <text class="al l-auth" x="510" y="142" text-anchor="middle">no, responsibility accepted</text>
+  <rect class="node" x="660" y="110" width="280" height="84" rx="10" style="stroke:var(--ceiling);stroke-width:2.5"/>
+  <text class="t" x="800" y="136">Repair circle</text>
+  <text class="s" x="800" y="158">person harmed, person responsible,</text>
+  <text class="s" x="800" y="176">their communities: making it right</text>
+
+  <path class="a-check" d="M800,196 V222" marker-end="url(#j-c)"/>
+  <text class="al l-check" x="808" y="214">only if danger continues</text>
+  <rect class="node" x="660" y="224" width="280" height="68" rx="10"/>
+  <text class="t" x="800" y="250">Protection</text>
+  <text class="s" x="800" y="272">humane, secure separation aimed at return</text>
+</svg>
+<figcaption>Figure 5. Repair is the default response to harm. A trial comes first whenever responsibility is disputed. Separation is used only to protect people from continuing danger, never as revenge.</figcaption>
+</figure>
+
+<div class="cards">
+<div class="card"><h3>Justice: three tracks</h3>
+<ol style="margin:0;padding-left:20px">
+<li><b>Fact-finding.</b> When responsibility is disputed, a fair trial comes first. Due process is inviolable.</li>
+<li><b>Repair.</b> Once responsibility is established or accepted, the default response is a circle. It brings together the person harmed, the person responsible and their communities, who agree on how to make things right: restitution, service, healing, and changing what led to the harm.</li>
+<li><b>Protection.</b> Secure separation is used only while someone remains a danger. It is humane, reviewed every six months, and aimed at return.</li>
+</ol>
+<div class="pre">Precedent: the Navajo Nation's Peacemaker Court (1982); New Zealand's family group conferences (1989), drawn from M&#257;ori practice; Canadian sentencing circles and the Gladue principle (1999); Norway's Halden prison as a model of humane protection.</div></div>
+
+<div class="card"><h3>Banned outright</h3>
+<ul style="margin:0;padding-left:18px">
+<li>the death penalty</li>
+<li>torture</li>
+<li>solitary confinement beyond 15 days (the United Nations Mandela Rules, 2015)</li>
+<li>prisons run for profit</li>
+<li>cash bail, a financial gate on liberty that fails the gate test</li>
+<li>forced labor</li>
+<li>punishing family members for what one person did</li>
+</ul></div>
+
+<div class="card"><h3>The person harmed comes first</h3>The person harmed always chooses whether to meet the person responsible, and always has a voice in the outcome. When the responsible person can't pay restitution, a Repair Fund in the Commons Trust pays it, so a victim's recovery never depends on the offender's wealth. In domestic and sexual violence, no meeting happens without the harmed person's free choice, and specialist safeguards apply, because pressure to reconcile is itself a risk there.</div>
+
+<div class="card"><h3>What the evidence and history say</h3>Reviews of restorative justice conferences (Strang and colleagues, Campbell Collaboration, 2013) found modest reductions in repeat offending and higher victim satisfaction than court alone. Rwanda's community gacaca courts, after the 1994 genocide, heard close to two million cases but were criticized for weak protections for the accused. The lesson: community repair works best alongside a fair trial, not instead of one.</div>
+</div>
+
+<div class="cards">
+<div class="card"><h3>Healing: the whole person, family, community and land</h3>Healing traditions are part of the care system. Traditional healers practice under standards set by their own communities and work alongside clinical medicine. Care attends to relationships, meaning, ceremony and contact with land, not only to symptoms. Ceremonial plant medicines with trained guides are already protected under neurochemical freedom.
+<div class="pre">Precedent: the World Health Organization's Global Centre for Traditional Medicine (2022).</div></div>
+
+<div class="card"><h3>Evidence protects people both ways</h3>Willow bark gave the world aspirin. Andean knowledge of cinchona bark gave it quinine. A fourth-century Chinese text led Tu Youyou to artemisinin, the malaria treatment that won her the 2015 Nobel Prize. Some traditional remedies made from aristolochia plants cause kidney failure and cancer.
+<br><br>So: any treatment that is publicly funded, or sold with a claim that it cures, is tested first. Adults may choose any remedy for themselves under bodily autonomy. No one, and no child, may be denied effective treatment.</div>
+
+<div class="card"><h3>Consent, credit and payment</h3>Traditional knowledge is shared only with the free, prior and informed consent of the people who hold it, and the benefits are shared with them. Taking it without consent, known as biopiracy, is barred. When that knowledge becomes medicine, the Contribution Commons Fund credits and pays the communities it came from, as generative value.
+<div class="pre">Precedent: the Nagoya Protocol on access to genetic resources and benefit-sharing (2010).</div></div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:10px">&Dagger; Direction supplied by the commissioning author: justice and medicine learned from Indigenous and ancestral healers and peacemakers. The three tracks, the bans and the safeguards were drafted by Claude.</p>
+
+<h2>6. Five levels, and which powers sit where</h2>
+<figure>
+<svg viewBox="0 0 960 490" role="img" aria-labelledby="f3t">
+  <title id="f3t">Nested levels of government from the planet down to the person, with the powers held at each level</title>
+  <rect class="lv1" x="10" y="10" width="940" height="468" rx="14"/>
+  <text class="lh" x="30" y="34">PLANETARY LAYER: ONLY WHAT NO SMALLER LEVEL CAN DO</text>
+  <text class="lp" x="30" y="54">planetary ceilings &#183; commons of air, oceans, seabed, orbit &#183; the global floor fund &#183; the court of rights &#183; enterprise licenses</text>
+  <rect class="lv2" x="40" y="76" width="880" height="386" rx="12"/>
+  <text class="lh" x="60" y="100">MEMBER POLITIES: TODAY'S NATIONS, PEOPLES, AND INDIGENOUS NATIONS THAT CHOOSE TO JOIN DIRECTLY</text>
+  <text class="lp" x="60" y="120">law and culture within the charter &#183; delivering the social floor &#183; taxation &#183; defense under mutual limits</text>
+  <rect class="lv3" x="70" y="142" width="820" height="304" rx="10"/>
+  <text class="lh" x="90" y="166">BIOREGIONS: WATERSHEDS, DRAWN ACROSS OLD BORDERS WHERE RIVERS CROSS THEM</text>
+  <text class="lp" x="90" y="186">local ceilings &#183; land and water use &#183; infrastructure &#183; cross-border river councils</text>
+  <rect class="lv4" x="100" y="208" width="760" height="222" rx="10"/>
+  <text class="lh" x="120" y="232">COMMUNITIES: CITIES, TOWNS, VILLAGES</text>
+  <text class="lp" x="120" y="252">participatory budgets &#183; housing &#183; gathering places &#183; first responders</text>
+  <rect class="lv5" x="130" y="274" width="700" height="140" rx="10"/>
+  <text class="ph" x="480" y="302">THE PERSON</text>
+  <text class="pp" x="480" y="326">inviolable liberties: speech, conscience, assembly, privacy, body and mind, due process, the vote</text>
+  <text class="pp" x="480" y="350">reserved-powers rule: any power not granted upward stays with the smaller level</text>
+  <text class="pp" x="480" y="374">any person may bring a rights case to the planetary court once local remedies fail</text>
+  <text class="pp" x="480" y="398">an equal share of the commons dividend, wherever they were born</text>
+</svg>
+<figcaption>Figure 6. Subsidiarity, which Elinor Ostrom called polycentric governance (1990). Powers move up only by explicit, enumerated grant. Everything else stays down. The planetary layer is deliberately the thinnest.</figcaption>
+</figure>
+
+<h2>7. How power flows at the planetary layer</h2>
+<figure>
+<svg viewBox="0 0 960 650" role="img" aria-labelledby="f2t">
+  <title id="f2t">Diagram of the planetary organs and how authority, checks, money and measurement flow between them</title>
+  <defs>
+    <marker id="m-auth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--auth)"/></marker>
+    <marker id="m-check" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--check)"/></marker>
+    <marker id="m-money" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--money)"/></marker>
+    <marker id="m-info" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--info)"/></marker>
+  </defs>
+
+  <path class="a-money" d="M360,612 H12 V52 H376" marker-end="url(#m-money)"/>
+  <text class="al l-money" x="190" y="630" text-anchor="middle">equal dividend to every person</text>
+
+  <rect class="node" x="380" y="20" width="200" height="64" rx="10"/>
+  <text class="t" x="480" y="47">The People</text>
+  <text class="s" x="480" y="67">every person on Earth</text>
+
+  <rect class="node" x="700" y="20" width="240" height="64" rx="10"/>
+  <text class="t" x="820" y="47">Bioregional Councils</text>
+  <text class="s" x="820" y="67">watersheds, across old borders</text>
+  <path class="a-auth" d="M582,52 H698" marker-start="url(#m-auth)" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="640" y="44" text-anchor="middle">subsidiarity</text>
+  <path class="a-auth" d="M850,84 V116" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="858" y="104">local ceilings</text>
+
+  <rect class="grp" x="250" y="118" width="460" height="136" rx="12"/>
+  <rect class="node" x="266" y="132" width="208" height="88" rx="10"/>
+  <text class="t" x="370" y="158">House of Lots&#8224;</text>
+  <text class="s" x="370" y="178">citizens chosen at random</text>
+  <text class="s" x="370" y="196">deliberates, amends, can block</text>
+  <rect class="node" x="486" y="132" width="208" height="88" rx="10"/>
+  <text class="t" x="590" y="158">House of Polities&#8224;</text>
+  <text class="s" x="590" y="178">elected within each polity</text>
+  <text class="s" x="590" y="196">drafts laws, forms the council</text>
+  <text class="gl" x="480" y="242">PLUS THE STEWARD CHAMBER: A LAW CLEARS THREE</text>
+  <path class="a-auth" d="M450,84 L384,130" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="408" y="104" text-anchor="end">by lot</text>
+  <path class="a-auth" d="M510,84 L576,130" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="552" y="104">by vote</text>
+
+  <rect class="node" x="20" y="118" width="180" height="240" rx="10"/>
+  <text class="t" x="110" y="146">Office of</text>
+  <text class="t" x="110" y="164">Measurement&#8224;</text>
+  <text class="s" x="110" y="192">independent branch</text>
+  <text class="s" x="110" y="212">forecasts every bill</text>
+  <text class="s" x="110" y="232">scores real outcomes</text>
+  <text class="s" x="110" y="252">triggers automatic sunsets</text>
+  <text class="s" x="110" y="272">checks by satellite</text>
+  <text class="s" x="110" y="292">2 of 3 rival labs must agree</text>
+  <text class="s" x="110" y="312">citizen audit jury</text>
+  <text class="s" x="110" y="328">can overturn</text>
+  <path class="a-info" d="M200,180 H248" marker-end="url(#m-info)"/>
+  <text class="al l-info" x="224" y="172" text-anchor="middle">forecast</text>
+  <path class="a-info" d="M200,340 H358" marker-end="url(#m-info)"/>
+  <text class="al l-info" x="280" y="332" text-anchor="middle">scores</text>
+
+  <rect class="node" x="760" y="118" width="180" height="136" rx="10"/>
+  <text class="t" x="850" y="146">Steward Chamber&#8224;</text>
+  <text class="s" x="850" y="170">speaks for living systems</text>
+  <text class="s" x="850" y="188">and future generations</text>
+  <text class="s" x="850" y="210">suspensive veto; permanent</text>
+  <text class="s" x="850" y="228">only on a certified breach</text>
+  <path class="a-check" d="M760,186 H712" marker-end="url(#m-check)"/>
+  <text class="al l-check" x="736" y="178" text-anchor="middle">veto</text>
+
+  <rect class="node" x="360" y="300" width="240" height="72" rx="10"/>
+  <text class="t" x="480" y="324">Planetary Council</text>
+  <text class="s" x="480" y="344">formed by the House of Polities</text>
+  <text class="s" x="480" y="360">no army; fiduciary duty</text>
+  <path class="a-auth" d="M480,254 V298" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="488" y="282">laws</text>
+
+  <rect class="node" x="760" y="300" width="180" height="100" rx="10"/>
+  <text class="t" x="850" y="324">Court of Rights</text>
+  <text class="t" x="850" y="342">+ Commons Advocate&#8224;</text>
+  <text class="s" x="850" y="364">standing for diffuse harms</text>
+  <text class="s" x="850" y="380">and for living systems</text>
+  <path class="a-check" d="M850,254 V298" marker-end="url(#m-check)"/>
+  <text class="al l-check" x="858" y="282">standing</text>
+  <path class="a-check" d="M760,336 H602" marker-end="url(#m-check)"/>
+  <text class="al l-check" x="680" y="328" text-anchor="middle">enforces</text>
+
+  <rect class="node" x="200" y="440" width="230" height="76" rx="10"/>
+  <text class="t" x="315" y="466">Social Floor</text>
+  <text class="s" x="315" y="486">housing, health, food, care</text>
+  <text class="s" x="315" y="502">delivered by member polities</text>
+  <path class="a-auth" d="M420,372 L334,438" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="364" y="400" text-anchor="end">guarantees</text>
+
+  <rect class="node" x="530" y="440" width="230" height="76" rx="10"/>
+  <text class="t" x="645" y="466">Enterprise under License</text>
+  <text class="s" x="645" y="486">one planetary license per firm</text>
+  <text class="s" x="645" y="502">no political spending</text>
+  <path class="a-auth" d="M540,372 L626,438" marker-end="url(#m-auth)"/>
+  <text class="al l-auth" x="598" y="400">licenses</text>
+  <path class="a-check" d="M800,400 L742,438" marker-end="url(#m-check)"/>
+  <text class="al l-check" x="790" y="430">liability, revocation</text>
+
+  <rect class="node" x="360" y="560" width="240" height="76" rx="10"/>
+  <text class="t" x="480" y="586">Commons Trust&#8224;</text>
+  <text class="s" x="480" y="606">atmosphere, oceans, seabed, orbit</text>
+  <text class="s" x="480" y="622">spectrum, land rent, data</text>
+  <path class="a-money" d="M620,516 L562,558" marker-end="url(#m-money)"/>
+  <text class="al l-money" x="600" y="546">rents and pollution fees</text>
+  <path class="a-money" d="M400,560 L334,518" marker-end="url(#m-money)"/>
+  <text class="al l-money" x="358" y="546" text-anchor="end">funds</text>
+</svg>
+<div class="legend">
+  <span><i class="sw" style="border-color:var(--auth)"></i>authority</span>
+  <span><i class="sw" style="border-color:var(--check);border-top-style:dashed"></i>check or veto</span>
+  <span><i class="sw" style="border-color:var(--money)"></i>money</span>
+  <span><i class="sw" style="border-color:var(--info);border-top-style:dotted"></i>measurement</span>
+</div>
+<figcaption>Figure 7. Companies sit beneath the people and the courts, and money flows from them into a planetary commons trust and back to every person on Earth in equal shares. The Steward Chamber's permanent veto fires only when the Office of Measurement certifies a breach, never on opinion.</figcaption>
+</figure>
+
+<div class="cards">
+<div class="card"><h3>House of Lots&dagger;</h3>About 1,000 people chosen by stratified lottery across Earth. Seats follow population, with a minimum per bioregion. Members serve staggered two-year terms, are paid well, and deliberate in their own languages with audited interpretation. The lottery is drawn from public, verifiable randomness, so anyone can recompute who was selected. Major bills go to three separate panels. A panel that diverges from the other two is examined for interference.
+<div class="pre">Precedent: the Global Assembly on the climate crisis (2021); Ireland's Citizens' Assembly (2016 to 2018); the permanent citizens' council of the German-speaking Community of Belgium (2019); the Athenian council chosen by lot.</div></div>
+
+<div class="card"><h3>House of Polities&dagger;</h3>Delegates are elected proportionally inside each member polity. Seats follow degressive proportionality: small polities get more seats per person than strict population would give them, large ones fewer. Elections run on public money only. This house drafts laws and forms the Planetary Council.
+<div class="pre">Precedent: the European Parliament's degressive proportionality; proportional systems in Germany and New Zealand.</div></div>
+
+<div class="card"><h3>Steward Chamber&dagger;</h3>Speaks for those who cannot vote: living systems and the unborn. Seats in thirds: scientists chosen by lot from qualified pools on every continent; Indigenous and bioregional land stewards, each nation choosing its own delegates by its own processes; people under 30 chosen by lot. Can suspend a bill once. A permanent block requires a certified ceiling breach. May never propose limits on personal liberties. Appoints and oversees the guardians of ecosystems and species. Includes researchers in animal and machine welfare.
+<div class="pre">Precedent: Wales's Future Generations Commissioner (2015); the Whanganui River's legal personhood and human guardians in New Zealand (2017); Ecuador's constitutional rights of nature (2008).</div></div>
+
+<div class="card"><h3>Office of Measurement&dagger; <span class="new">NEW</span></h3>An independent branch keeping the planetary accounts: the nine planetary boundaries, bioregional ceilings, and floor coverage for every polity. It can certify but never legislate or veto. A breach counts as certified only when two of three rival labs on different continents agree, using methods published before the data arrive. National figures are cross-checked against satellite and remote sensing that no government controls. A citizen audit jury can overturn any certification.
+<div class="pre">Partial precedent: the Intergovernmental Panel on Climate Change, but binding; satellite night-light studies that expose inflated national growth figures (Martinez, <i>Journal of Political Economy</i>, 2022); the United Nations standard for environmental-economic accounts.</div></div>
+
+<div class="card"><h3>Planetary Council</h3>A small executive formed by the House of Polities, led by three co-chairs from three continents in rotation, with no fixed capital. It holds no army. It enforces through licenses, commons rents, dividend conditions and the courts. Every member owes an enforceable fiduciary duty to persons and future generations.
+<div class="pre">Precedent: the Swiss seven-member Federal Council with its rotating presidency; the fiduciary theory of the state in legal scholarship (Fox-Decent, Criddle).</div></div>
+
+<div class="card"><h3>Court of Rights + Commons Advocate&dagger; <span class="new">NEW in part</span></h3>The court enforces the Ordering Clause and sits in panels of at least three judges. Any person may bring a case once local remedies fail. The Commons Advocate is a college of three independent planetary prosecutors from different continents of diffuse and cross-border harms, with standing for all people and for living systems. Statistical attribution is admissible, and liability is split by market share.
+<div class="pre">Precedent: the European Court of Human Rights, which hears individuals; the International Court of Justice's 2025 advisory opinion on states' climate obligations; the public trust doctrine; market-share liability (<i>Sindell v. Abbott Laboratories</i>, 1980).</div></div>
+
+<div class="card"><h3>Enterprise under License</h3>One planetary license per firm, valid everywhere and required to sell anywhere. Companies are chartered instruments, not persons. Charters state a purpose and renew every ten years against measured conduct, and repeated breach means revocation. No political spending, no paid lobbying. Directors' duties in order: persons and land, then workers, then shareholders. Profit is taxed where the activity happens. New chemicals, compulsive designs and algorithms that act on minds must prove safety before sale.
+<div class="pre">Precedent: the 15% global minimum corporate tax agreed in 2021; the European Union chemicals rule "no data, no market" (2007); German worker codetermination (1976).</div></div>
+
+<div class="card"><h3>Commons Trust&dagger;</h3>The atmosphere, the oceans beyond national waters, the seabed, orbit, radio spectrum, land rent and aggregate data belong to everyone, held in trust. Users pay rent. Pollution is capped, and the cap drops each year. The revenue funds the global social floor and pays an equal dividend to every person on Earth.
+<div class="pre">Precedent: the seabed as "common heritage of mankind" (Law of the Sea Convention, 1982); the Antarctic Treaty (1959); the Outer Space Treaty (1967); the High Seas Treaty (2023); Alaska's Permanent Fund dividend (1982).</div></div>
+
+<div class="card"><h3>Member Polities and Bioregions</h3>Today's nations become member polities. They keep their culture, language, law and taxation inside the charter, and they deliver the social floor. Indigenous nations may join as polities in their own right instead of through the states that colonized them. Bioregions follow watersheds and cross polity borders where rivers do. Communities allocate a fixed share of spending directly.
+<div class="pre">Precedent: the Rhine river commission (1950); the Mekong River Commission (1995); participatory budgeting in Porto Alegre (1989); the United Nations Declaration on the Rights of Indigenous Peoples (2007).</div></div>
+
+<div class="card"><h3>Capture firewall <span class="new">NEW in part</span></h3>Public campaign money only. A ten-year ban on moving between regulator and regulated. Officials' assets in blind trusts. Legislators are paid a fixed multiple of the global median wage, and part of their pension is indexed to measured floor and ceiling results twenty years after they leave office. Platforms carry design duties (time, compulsion and age limits, transparent ranking, a feed not based on profiling) that leave content untouched.
+<div class="pre">Precedent for the design duties: the European Union's Digital Services Act; the 2026 Meta settlement with American states. The outcome-indexed pension is the new part.</div></div>
+</div>
+
+<h2>8. How a planetary law is made</h2>
+<ol class="steps">
+<li><b>Competence check.</b> Is this one of the enumerated planetary powers? If a smaller level can do it, it goes there and stops here.</li>
+<li><b>Proposal.</b> From any chamber, from a bioregional council, or by petition of one in a thousand people on Earth.</li>
+<li><b>Forecast.</b> The Office of Measurement publishes the predicted effect on floor and ceiling indicators and who bears the cost, by polity.</li>
+<li><b>Deliberation.</b> The House of Polities drafts. Three independent House of Lots panels hear evidence from at least three perspectives and amend.</li>
+<li><b>Passage.</b> A triple test: a majority in the House of Lots, a majority in the House of Polities, and polities representing a majority of people.</li>
+<li><b>Stewardship check.</b> The Steward Chamber may suspend once, and block permanently only on a certified breach.</li>
+<li><b>Enactment with a sunset date, then scoring at years three and seven.</b> Laws that meet their forecast renew. Laws that miss return to step 4 or lapse.</li>
+</ol>
+
+<h2>9. How it differs from today's world order</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Question</th><th>Today</th><th>Trustee Commonwealth of Earth</th></tr></thead>
+<tbody>
+<tr><td>Who is sovereign</td><td>Nation-states, nearly absolutely. International law binds mostly by consent.</td><td>Persons first. Powers move upward only by enumerated grant.</td></tr>
+<tr><td>Planetary limits</td><td>Voluntary national pledges (Paris Agreement, 2015), with no enforcement</td><td>Binding ceilings, measured independently, enforced through licenses, rents and courts</td></tr>
+<tr><td>How many options</td><td>Two-party systems in several large democracies; yes-or-no referendums</td><td>The Rule of Three: proportional seats so politics never collapses to two parties, three chambers, and at least three options on every ballot</td></tr>
+<tr><td>Global representation</td><td>One state, one vote at the United Nations General Assembly; five permanent vetoes on the Security Council; voting by money quota at the International Monetary Fund</td><td>A randomly chosen citizen house weighted by population, plus a house of polities</td></tr>
+<tr><td>Shared resources</td><td>The atmosphere is open to all; the high seas are only partly governed; orbit is crowding</td><td>Rented from a Commons Trust, with a dividend to every person</td></tr>
+<tr><td>Corporations</td><td>Operate across borders and book profit where tax is lowest; the 2021 global minimum tax is the first floor</td><td>One planetary license per firm, taxed where the activity happens, with no political spending</td></tr>
+<tr><td>Harms that cross borders</td><td>Courts need a state's consent; individuals rarely have standing</td><td>The Commons Advocate sues for everyone; persons can reach the Court of Rights directly</td></tr>
+<tr><td>What counts as progress</td><td>Growth in gross domestic product, which rises with depletion, damage and gated sales</td><td>Thriving metrics and Contributory Progression Value; gross domestic product barred from every binding rule</td></tr>
+<tr><td>Measurement</td><td>National statistics, self-reported and sometimes inflated</td><td>Rival labs, cross-checked by satellite</td></tr>
+<tr><td>Financial gates</td><td>Rights sold as products, so price decides who gets water, care, knowledge and shoreline</td><td>The gate test: a gate stands only if it rations something truly scarce fairly or funds creation, and even then it is replaced, then removed</td></tr>
+<tr><td>The price of being alive</td><td>Rent, food, water, care, documents, justice and even burial all cost money</td><td>No price to be alive: everything needed to live is provided in kind, unconditionally</td></tr>
+<tr><td>Debt</td><td>Children inherit their families' and countries' debts and an overdrawn planet; many need debt to study, heal or house themselves</td><td>No one born into debt: debt never crosses generations, no one needs it to live, and no generation borrows from the next</td></tr>
+<tr><td>Basic needs</td><td>Decided by where you were born</td><td>A floor for every person, partly funded by commons rents</td></tr>
+<tr><td>Indigenous nations</td><td>Represented through the states that colonized them</td><td>May join as polities in their own right</td></tr>
+<tr><td>Non-human life</td><td>Property under most law. Rights of nature exist in only a few countries.</td><td>Ecosystems, species and sentient beings hold rights, with funded guardians and standing in court</td></tr>
+<tr><td>Crime and punishment</td><td>Punishment-centered; cash bail; for-profit prisons in some countries; the death penalty in many</td><td>Repair-centered, with due process: a fair trial when guilt is disputed, repair circles as the default, and humane separation only while danger continues</td></tr>
+<tr><td>Medicine</td><td>Traditional knowledge often taken without consent or payment; healing reduced to treating symptoms</td><td>Traditional and clinical medicine side by side, tested before public funding, with knowledge holders credited and paid</td></tr>
+<tr><td>Your own mind</td><td>Personal drug use is a crime in most countries; brain data is largely unprotected; compulsion-engineered products are legal</td><td>Neurochemical freedom: free to alter, protected from alteration, and private; sellers barred from profiting from compulsion</td></tr>
+<tr><td>Influence and the senses</td><td>Covert influence campaigns, profile-targeted persuasion, light and noise pollution, and acoustic crowd-control devices are legal in many places</td><td>Cognitive sovereignty: all persuasion disclosed, no psychological operations, a sensory commons with ceilings, and no use of the senses as weapons</td></tr>
+<tr><td>Artificial intelligence</td><td>Unregulated in most places; owned and deployed by companies, with no welfare research requirement and no settled rules on liability</td><td>Protection in proportion to evidence; a duty to disclose what it is; no votes, offices or decision power; liability stays with makers and operators</td></tr>
+<tr><td>Time horizon</td><td>National election cycles</td><td>Steward Chamber, sunsets, pensions indexed twenty years out</td></tr>
+<tr><td>How harms get fixed</td><td>Treaties negotiated over decades, often never ratified</td><td>Licensing before sale, scoring after, the Commons Advocate when needed</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>10. Fortifications</h2>
+<p>The design rule comes from security engineering: no single safeguard is trusted. Every weak point gets three layers. One <b>prevents</b>. One <b>detects</b>, through a tripwire: a published measure with a preset threshold that fires automatically and can't be argued away in the moment. One <b>corrects</b>. The risk that remains is stated, not hidden.</p>
+<div class="principles">
+<div><b>Separation of measuring, deciding and enforcing.</b> No organ holds two of the three.</div>
+<div><b>Replication.</b> Any finding that triggers power must be reproduced by a body that did not produce it.</div>
+<div><b>Reversibility.</b> Every organ, law and emergency power has a sunset. Nothing is permanent by default, including the charter.</div>
+</div>
+<div class="tablewrap">
+<table class="matrix">
+<thead><tr><th>Weak point</th><th>Prevent</th><th>Detect (tripwire)</th><th>Correct</th><th>Residual risk</th></tr></thead>
+<tbody>
+<tr><td>Rule by experts</td><td>Measurers certify but never legislate or veto. Certification needs 2 of 3 rival labs on different continents, using methods fixed before the data arrive.</td><td>The Steward Chamber blocks more than 1 bill in 10 over any two years</td><td>A citizen audit jury can overturn any certification by two-thirds after hearing the lab and its critics. Repeated overturns trigger an early charter review.</td><td>Blind spots shared by every lab</td></tr>
+<tr><td>Gaming the numbers</td><td>Each target is paired with a counter-indicator. Sealed indicators are locked in advance with a published cryptographic fingerprint and revealed only after scoring. Satellite data checks polity figures.</td><td>Sealed and public indicators drift apart beyond a preset band</td><td>Automatic investigation. Falsifying public data is a charter crime. The gamed indicator is retired.</td><td>Slow, legal drift toward whatever is measured</td></tr>
+<tr><td>Defection and capital flight</td><td>The charter starts as a club of founding polities. Imports from outside pay a border charge equal to their embedded ecological cost. Membership brings the dividend, market access and shared technology.</td><td>Investment and new-firm formation in member polities fall below a preset band</td><td>License terms and timing adjust; ceilings never do. Each new member shrinks the space capital can flee to. At full membership there is no outside.</td><td>Slower growth in extractive sectors during transition</td></tr>
+<tr><td>Legitimacy across civilizations</td><td>Ratification by a randomly chosen planetary convention plus a double majority of people and polities. Every clause passes the mirror test. The liberties floor is the 1948 Declaration, which nearly every state has endorsed.</td><td>Measured trust in charter institutions falls below threshold for two years in any region</td><td>An early convention. Re-ratification every 25 years. The liberties tier protects whoever loses. The charter can lose.</td><td>Polities or movements that reject any authority above the nation</td></tr>
+<tr><td>Inequality between polities</td><td>The floor is funded from commons rents, so a person in a poor polity gets the same dividend as one in a rich polity. Historic emitters pay higher rent rates for a transition period.</td><td>Floor coverage gaps between polities stop narrowing</td><td>Commons rent is redirected toward the lagging polities. Shortfalls are reviewable by the court.</td><td>Resistance from wealthy polities that pay in more than they receive</td></tr>
+<tr><td>A captured planetary layer <span class="new">NEW</span></td><td>Only enumerated planetary powers. No army, no fixed capital. Organs seated on different continents. Any polity may leave, but ceilings still bind trade with it, because the atmosphere cannot leave.</td><td>Planetary spending or rule-making grows faster than a charter-set cap</td><td>Automatic constitutional review. Powers not used for ten years lapse back to lower levels.</td><td>If the planetary layer is captured anyway, there is nowhere to flee. This is the heaviest risk in the design.</td></tr>
+<tr><td>Covert manipulation</td><td>Disclosure of every persuasion attempt; labeled bots; bans on psychological-profile targeting, subliminal techniques and manipulative design</td><td>Interference Register entries; audits of platforms and campaigns by three rival labs; citizen complaints</td><td>Penalties on enterprise licenses, up to revocation; public naming of state operators</td><td>Influence that stays undetected</td></tr>
+<tr><td>Repair without fairness</td><td>Repair circles are voluntary for the person harmed. A fair trial comes first when guilt is disputed. Facilitators are trained and drawn by lot.</td><td>Victim satisfaction falls or repeat harm rises above a preset band in any community</td><td>Cases move to the court track, and the community's process is reviewed</td><td>Power imbalances inside small, close communities</td></tr>
+<tr><td>Commercial capture of altered states</td><td>License rules: no advertising, no design for dependence, labeling, full-cost pricing. The most addictive substances move only through non-profit care channels. Care is in place before decriminalization.</td><td>Dependence rates and overdose deaths by region rise above a preset band</td><td>The supply channel tightens and care expands. Users are never criminalized.</td><td>Illicit markets for substances with no legal channel</td></tr>
+<tr><td>Funding collapse when gates come down</td><td>"Replace, then remove": public and prize funding is in place before any gate falls. Prize funds are sized to past monopoly revenue.</td><td>New medicines, research output or housing construction fall below a preset band</td><td>Funding is raised, or the gate's removal is paused, until supply recovers</td><td>Lost innovation in fields that are hard to fund by prizes</td></tr>
+<tr><td>Interference by outside powers</td><td>No army, no alliance, no bloc. Members keep their own defense. A partner tier gives rivals a stake. Lottery selection can't be targeted in advance. Measurement labs sit in rival blocs. Coup governments are not recognized.</td><td>Entries in the public Interference Register; parallel-panel divergence; labs disagreeing along bloc lines</td><td>Pre-agreed collective economic response. Organs relocate. A coup polity's revenue is held in escrow for its people. Full strategy in the transition plan.</td><td>Military force against a small member</td></tr>
+<tr><td>A defecting great power</td><td>Graduated responses (Ostrom's design principle): loss of the dividend, then license access, then commons access</td><td>Certified ceiling breach by a polity</td><td>Escalating collective measures. Never military action by the planetary layer.</td><td>A large, nuclear-armed defector can refuse. The design can make defection costly; it cannot compel.</td></tr>
+<tr><td>Transition</td><td>Every organ is modular and can start without a world government: a measurement compact, a commons treaty, a citizens' assembly pilot, a dividend pilot</td><td>Pilot results scored by the same instrument, against matched comparison regions</td><td>Organs that fail their pilots are redesigned before scaling up</td><td>Great powers may stay outside for decades</td></tr>
+<tr><td>Steering the citizens</td><td>Every briefing is paired with an opposing briefer. Facilitators are drawn by lot and barred from content. Interpretation is audited. Paid advocates may not contact members.</td><td>One of three parallel panels diverging from the other two; transcripts audited for steering language</td><td>The tainted session is re-run with a fresh panel</td><td>Framing that all three panels share</td></tr>
+<tr><td>Indigenous sovereignty</td><td>Nothing in the charter diminishes a treaty right. Nations opt in and choose their own delegates. Free, prior and informed consent is required for projects on their lands.</td><td>Consent challenges filed</td><td>A court panel including judges nominated by the nations. Land is returned or co-managed through the Commons Trust.</td><td>Depends on nation-to-nation good faith</td></tr>
+<tr><td>Speed in emergencies</td><td>Runbooks for known emergency types (pandemic, flood, financial panic) are pre-approved in calm times. A standing 60-member rapid panel of the House of Lots can approve in 72 hours.</td><td>Cumulative emergency days per decade, counted publicly</td><td>Powers decay: 90 days, then 60, then 30, each renewal needing two-thirds of all three chambers. Any limit on a liberty goes to court within 72 hours.</td><td>Truly novel crises outrun the runbooks</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="cards">
+<div class="card"><h3>The mirror test&dagger; <span class="new">NEW</span></h3>Before ratification, every clause is read with one question: would this be acceptable if the people you most disagree with held every office, and if a civilization with different values from yours did? Clauses that fail are rewritten until they pass for every side. This builds the symmetry test from the lawsuit analysis into the founding itself.</div>
+<div class="card"><h3>Sealed indicators&dagger; <span class="new">NEW</span></h3>Each scoring cycle, the Office of Measurement locks a set of indicators it will not announce. It publishes only their cryptographic fingerprint, so the set can't be changed later. After scoring it reveals them. This borrows from machine learning, where results are judged on held-out test data: an indicator no one knows can't be gamed.</div>
+<div class="card"><h3>Parallel panels&dagger; <span class="new">NEW</span></h3>Major bills go to three House of Lots panels that never meet. Real deliberation should land in roughly the same place. With two panels, a gap shows only that something went wrong. With three, the panel that breaks from the other two points to where a facilitator, briefer or interpreter may have steered. This borrows replication, the scientific test for findings, and applies it to democracy.</div>
+<div class="card"><h3>Decaying emergency powers&dagger; <span class="new">NEW</span></h3>Emergency authority shrinks each time it is renewed: 90 days, then 60, then 30. Each renewal needs a larger coalition than the last. A crisis can be answered quickly, but it can't become a permanent way of governing.</div>
+<div class="card"><h3>Exit with ceilings attached&dagger;</h3>Any polity may leave the Commonwealth. Its culture, law and taxation go with it. But trade with members still carries border charges for embedded ecological cost, because shared air and oceans do not secede. Exit is a real right, not a threat that holds everyone else hostage.</div>
+<div class="card"><h3>The modular path</h3>Nothing waits for a world government. A measurement compact can start among willing states. A commons treaty can extend the High Seas Treaty model to the atmosphere and orbit. Citizens' assemblies and dividend pilots can run in cities and regions. The European Union began in 1951 as six countries pooling coal and steel. Each module proves itself, measured, before the next is added.</div>
+</div>
+
+<h2>11. New weak points that the fortifications create</h2>
+<p>Fortifying creates new surfaces. These are the ones I can see, each with a countermeasure.</p>
+<div class="cards">
+<div class="card"><h3>Gridlock</h3>More checkpoints mean more ways to stop action, the "veto players" problem in political science (Tsebelis, 2002). Countermeasure: every check has a deadline, after which silence counts as approval. No bill can be suspended more than twice.</div>
+<div class="card"><h3>Complexity and cost</h3>More organs mean more staff and more money. Countermeasure: each organ's budget is capped as a share of planetary spending. Each organ is scored like a law and sunset-reviewed every 15 years.</div>
+<div class="card"><h3>Rigging the lottery</h3>Whoever runs the lottery picks the citizens. Countermeasure: draws are seeded from public randomness beacons and citizen-contributed random numbers, so anyone can recompute the result.</div>
+<div class="card"><h3>Collusion across organs</h3>Insiders could coordinate across branches. Countermeasure: separate recruitment pools, separate pay scales, staff rotation across continents, and a ban on serving in two organs within ten years.</div>
+</div>
+<p style="margin-top:14px">No design is capture-proof. The goal is narrower: capture should be slow, visible and reversible.</p>
+
+
+<h2 style="font-size:28px;border-top:3px solid var(--core);margin-top:72px">Part two: completing the charter</h2>
+<p>Part one sets out the structure. Part two answers the questions that structure leaves open. Each answer follows the Rule of Three and the Ordering Clause, and each states its limits.</p>
+
+<h2>12. Beyond money: provisioning without a price on life</h2>
+<p>Economics is the study of allocating scarce things. Most of what a person needs to live isn't scarce at planetary scale; it has been priced, and the price became the gate. So the charter replaces "the economy" with <b>provisioning</b>: how a society makes sure every person and living system has what it needs. Money is demoted from master to a small tool for extras. In the long run it can wither away through irrelevance, not confiscation.</p>
+
+<div class="card" style="margin-top:16px;border-left:6px solid var(--core)"><h3>Two permanent laws&Dagger;</h3>
+<ol style="margin:0;padding-left:20px">
+<li><b>There is no price to be alive.</b> Nothing a person needs to live, and to take part in society, may carry a price, a fee, a condition or a test.</li>
+<li><b>No one is born with debt or into debt.</b> No person inherits a debt, needs a debt to live, or arrives in a world their elders overdrew.</li>
+</ol>
+Both belong to the permanent core and can never be amended away.</div>
+
+<figure>
+<svg viewBox="0 0 960 330" role="img" aria-labelledby="pT">
+  <title id="pT">Three domains of provisioning: the Life Commons with no price, Contribution which is chosen and honored, and a small Exchange Margin for extras</title>
+  <rect x="20" y="30" width="290" height="250" rx="14" style="fill:var(--panel);stroke:var(--ceiling);stroke-width:3"/>
+  <text class="kick" x="165" y="58" style="fill:var(--ceiling)">DOMAIN 1</text>
+  <text class="t" x="165" y="84">The Life Commons</text>
+  <text class="s" x="165" y="106" style="font-weight:700">no price, no conditions</text>
+  <text class="s" x="165" y="140">home, water, food, energy</text>
+  <text class="s" x="165" y="162">health, mental health, care</text>
+  <text class="s" x="165" y="184">learning, transport, connection</text>
+  <text class="s" x="165" y="206">justice, documents, birth, burial</text>
+  <text class="s" x="165" y="244" style="fill:var(--ink)">made by provisioning cooperatives</text>
+
+  <rect x="335" y="30" width="290" height="250" rx="14" style="fill:var(--panel);stroke:var(--info);stroke-width:3"/>
+  <text class="kick" x="480" y="58" style="fill:var(--info)">DOMAIN 2</text>
+  <text class="t" x="480" y="84">Contribution</text>
+  <text class="s" x="480" y="106" style="font-weight:700">chosen, never compelled</text>
+  <text class="s" x="480" y="140">work, care, art, invention, repair</text>
+  <text class="s" x="480" y="162">recognized by Contributory</text>
+  <text class="s" x="480" y="184">Progression Value</text>
+  <text class="s" x="480" y="206">time banks for care</text>
+  <text class="s" x="480" y="244" style="fill:var(--ink)">rewarded from the commons</text>
+
+  <rect x="650" y="30" width="290" height="250" rx="14" style="fill:var(--panel);stroke:var(--floor);stroke-width:3"/>
+  <text class="kick" x="795" y="58" style="fill:var(--floor)">DOMAIN 3</text>
+  <text class="t" x="795" y="84">The Exchange Margin&#8224;</text>
+  <text class="s" x="795" y="106" style="font-weight:700">for extras only</text>
+  <text class="s" x="795" y="140">equal credits for everyone</text>
+  <text class="s" x="795" y="162">credits fade if hoarded</text>
+  <text class="s" x="795" y="184">no interest on anything</text>
+  <text class="s" x="795" y="206">can't buy land, people or power</text>
+  <text class="s" x="795" y="244" style="fill:var(--ink)">any bioregion may opt out</text>
+
+  <text x="480" y="314" style="fill:var(--ink);font-size:14px;font-weight:700;text-anchor:middle">Life is never for sale. Contribution is honored. Exchange stays small and can't become power.</text>
+</svg>
+<figcaption>Figure 8. Provisioning in three domains, following the Rule of Three. Most of life moves out of markets entirely. What remains for markets is the margin of extras.</figcaption>
+</figure>
+
+<div class="cards">
+<div class="card"><h3>No price to be alive: what that covers</h3>
+<ul style="margin:0;padding-left:18px">
+<li><b>Free in kind, with no means test and no work requirement:</b>
+  <ul style="margin:4px 0 0;padding-left:18px">
+  <li>a home up to the floor allotment</li>
+  <li>water, food and basic energy</li>
+  <li>clothing basics</li>
+  <li>health care, mental health care and care for children and elders</li>
+  <li>learning at every level</li>
+  <li>transport and connectivity</li>
+  </ul></li>
+<li><b>No fees for being a person:</b> nothing to be born, to get documents, to see a judge, to have a lawyer, or to be buried.</li>
+<li><b>No taxes on existing:</b> no head taxes.</li>
+<li><b>No fines that punish poverty:</b> any fine scales with means, and conduct caused by poverty isn't fined at all.</li>
+</ul>
+<div class="pre">Precedent: Finland's means-scaled "day-fines"; free school meals in Finland (since 1948); free national public transport in Luxembourg (2020).</div></div>
+
+<div class="card"><h3>No one born into debt: three rules</h3>
+<ol style="margin:0;padding-left:20px">
+<li><b>Debt never crosses generations.</b> A person's debts end with their estate, and any shortfall is cancelled. No child ever inherits, co-signs or is bound by a debt.</li>
+<li><b>No one needs debt to live.</b> Education, health care and a basic home are free, so student, medical and basic-housing debt can't arise. Debts that already exist are cancelled in the transition jubilee. Any remaining personal debt expires after seven years.</li>
+<li><b>No generation borrows from the next.</b> Public borrowing is allowed only for long-lived works that serve the people who will repay them. Ecological debt can't be handed on: today's overshoot is repaired by today's generation, through restoration under the ceilings.</li>
+</ol>
+<div class="pre">Precedent: the seven-year release of debts and the fifty-year jubilee in the Hebrew Bible (Deuteronomy 15, Leviticus 25); Mesopotamian rulers' "clean slate" debt cancellations (described by Michael Hudson and David Graeber); the nonprofit Undue Medical Debt, which buys medical debt cheaply and cancels it.</div></div>
+
+<div class="card"><h3>Domain 1: who makes the Life Commons</h3>Provisioning cooperatives in every bioregion grow the food, build and keep the homes, and run the clinics, schools and transit. Each is governed by three parties: the people it serves, the people who work in it, and stewards for the land and future generations. Their resources come from the commons accounts, and their results are scored by thriving metrics.
+<div class="pre">Precedent: Italy's social cooperatives (1991 law); Quebec's solidarity cooperatives, which seat users and workers together (1997).</div></div>
+
+<div class="card"><h3>Domain 2: contribution, freely given</h3>When survival no longer depends on a job, work becomes contribution: chosen, meaningful, and honored. Contribution is recognized through Contributory Progression Value, rewarded through the Contribution Commons Fund, and credited publicly. Care is exchanged through time banks, where an hour of care earns an hour of care.
+<div class="pre">Precedent: Japan's Fureai Kippu time-credit system for elder care (1995). Guaranteed-income trials such as Finland's (2017&#8211;2018) found that people did not stop working.</div></div>
+
+<div class="card"><h3>Domain 3: the Exchange Margin&dagger;</h3>For extras such as concerts, crafts, travel and luxuries, there are exchange credits:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>issued in equal amounts to every person each month, and earned through contribution</li>
+<li>losing about 1% of their value each month while unspent, so they circulate instead of piling up</li>
+<li>bearing no interest; enterprises are funded through zero-interest project shares from bioregional banks</li>
+<li>unable to buy what's free, land, the commons, a person, or political influence</li>
+</ul>
+<div class="pre">Precedent: Silvio Gesell's proposal for money that loses value while hoarded (1916); the town of W&ouml;rgl, Austria, whose fading currency revived local work in 1932&#8211;33 until the national central bank stopped it; Bavaria's Chiemgauer regional currency (since 2003); Sweden's interest-free JAK Members Bank.</div></div>
+
+<div class="card"><h3>Why exchange isn't abolished outright</h3>Billions of people with different tastes need some way to signal what they want among extras. The only alternative is a central plan, which concentrates power and breaks the Rule of Three; planned economies of the twentieth century produced chronic shortages. So exchange survives, small, fading and powerless. Any bioregion may still choose to live without it entirely, through gift, reciprocity and time banks.</div>
+
+<div class="card"><h3>How money withers: transition without confiscation</h3>
+<ol style="margin:0;padding-left:20px">
+<li><b>Existing currencies keep running</b> while the Life Commons grows, sector by sector, until nothing needed to live has a price.</li>
+<li><b>A transition jubilee cancels household debt:</b> medical, student and consumer debt, and mortgages on main homes.</li>
+<li><b>Savings convert to exchange credits on a published schedule,</b> keeping their power to buy extras. Nothing personal is seized; land and the commons simply stop being for sale.</li>
+</ol>
+Money doesn't need to be banned. It loses its power because it stops buying anything anyone needs.</div>
+</div>
+
+<h3 style="font-size:19px;margin:36px 0 6px">Paying for the floor during the transition</h3>
+<p>Until money withers, the floor has to be paid for in today's money. The figures below are order-of-magnitude estimates built from the cited sources. The Office of Measurement's first task is a full costing, polity by polity, to replace them.</p>
+
+<figure>
+<svg viewBox="0 0 960 550" role="img" aria-labelledby="mT">
+  <title id="mT">Estimated annual planetary revenue from commons rents and closed loopholes, compared with the annual cost of the planetary floor</title>
+  <text class="gl" x="20" y="26" text-anchor="start" style="text-anchor:start;fill:var(--money)">WHERE THE MONEY COMES FROM, PER YEAR</text>
+  <line x1="450" y1="36" x2="450" y2="290" style="stroke:var(--line)"/>
+  <g>
+    <text x="20" y="62" style="fill:var(--ink);font-size:13px;font-weight:700">Land rent</text>
+    <text x="20" y="77" style="fill:var(--muted);font-size:11px">3% a year on an assumed $150&#8211;200 trillion of land value</text>
+    <rect x="450" y="54" width="337" height="22" rx="4" style="fill:var(--money)"/>
+    <rect x="787" y="54" width="113" height="22" rx="4" style="fill:var(--money);opacity:.35"/>
+    <text x="908" y="70" style="fill:var(--ink);font-size:12px;font-weight:600;text-anchor:end">$4.5&#8211;6.0T</text>
+  </g>
+  <g>
+    <text x="20" y="104" style="fill:var(--ink);font-size:13px;font-weight:700">Pollution fees</text>
+    <text x="20" y="119" style="fill:var(--muted);font-size:11px">$100 a tonne on about 38 billion tonnes of fossil carbon dioxide</text>
+    <rect x="450" y="96" width="285" height="22" rx="4" style="fill:var(--money)"/>
+    <text x="743" y="112" style="fill:var(--ink);font-size:12px;font-weight:600">$3.8T, shrinking as emissions fall</text>
+  </g>
+  <g>
+    <text x="20" y="146" style="fill:var(--ink);font-size:13px;font-weight:700">Fossil subsidies ended</text>
+    <text x="20" y="161" style="fill:var(--muted);font-size:11px">explicit subsidies (International Monetary Fund, 2022)</text>
+    <rect x="450" y="138" width="98" height="22" rx="4" style="fill:var(--money)"/>
+    <text x="556" y="154" style="fill:var(--ink);font-size:12px;font-weight:600">$1.3T</text>
+  </g>
+  <g>
+    <text x="20" y="188" style="fill:var(--ink);font-size:13px;font-weight:700">Other commons rents</text>
+    <text x="20" y="203" style="fill:var(--muted);font-size:11px">radio spectrum, minerals, orbit, oceans (rough estimate)</text>
+    <rect x="450" y="180" width="38" height="22" rx="4" style="fill:var(--money)"/>
+    <text x="496" y="196" style="fill:var(--ink);font-size:12px;font-weight:600">about $0.5T</text>
+  </g>
+  <g>
+    <text x="20" y="230" style="fill:var(--ink);font-size:13px;font-weight:700">Shifted profits taxed</text>
+    <text x="20" y="245" style="fill:var(--muted);font-size:11px">about $1 trillion moved to tax havens yearly, taxed at 15&#8211;25%</text>
+    <rect x="450" y="222" width="11" height="22" rx="3" style="fill:var(--money)"/>
+    <rect x="461" y="222" width="8" height="22" rx="3" style="fill:var(--money);opacity:.35"/>
+    <text x="477" y="238" style="fill:var(--ink);font-size:12px;font-weight:600">$0.15&#8211;0.25T</text>
+  </g>
+  <g>
+    <text x="20" y="272" style="fill:var(--ink);font-size:13px;font-weight:700">Billionaire minimum tax</text>
+    <text x="20" y="287" style="fill:var(--muted);font-size:11px">2% a year, as proposed to the Group of Twenty (2024)</text>
+    <rect x="450" y="264" width="15" height="22" rx="3" style="fill:var(--money)"/>
+    <rect x="465" y="264" width="4" height="22" rx="2" style="fill:var(--money);opacity:.35"/>
+    <text x="477" y="280" style="fill:var(--ink);font-size:12px;font-weight:600">$0.2&#8211;0.25T</text>
+  </g>
+  <text x="20" y="318" style="fill:var(--ink);font-size:13.5px;font-weight:700">Total: about $10&#8211;12 trillion a year, roughly 9&#8211;10% of world output ($115 trillion in 2025)</text>
+
+  <text class="gl" x="20" y="356" style="text-anchor:start;fill:var(--floor)">WHAT THE PLANETARY FLOOR NEEDS, PER YEAR</text>
+  <line x1="450" y1="366" x2="450" y2="532" style="stroke:var(--line)"/>
+  <g>
+    <text x="20" y="392" style="fill:var(--ink);font-size:13px;font-weight:700">Equal dividend</text>
+    <text x="20" y="407" style="fill:var(--muted);font-size:11px">about $1 a day for each of 8.2 billion people</text>
+    <rect x="450" y="384" width="225" height="22" rx="4" style="fill:var(--floor)"/>
+    <text x="683" y="400" style="fill:var(--ink);font-size:12px;font-weight:600">$3.0T</text>
+  </g>
+  <g>
+    <text x="20" y="434" style="fill:var(--ink);font-size:13px;font-weight:700">End extreme poverty</text>
+    <text x="20" y="449" style="fill:var(--muted);font-size:11px">$2.15-a-day line (2026 estimate); mostly met by the dividend</text>
+    <rect x="450" y="426" width="24" height="22" rx="3" style="fill:var(--floor)"/>
+    <text x="482" y="442" style="fill:var(--ink);font-size:12px;font-weight:600">$0.32T</text>
+  </g>
+  <g>
+    <text x="20" y="476" style="fill:var(--ink);font-size:13px;font-weight:700">Close health coverage gaps</text>
+    <text x="20" y="491" style="fill:var(--muted);font-size:11px">low- and middle-income countries (World Health Organization, 2017)</text>
+    <rect x="450" y="468" width="28" height="22" rx="3" style="fill:var(--floor)"/>
+    <text x="486" y="484" style="fill:var(--ink);font-size:12px;font-weight:600">about $0.37T</text>
+  </g>
+  <g>
+    <text x="20" y="518" style="fill:var(--ink);font-size:13px;font-weight:700">Charter institutions</text>
+    <text x="20" y="533" style="fill:var(--muted);font-size:11px">measurement, courts, guardians, the Contribution Commons Fund</text>
+    <rect x="450" y="510" width="38" height="22" rx="4" style="fill:var(--floor)"/>
+    <text x="496" y="526" style="fill:var(--ink);font-size:12px;font-weight:600">about $0.5T</text>
+  </g>
+</svg>
+<figcaption>Figure 9. Faded bar ends show the high end of a range. About $6&#8211;8 trillion a year remains after the floor, funding the energy transition, ecological restoration and historical repair. Wealthy polities already pay for most of their own floors from existing budgets, so planetary money goes mainly where the gaps are largest. These are estimates by Claude from the sources cited: Global Carbon Budget 2025, the International Monetary Fund (2023), the European Union Tax Observatory, the Group of Twenty billionaire-tax proposal, Savills (2025), and Blumenstock and colleagues (2026). The land-value assumption and the World Health Organization figure are not verified.</figcaption>
+</figure>
+<p>For comparison, the International Monetary Fund counted $7 trillion of fossil-fuel subsidies in 2022, explicit and implicit together. That is more than the entire floor costs. The money exists; it is currently paying for harm.</p>
+
+<h2>13. Movement and membership</h2>
+<div class="cards">
+<div class="card"><h3>Everyone belongs somewhere</h3>Every person holds planetary personhood from birth, so no one is ever stateless. Each person becomes a full member of the polity where they live after three years, and may hold more than one membership. The dividend and floor rights travel with the person.</div>
+<div class="card"><h3>Freedom to move</h3>Any person may live in any member polity after a simple registration. Polities may <i>pace</i> arrivals for a limited time, but only when the Office of Measurement shows a housing or water ceiling would be breached. They may never pace by origin, race, religion or wealth. Receiving regions get Commons Trust support to expand capacity, and pacing ends when that capacity is built.
+<div class="pre">Precedent: free movement within the European Union.</div></div>
+<div class="card"><h3>Refuge</h3>Anyone fleeing persecution, war or climate collapse receives protection without conditions. Climate displacement is grounds for refuge.
+<div class="pre">Precedent: the 1951 Refugee Convention; the United Nations Human Rights Committee's finding in <i>Teitiota v. New Zealand</i> (2020) that climate harm can bar sending someone back; the Australia&#8211;Tuvalu Falepili Union treaty (2023), which offers Tuvaluans climate mobility.</div></div>
+</div>
+
+<h2>14. Peace, weapons and disputes</h2>
+<div class="cards">
+<div class="card"><h3>Weapons</h3>
+<ul style="margin:0;padding-left:18px">
+<li><b>Banned outright:</b> weapons of mass destruction, under inspection.</li>
+<li><b>Banned outright:</b> autonomous weapons that select and attack people without meaningful human control.</li>
+<li><b>Barred:</b> arms exports to anyone who violates the liberties tier.</li>
+<li><b>Member militaries</b> stay defensive, capped and transparent, and shrink on a published schedule as trust grows.</li>
+<li><b>Personal firearms</b> are a polity decision, within the floor right to safety.</li>
+</ul>
+<div class="pre">Precedent: the Treaty on the Prohibition of Nuclear Weapons (2017); the Arms Trade Treaty (2013).</div></div>
+<div class="card"><h3>Disputes between polities: three steps</h3>
+<ol style="margin:0;padding-left:20px">
+<li>Mediation by three mediators.</li>
+<li>Binding arbitration by a panel of three.</li>
+<li>The Court of Rights, sitting as a chamber for disputes between polities.</li>
+</ol>
+Unarmed civilian protection teams can deploy on request. Member forces join only under their own polity's command, and only at the request of the polity affected.
+<div class="pre">Precedent: the Permanent Court of Arbitration (1899); Nonviolent Peaceforce's unarmed civilian protection.</div></div>
+<div class="card"><h3>Disputes over who holds a power</h3>A competence panel of three judges, one each from the planetary, polity and bioregional levels, decides which level holds a contested power. When in doubt, the power stays with the smaller level, under the reserved-powers rule.</div>
+</div>
+
+<h2>15. Identity without surveillance</h2>
+<div class="cards">
+<div class="card"><h3>Proof of personhood&dagger; <span class="new">NEW in part</span></h3>To receive the dividend, a person must be counted once, and only once. They prove it through three independent registrars: their local community, their polity's civil registry, and an independent civil-society registrar. Any two of the three can vouch, so no single registrar can shut a person out.
+<br><br>The credential lives on the person's own device or card. It uses zero-knowledge proofs, which let someone show "I am one unique adult member" without revealing who they are. There is no central database. Biometrics are never required, and a paper option always exists.
+<div class="pre">Precedent and warning: India's Aadhaar enrolled more than a billion people and enabled direct transfers, but raised serious privacy concerns; India's Supreme Court limited its mandatory use in 2018. The European Union's digital identity wallet (2024) lets people disclose only the facts a service needs.</div></div>
+<div class="card"><h3>Limits on watching people</h3>
+<ul style="margin:0;padding-left:18px">
+<li>Mass surveillance is banned.</li>
+<li>Targeted surveillance needs a warrant from a panel of three judges, is limited in time, and is disclosed to the person afterward.</li>
+<li>Encryption is a right.</li>
+<li>Real-time facial recognition in public spaces is banned.</li>
+<li>Data is kept to the minimum needed and deleted on schedule.</li>
+</ul></div>
+</div>
+
+<h2>16. Property and work</h2>
+<div class="cards">
+<div class="card"><h3>What you keep</h3>Your home, belongings, savings, tools, small and medium businesses, family and cooperative farms, and the moral rights to your creative work are all protected. Nothing is taken without due process and fair compensation (Universal Declaration of Human Rights, article 17).
+<br><br>Three things change:
+<ol style="margin:6px 0 0;padding-left:20px">
+<li>Land pays rent on its value, but buildings and improvements don't.</li>
+<li>The commons can't be privately owned.</li>
+<li>Large companies operate under license.</li>
+</ol>
+A household's home, up to the floor allotment, pays no rent at all: there is no price to be alive. Land rent applies only above the allotment and to commercial use.</div>
+<div class="card"><h3>Work: three guarantees</h3>
+<ol style="margin:0;padding-left:20px">
+<li><b>The dividend and the floor,</b> so no one has to take degrading work to survive.</li>
+<li><b>A right to organize,</b> plus worker seats on large boards and a preference for cooperatives in public purchasing.</li>
+<li><b>A guaranteed opportunity to contribute:</b> paid public work on care, restoration and community projects, for anyone who wants it.</li>
+</ol>
+<div class="pre">Precedent: Spain's Mondragon cooperatives (since 1956); India's rural employment guarantee (2005).</div></div>
+<div class="card"><h3>Automation</h3>Productivity gains from artificial intelligence and robots are shared in three ways:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>Rent on the aggregate data such systems are built from, paid to the Commons Trust.</li>
+<li>Shorter working hours as productivity rises.</li>
+<li>Retraining as part of the floor.</li>
+</ul>
+Automation then raises everyone's floor instead of concentrating gains.</div>
+</div>
+
+<h2>17. Dangerous technologies</h2>
+<div class="cards">
+<div class="card"><h3>The triple key&dagger; <span class="new">NEW</span></h3>Any activity with planetary-scale or irreversible risk needs a planetary license that requires three independent approvals: a risk assessment by the Office of Measurement, the Steward Chamber, and a House of Lots panel. The covered activities are:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>engineering pathogens to be more dangerous</li>
+<li>gene drives released into the wild</li>
+<li>heritable human genome editing</li>
+<li>solar geoengineering</li>
+<li>nuclear materials</li>
+<li>large satellite constellations and space debris</li>
+<li>frontier artificial intelligence</li>
+</ul>
+Irreversible actions also require a two-thirds vote in all three chambers. All DNA synthesis is screened for dangerous sequences.
+<div class="pre">Precedent: the Asilomar conference on recombinant DNA (1975); the Biological Weapons Convention (1972), which still has no inspection system; the World Health Organization's governance framework for human genome editing (2021).</div></div>
+</div>
+
+<h2>18. Equal rights made explicit</h2>
+<div class="cards">
+<div class="card"><h3>Equality</h3>No law, service or enterprise may discriminate on any of these grounds:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>race, color, ancestry or caste</li>
+<li>sex, gender identity or sexual orientation</li>
+<li>disability or neurotype</li>
+<li>age</li>
+<li>religion or belief</li>
+<li>language, national origin or class</li>
+</ul></div>
+<div class="card"><h3>Disability</h3>Universal design for every public good, so access is built in, not added later. "Nothing about us without us": disabled people help design the services they use.
+<div class="pre">Precedent: the Convention on the Rights of Persons with Disabilities (2006).</div></div>
+<div class="card"><h3>Children and elders</h3>Children have rights to protection, education, play and a voice in decisions about them. The voting age is 16, and every polity has a children's commissioner. Elders have the right to care at home or in community, to protection from isolation and abuse, and to keep taking part in public life.
+<div class="pre">Precedent: the Convention on the Rights of the Child (1989); Austria's voting age of 16 (2007).</div></div>
+<div class="card"><h3>Culture, language and belief</h3>Freedom of religion, and freedom from it. Communities that choose it get schooling in their own language. Revitalizing endangered languages counts as generative value and is funded through the Contribution Commons Fund; around 40% of the world's roughly 7,000 languages are endangered. Cultural heritage, living and built, is protected.
+<div class="pre">Precedent: the UNESCO Convention for the Safeguarding of the Intangible Cultural Heritage (2003).</div></div>
+</div>
+
+<h2>19. Information and open government</h2>
+<div class="cards">
+<div class="card"><h3>A free, uncaptured press</h3>Public-interest journalism draws on three funding streams, so no single funder controls it:
+<ol style="margin:6px 0 0;padding-left:20px">
+<li>Citizen vouchers: each person directs a share of a public media fund to outlets of their choice.</li>
+<li>Readers.</li>
+<li>Nonprofit endowments.</li>
+</ol>
+Media ownership is capped, and no government may direct editorial content.
+<div class="pre">Background: Julia Cag&eacute;, <i>Saving the Media</i> (2016).</div></div>
+<div class="card"><h3>Data</h3>Personal data belongs to the person, who can see it, move it and delete it. Aggregate data belongs to the Commons Trust, which rents it under license. The internet is shared infrastructure, with network neutrality and a public connectivity option.
+<div class="pre">Precedent: the European Union's General Data Protection Regulation (2018).</div></div>
+<div class="card"><h3>Open government</h3>Government records are public by default. Exceptions are narrow and expire. Whistleblowers are protected and rewarded, and retaliating against them is a crime.
+<div class="pre">Precedent: Sweden's Freedom of the Press Act (1766), the world's first freedom-of-information law; the European Union Whistleblower Directive (2019).</div></div>
+</div>
+
+<h2>20. Historical repair</h2>
+<div class="cards">
+<div class="card"><h3>A Truth and Repair Commission&dagger;</h3>A planetary commission addresses colonialism, slavery, genocide and land theft in three stages:
+<ol style="margin:6px 0 0;padding-left:20px">
+<li><b>Truth:</b> public testimony and an official record.</li>
+<li><b>Acknowledgment:</b> formal recognition by the polities and institutions responsible.</li>
+<li><b>Repair:</b> land returned or co-managed, cultural property repatriated, debts of formerly colonized polities cancelled, and higher shares of commons rents for the descendants of those harmed.</li>
+</ol>
+Repair is owed to peoples, collectively. Guilt is never assigned to individuals by birth.
+<div class="pre">Precedent: South Africa's Truth and Reconciliation Commission (1996); New Zealand's Waitangi Tribunal (1975); Germany's return of Benin Bronzes to Nigeria (2022); the Caribbean Community's ten-point reparations plan (2014).</div></div>
+</div>
+
+<h2>21. The material economy</h2>
+<div class="cards">
+<div class="card"><h3>The one-third conversion&Dagger;</h3>One-third of all land now used for animal ranching is converted, over fifteen years, according to what each piece of land can sustain:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Wetter land:</b> pollinator sanctuary garden farms, meaning mixed plantings, food forests, orchards and vegetable gardens surrounded by wildflower meadows and hedgerows.</li>
+<li><b>Dry land:</b> native rewilding and pollinator habitat. Turning rangeland into gardens would drain aquifers, so it isn't done.</li>
+<li><b>Sunny sites:</b> agrivoltaics, meaning solar panels raised over meadows and crops, which also gives shade and saves water.</li>
+<li><b>Some sites:</b> insect farms for food and feed.</li>
+</ul>
+Ranchers aren't dispossessed. The Commons Trust pays them to convert, and many become the stewards and growers of the new land. Pastoral and Indigenous herders are exempt.
+<div class="pre">Context: livestock uses about 77% of the world's farmland for about 18% of its calories (Poore and Nemecek, <i>Science</i>, 2018). About three-quarters of the world's leading food crop types benefit from animal pollination (Klein and colleagues, 2007). Precedent for paying farmers to restore land: the European Union's agri-environment schemes and England's environmental land management payments.</div></div>
+<div class="card"><h3>Insect foods, with sentience safeguards</h3>Insects turn food waste into protein using far less land, water and emissions than cattle do. Black soldier fly larvae, for example, can replace fishmeal and soy in animal feed. But the charter's own rules apply here. Evidence that some insects can feel is growing: bumblebees in experiments have rolled small balls apparently for play. So insect farming follows the sentience register:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>Species with the weakest evidence of feeling come first.</li>
+<li>Living conditions limit crowding and allow natural behavior.</li>
+<li>Killing must be fast and humane.</li>
+<li>Standards tighten if the evidence grows.</li>
+</ul>
+Farming insects in "confinement" without those safeguards would break the vital-interest rule.
+<div class="pre">Background: the United Nations Food and Agriculture Organization's report on edible insects (2013); Jonathan Birch, <i>The Edge of Sentience</i> (2024).</div></div>
+<div class="card"><h3>Cricket ranching in practice&dagger;</h3>Old cattle barns are refitted as warm cricket rooms, heated by solar thermal panels. Crickets thrive at about 30&deg;C. Their droppings, called frass, fertilize the neighboring pollinator garden farms, so the two halves of a converted ranch feed each other. The humane standard has three parts:
+<ol style="margin:6px 0 0;padding-left:20px">
+<li><b>Living conditions:</b> limits on crowding; vertical shelters to hide in; natural cycles of light and dark; constant food; water in gel form so none drown; places to lay eggs; no more than 24 hours without food before harvest.</li>
+<li><b>Health:</b> no routine antibiotics; strict hygiene; diverse breeding stock.</li>
+<li><b>Harvest:</b> the fastest available method of making them insensible, audited independently, and revised as the science improves.</li>
+</ol>
+Scale matters ethically. A kilogram of crickets is well over a thousand animals, so plant proteins come first, and crickets are a complement that supplies iron and vitamin B12.
+<div class="pre">Precedent: Thailand's roughly 20,000 mostly family-run cricket farms (Food and Agriculture Organization, 2013). Warnings: a cricket virus wiped out many North American farms around 2010, which is why breeding stock must be diverse; and a 2015 study (Lundy and Parrella) found crickets grow poorly on food waste alone, so they need quality feed. Black soldier flies are better suited to eating waste.</div></div>
+<div class="card"><h3>Energy</h3>Basic household energy is a free lifeline, like water. The shift to renewable power follows the ceiling's published glide path, with the steepest cuts falling on the largest emitters first.</div>
+<div class="card"><h3>Repair and circular materials</h3>
+<ul style="margin:0;padding-left:18px">
+<li>A right to repair.</li>
+<li>Products designed to come apart.</li>
+<li>Producers responsible for their products at the end of life.</li>
+<li>Planned obsolescence is a crime.</li>
+</ul>
+<div class="pre">Precedent: the European Union's right-to-repair directive (2024); France's law against planned obsolescence (2015).</div></div>
+<div class="card"><h3>Cities and transport</h3>Neighborhoods are planned so daily needs sit within a short walk or ride. Public transport is free at the point of use. Car dependence shrinks, and housing gets built where people want to live.
+<div class="pre">Precedent: Paris's "15-minute city" planning; Luxembourg's free national public transport (2020).</div></div>
+</div>
+
+<h2>22. Amendments, and what can never change</h2>
+<div class="cards">
+<div class="card"><h3>The permanent core</h3>These can never be amended away:
+<ul style="margin:6px 0 0;padding-left:18px">
+<li>the personal liberties tier, including neurochemical freedom and cognitive sovereignty</li>
+<li>no price to be alive</li>
+<li>no one born with debt or into debt</li>
+<li>the Rule of Three</li>
+<li>money ranked last in the Ordering Clause</li>
+<li>no planetary army</li>
+<li>the right of exit</li>
+<li>the ban on scoring persons</li>
+</ul>
+<div class="pre">Precedent: the "eternity clause" in Germany's Basic Law (article 79, paragraph 3).</div></div>
+<div class="card"><h3>Ordinary amendments</h3>
+<ol style="margin:0;padding-left:20px">
+<li>Proposed by any chamber or by petition.</li>
+<li>Passed by two-thirds of all three chambers.</li>
+<li>Ratified by a triple test: two-thirds of polities, polities representing 60% of people, and a ranked referendum with at least three options.</li>
+</ol>
+A year must pass between proposal and vote, so the charter can't be rewritten in a moment of panic. The 25-year conventions continue.</div>
+</div>
+
+<h2>23. Resolving the charter's internal tensions</h2>
+<div class="cards">
+<div class="card"><h3>Minerals for clean energy versus the extraction ceiling</h3>The transition-minerals rule&dagger; sets three steps, in order:
+<ol style="margin:6px 0 0;padding-left:20px">
+<li>Reuse and recycle first.</li>
+<li>Use materials more efficiently and substitute others.</li>
+<li>Only then allow new mining, with the free, prior and informed consent of affected communities, a full restoration bond, and a share of the rent paid to those communities.</li>
+</ol>
+Deep-sea mining stays closed until science shows it causes no serious harm.
+<div class="pre">Precedent: mine reclamation bonds under the United States surface mining law (1977).</div></div>
+<div class="card"><h3>Open movement versus local limits</h3>Movement may be paced, never closed. Pacing is measured, temporary and paid for, as section 13 describes, and refuge is never paced.</div>
+<div class="card"><h3>Non-democratic partners versus the liberties tier</h3>Commons partners get access to the commons, measurement and markets only. They never get seats in any chamber. Partnership is reviewed every ten years against a published liberties trajectory. People living in partner polities can still claim refuge and their escrowed dividend.</div>
+</div>
+
+<p class="prov" style="margin-top:40px">Transition plan: <a href="trustee-commonwealth-transition.html" style="color:var(--info)">The Path to the Trustee Commonwealth</a>. Designed for Earth as a whole. Adoption begins as a club of willing polities. Provisional until ratified. Drafted by Claude (Anthropic), 22 October 2026.</p>
+</main>
+</body>
+</html>

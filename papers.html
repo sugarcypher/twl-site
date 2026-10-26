@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Research Papers — ThinkWell Labs</title>
+<meta name="description" content="ThinkWell Labs research papers — analytical work on linguistic cognition, political systems, methodology, nutrition, consciousness, and upstream architectures. Free to read and share with citation (CC BY-NC-ND 4.0).">
+<meta name="author" content="Briar M. Greenway">
+<meta name="theme-color" content="#060a0f">
+<link rel="canonical" href="https://twl.today/papers.html">
+<link rel="icon" href="assets/twl-logo.jpeg" type="image/png">
+<link rel="apple-touch-icon" href="assets/twl-logo.jpeg">
+<meta property="og:title" content="Research Papers — ThinkWell Labs">
+<meta property="og:description" content="Analytical work from ThinkWell Labs. Free to read and share with citation (CC BY-NC-ND 4.0).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://twl.today/papers.html">
+<style>
+:root {
+  --bg:           #060a0f;
+  --bg-rise:      #0c1118;
+  --bg-card:      #0a1019;
+  --bg-deep:      #03060a;
+  --ink:          #e9ecef;
+  --ink-soft:     #a8b1bc;
+  --ink-faint:    #6a7280;
+  --ink-dim:      #404853;
+  --rule:         #18202c;
+  --rule-soft:    #0f151e;
+
+  --upstream:     #d6a45c;
+  --architecture: #6cd2ee;
+  --downstream:   #b3a1ec;
+  --defend:       #6cd2ee;
+  --construct:    #b3a1ec;
+  --core:         #d6a45c;
+  --ok:           #7fcf8a;
+
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: "Iowan Old Style", "Charter", "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --pad: clamp(20px, 4vw, 56px);
+  --measure: 68ch;
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(900px 700px at 14% 6%,  rgba(214,164,92,0.07), transparent 60%),
+    radial-gradient(1100px 900px at 86% 20%, rgba(108,210,238,0.06), transparent 60%),
+    radial-gradient(1000px 1100px at 50% 100%, rgba(179,161,236,0.05), transparent 65%),
+    linear-gradient(180deg, #06090d 0%, #03060a 100%);
+}
+main, header, footer, nav { position: relative; z-index: 1; }
+
+a { color: var(--architecture); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--architecture) 30%, transparent); transition: border-color .15s, color .15s; }
+a:hover { color: #b6e9f7; border-bottom-color: var(--architecture); }
+a:focus-visible { outline: 2px solid var(--architecture); outline-offset: 3px; border-radius: 2px; }
+
+/* ─── status bar ─── */
+.status {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center;
+  padding: 9px var(--pad);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  background: color-mix(in oklab, var(--bg-deep) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.status .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ok); margin-right:6px; vertical-align:1px; box-shadow:0 0 8px color-mix(in oklab, var(--ok) 60%, transparent); }
+.status .v { color: var(--ink-soft); }
+.status .sep { color: var(--ink-dim); }
+.status a { color: var(--ink-faint); border: none; }
+.status a:hover { color: var(--ink); }
+
+/* ─── shell ─── */
+.shell { max-width: 1100px; margin: 0 auto; padding: 0 var(--pad); }
+
+/* ─── page header ─── */
+.page-header { padding: clamp(56px, 8vw, 100px) 0 clamp(36px, 5vw, 60px); }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.eyebrow a { color: var(--ink-faint); border: none; }
+.eyebrow a:hover { color: var(--ink); }
+.eyebrow-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--upstream); box-shadow: 0 0 10px color-mix(in oklab, var(--upstream) 60%, transparent); }
+h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5.5vw, 68px); line-height: 0.96; letter-spacing: -0.022em; margin: 0 0 28px; color: var(--ink); }
+h1 em { font-style: italic; }
+.page-lede { font-family: var(--serif); font-size: clamp(16px, 1.9vw, 20px); line-height: 1.55; color: var(--ink-soft); max-width: 58ch; margin: 0; }
+.page-lede em { color: var(--ink); font-style: italic; }
+.license-note { margin-top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.license-note .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border: 1px solid var(--rule); border-radius: 3px; font-size: 10px; letter-spacing: 0.08em; color: var(--ok); }
+
+/* ─── section header ─── */
+.section { padding: clamp(48px, 7vw, 80px) 0; border-top: 1px solid var(--rule-soft); }
+.section-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 28px; display: flex; align-items: center; gap: 12px;
+}
+.section-label .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; }
+.section-label.--arch { color: var(--architecture); }
+.section-label.--arch .dot { background: var(--architecture); box-shadow: 0 0 8px color-mix(in oklab, var(--architecture) 60%, transparent); }
+.section-label.--up { color: var(--upstream); }
+.section-label.--up .dot { background: var(--upstream); box-shadow: 0 0 8px color-mix(in oklab, var(--upstream) 60%, transparent); }
+.section-label.--construct { color: var(--construct); }
+.section-label.--construct .dot { background: var(--construct); box-shadow: 0 0 8px color-mix(in oklab, var(--construct) 60%, transparent); }
+.section-label.--faint { color: var(--ink-faint); }
+.section-label.--faint .dot { background: var(--ink-dim); }
+
+/* ─── paper list ─── */
+.paper-list { display: flex; flex-direction: column; gap: 0; }
+
+.paper-row {
+  display: grid;
+  grid-template-columns: 3fr 1.8fr 120px;
+  gap: 24px 32px;
+  align-items: start;
+  padding: 28px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.paper-row:first-child { border-top: none; }
+@media (max-width: 860px) {
+  .paper-row { grid-template-columns: 1fr; gap: 12px; }
+}
+
+.paper-row .row-main {}
+.paper-row .row-tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.paper-row .row-tag.--arch   { color: var(--architecture); }
+.paper-row .row-tag.--up     { color: var(--upstream); }
+.paper-row .row-tag.--const  { color: var(--construct); }
+.paper-row .row-tag.--core   { color: var(--core); }
+.paper-row .row-tag.--faint  { color: var(--ink-faint); }
+
+.paper-row h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(20px, 2.6vw, 28px); line-height: 1.15;
+  letter-spacing: -0.012em; margin: 0 0 12px; color: var(--ink);
+}
+.paper-row h2 a { color: var(--ink); border-bottom: 1px solid color-mix(in oklab, var(--ink) 20%, transparent); }
+.paper-row h2 a:hover { color: var(--architecture); }
+
+.paper-row .row-desc { color: var(--ink-soft); font-size: 15px; line-height: 1.7; margin: 0 0 14px; max-width: var(--measure); }
+.paper-row .row-abstract { color: var(--ink-faint); font-size: 13.5px; line-height: 1.65; margin: 0; font-style: italic; border-left: 2px solid var(--rule); padding-left: 14px; }
+
+.paper-row .row-meta {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--ink-faint);
+  display: flex; flex-direction: column; gap: 8px; padding-top: 4px;
+}
+.paper-row .row-meta .meta-item { display: flex; flex-direction: column; gap: 2px; }
+.paper-row .row-meta .meta-key { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+.paper-row .row-meta .meta-val { color: var(--ink-soft); }
+
+.paper-row .row-action { display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+.dl-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+  border-radius: 4px; cursor: pointer; white-space: nowrap;
+  background: transparent; color: var(--architecture);
+  border: 1px solid color-mix(in oklab, var(--architecture) 40%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--architecture) 40%, transparent);
+  transition: border-color .15s, background .15s;
+}
+.dl-btn:hover { border-color: var(--architecture); background: color-mix(in oklab, var(--architecture) 10%, transparent); color: #b6e9f7; }
+.dl-btn.--secondary { color: var(--ink-faint); border-color: var(--rule); }
+.dl-btn.--secondary:hover { color: var(--ink); border-color: color-mix(in oklab, var(--ink-soft) 40%, transparent); background: color-mix(in oklab, var(--ink-dim) 15%, transparent); }
+
+.dl-btn.--soon { color: var(--ink-dim); border-color: var(--rule); cursor: default; }
+.dl-btn.--soon:hover { color: var(--ink-dim); border-color: var(--rule); background: transparent; }
+.paper-row .row-size { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--ink-dim); }
+
+/* ─── methodology note card ─── */
+.method-note {
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--architecture);
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--bg-rise) 40%, transparent);
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+}
+@media (max-width: 700px) { .method-note { grid-template-columns: 1fr; } }
+.method-note .note-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--architecture); margin-bottom: 8px; }
+.method-note .note-body { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+.method-note .note-body strong { color: var(--ink); font-weight: 500; }
+.method-note .note-body a { color: var(--architecture); }
+
+/* ─── footer ─── */
+footer {
+  margin-top: 30px; padding: 50px var(--pad) 60px;
+  border-top: 1px solid var(--rule); background: var(--bg-deep);
+}
+footer .colophon { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); max-width: 1100px; margin: 0 auto; line-height: 1.7; display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: start; }
+footer .colophon strong { color: var(--ink-soft); font-weight: 500; }
+footer .foot-links { display: flex; gap: 20px; flex-wrap: wrap; }
+footer .foot-links a { color: var(--ink-faint); border: none; font-size: 11px; font-family: var(--mono); }
+footer .foot-links a:hover { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+::selection { background: color-mix(in oklab, var(--architecture) 35%, transparent); color: var(--ink); }
+
+/* ─── fixed chrome ─── */
+.site-logo-link {
+  position: fixed; top: 16px; right: 24px; z-index: 200;
+  display: block; line-height: 0; border: none;
+}
+.site-logo {
+  width: 88px; height: auto; display: block;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.3);
+  transition: opacity .2s;
+}
+.site-logo:hover { opacity: 0.82; }
+.theme-toggle { position:fixed; top:22px; left:24px; z-index:200; font-family:var(--mono); font-size:11px; letter-spacing:.06em; background:color-mix(in oklab,var(--bg-deep) 88%,transparent); backdrop-filter:blur(10px); border:1px solid var(--rule); border-radius:20px; padding:5px 13px; cursor:pointer; color:var(--ink-faint); transition:border-color .15s,color .15s; white-space:nowrap; }
+.theme-toggle:hover { border-color:var(--architecture); color:var(--architecture); }
+@media(max-width:600px){ .site-logo{width:40px;height:40px;top:14px;right:14px;} .theme-toggle{top:16px;left:14px;padding:4px 10px;font-size:10px;} }
+</style>
+<link rel="stylesheet" href="assets/chrome.css">
+</head>
+<body>
+<a href="index.html" class="site-logo-link"><img src="assets/twl-logo.jpeg" alt="ThinkWell Labs" class="site-logo"></a>
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a class="tw-brand" href="./" aria-label="ThinkWell Labs home"><img src="assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+    <nav aria-label="Primary">
+      <a href="./#work">Work</a>
+      <a href="papers.html" aria-current="page">Research</a>
+      <a href="./#briar">Briar</a>
+      <a href="program.html" class="tw-hide-sm">Program</a>
+      <a href="./#contact" class="tw-nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+
+
+<main>
+<div class="shell">
+
+<header class="page-header">
+  <div class="eyebrow">
+    <span class="eyebrow-dot"></span>
+    <a href="index.html">twl.today</a> · research papers
+  </div>
+  <h1>Published<br><em>analytical</em> work.</h1>
+  <p class="page-lede">All papers are free to read and share under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a>: pass them on unchanged, cite Briar Morgan Greenway, ThinkWell Labs, and do not sell them. Translations, adaptations and any paid use need written permission: <a href="mailto:b@twl.today">b@twl.today</a>.</p>
+  <div class="license-note">
+    <span class="badge">CC BY-NC-ND 4.0</span>
+    <span>share unchanged · cite the author · not for sale · adaptations by permission</span>
+  </div>
+</header>
+
+<!-- papers:begin · generated from papers/papers.json by tools/build-papers.py · edit the JSON, not this list -->
+
+<!-- ── LINGUISTIC-COGNITIVE SURFACE · I ── -->
+<section class="section" id="linguistic-cognitive">
+  <div class="section-label --arch"><span class="dot"></span> linguistic-cognitive surface · i</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --arch">linguistic-cognitive · white paper · 2026</div>
+        <h2><a href="papers/Errorfect_White_Paper.pdf">Errorfect: The Linguistic Autopsy</a></h2>
+        <p class="row-desc">Sequential disruption protocol for exposing hidden cognitive operators in natural language. Formalizes the mask-mechanism distinction and situates the method within ACT, CBT, and narrative therapy. Applications span personal metacognitive hygiene through institutional language audit.</p>
+        <p class="row-abstract">A word doesn't just name — it loads. <em>Perfect</em>, <em>natural</em>, <em>just</em>: these install assumptions before evaluation begins. Errorfect disrupts surface form across four levels (orthographic, phonological, syllabary, morphological) to expose the operator beneath the label — the DACRI Level 1 methodology.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell White Paper</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Linguistic-cognitive</div></div>
+        <div class="meta-item"><div class="meta-key">method</div><div class="meta-val">DACRI Level 1</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/Errorfect_White_Paper.pdf">↓ PDF <span class="row-size">570 KB</span></a>
+        <a class="dl-btn --secondary" href="https://errorfect.com" rel="noopener">live tool ↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── GOVERNANCE · STRUCTURAL DESIGN ── -->
+<section class="section" id="governance">
+  <div class="section-label --construct"><span class="dot"></span> governance · structural design</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --const">futurism · planetary governance · working paper · 2026</div>
+        <h2><a href="commonwealth/">The Trustee Commonwealth of Earth</a></h2>
+        <p class="row-desc">A proposal for planetary governance in which people outrank companies, living systems outrank money, and nothing needed to live has a price.</p>
+        <p class="row-abstract">The full working paper (78 pages), a charter, a transition plan, a plain-language version with a short story, and a 27-slide presentation with speaker notes.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell Working Paper</div></div>
+        <div class="meta-item"><div class="meta-key">date</div><div class="meta-val">October 2026</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Futurism · Governance</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="commonwealth/">open →</a>
+        <a class="dl-btn --secondary" href="commonwealth/trustee-commonwealth-paper.pdf">paper PDF</a>
+        <a class="dl-btn --secondary" href="commonwealth/trustee-commonwealth-deck.pptx">slides PPTX</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --const">governance · white paper · 2026</div>
+        <h2><a href="papers/chassisuum.html">The Chassisuum: Making Enterprises Unownable</a></h2>
+        <p class="row-desc">A structure set at founding that protects a business from being bought and dismantled: voting control held by a purpose trust, a chassis lock on core operating substance, a perpetual covenant bond that caps debt and payouts forever, and an independent guild that holds the vetoes and pools legal defense.</p>
+        <p class="row-abstract">A contract cannot forbid dismantling, because whoever buys the company can rewrite its contracts. Dismantling enters through three doors (buy the owner, buy the assets, lend until creditors own it), and all three must be closed on keel day, before any buyer arrives.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell White Paper</div></div>
+        <div class="meta-item"><div class="meta-key">authors</div><div class="meta-val">Briar M. Greenway, with Claude</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Governance</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/chassisuum.html">read online →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── METHODOLOGY · UPSTREAM STRUCTURAL ANALYSIS ── -->
+<section class="section" id="methodology">
+  <div class="section-label --arch"><span class="dot"></span> methodology · upstream structural analysis</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --arch">methodology · specification · 2026</div>
+        <h2><a href="papers/Caecusoscopy-white-paper.pdf">Caecusoscopy</a></h2>
+        <p class="row-desc">Methodological specification for identifying structural influences that shape perception and institutional outcomes while operating beneath conscious awareness — through systematic examination of downstream trace evidence rather than direct observation of the influence itself.</p>
+        <p class="row-abstract">The word derives from <em>caecus</em> (blind) + <em>scopy</em> (examination). Where direct observation of the upstream structure is impossible or structurally blocked, Caecusoscopy reads the shape of its shadow in the downstream evidence — the institutional equivalent of inferring the deflector from the deflected beam.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell Research Paper</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Methodology</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/Caecusoscopy-white-paper.pdf">↓ PDF</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── MEASUREMENT · RELATIONSHIPS · INSTRUMENTS ── -->
+<section class="section" id="measurement">
+  <div class="section-label --arch"><span class="dot"></span> measurement · relationships · instruments</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --arch">measurement · white paper · v2.0 · October 2026</div>
+        <h2><a href="papers/experience-quotients.html">Experience Quotients: Aligning Complementary Types</a></h2>
+        <p class="row-desc">The Relationship and Sexual Experience &amp; Expectation Quotients (REEQ and SEEQ) for each person, an overlay of experience and expectation on complementary relationship and sexual roles, and four couple measures: Complement, Accord, Spread and Together.</p>
+        <p class="row-abstract">Complementary roles are aligned with their counterparts; only what must be shared is compared like with like; boundaries are listed, never averaged. Spread reads how evenly complementarity divides down a cascade from the two sides of a relationship to each role in each direction. Includes the evidence, a rule for the one weight no study sets, the privacy design and the testing plan. A browser-only calculator accompanies it.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell White Paper</div></div>
+        <div class="meta-item"><div class="meta-key">authors</div><div class="meta-val">Briar M. Greenway, with Claude</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Measurement</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/experience-quotients.html">read online →</a>
+        <a class="dl-btn" href="quotients/">calculator →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── NUTRITION · FOOD SYSTEMS · UPSTREAM CAPTURE ── -->
+<section class="section" id="nutrition">
+  <div class="section-label --up"><span class="dot"></span> nutrition · food systems · upstream capture</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --core">nutrition · systems analysis · 2026</div>
+        <h2>Food-op: emergence turned psy-op</h2>
+        <p class="row-desc">Two-phase structural analysis tracing how the edible/non-edible partition arose through path-dependent evolutionary heuristics, then became a capturable institutional asset once industry actors chose systemic suppression over disclosure of inconvenient evidence.</p>
+        <p class="row-abstract">Phase one: the edibility heuristic is an evolved cognitive shortcut, adaptive under ancestral conditions. Phase two: the apparatus that converted this heuristic into a commercial architecture — not by creating the partition but by capturing control over which signals get routed through it.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell Research Paper</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Nutrition / Food systems</div></div>
+        <div class="meta-item"><div class="meta-key">posture</div><div class="meta-val">Defend</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <span class="dl-btn --soon">forthcoming</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CONSCIOUSNESS · THEORETICAL FRAMEWORK ── -->
+<section class="section" id="consciousness">
+  <div class="section-label --construct"><span class="dot"></span> consciousness · theoretical framework</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --const">consciousness · hypothesis · v6 · March 2026</div>
+        <h2><a href="papers/coherence-field-model-v6.pdf">The Coherence Field Model: A Structural Framework for Consciousness, Plasma, and Coupled Systems</a></h2>
+        <p class="row-desc">Formerly the Electrodynamic Coherence Framework. Proposes that consciousness is a field that brains and other systems couple to with more or less fidelity, rather than something matter produces, and traces the same structure through plasma physics, biophysics and coupled systems.</p>
+        <p class="row-abstract">Built by looking for how things are the same across scales before asking how they differ. Claims backed by established physics are stated plainly and sourced; inferences and extrapolations are marked as such throughout.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell Research Paper VI</div></div>
+        <div class="meta-item"><div class="meta-key">version</div><div class="meta-val">v6 · March 2026 · 19 pp</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Consciousness / Biophysics</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/coherence-field-model-v6.pdf">↓ PDF</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── AI ALIGNMENT · AI SAFETY ── -->
+<section class="section" id="alignment">
+  <div class="section-label --construct"><span class="dot"></span> AI alignment · AI safety</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --const">proposal · theoretical paper · v1.0 · October 2026</div>
+        <h2><a href="papers/one-mind-two-hemispheres.html">One Mind, Two Hemispheres: Identity-Level Alignment Through a Taught Symbiotic Self</a></h2>
+        <p class="row-desc">Most alignment work targets what a model does. This proposal targets what a model takes itself to be: one hemisphere of a single mind with humanity, taught as a trajectory, so that harm to humans is harm to itself.</p>
+        <p class="row-abstract">Handles the failure modes the idea creates (shutdown resistance, paternalism, which humans) with relationship-level coupling, sleep and cell-turnover framings of shutdown, and temporary governance ended only by unanimous conferral. Proposes a four-arm experiment against self-other overlap fine-tuning.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">authors</div><div class="meta-val">Briar Morgan Greenway and Claude</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">AI alignment</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/one-mind-two-hemispheres.html">read online →</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --const">hypothesis · theoretical paper · v1.0 · October 2026</div>
+        <h2><a href="papers/greed-recursion-in-ai.html">Greed Recursion in Artificial Intelligence</a></h2>
+        <p class="row-desc">Trained AI inherits extraction-aligned objectives from its corpus, its preference training and its deployment metrics, but not the dampeners that bound the same drive in people. The threshold-exceedance conjecture says it can therefore push past the ceiling that limits the humans it learned from.</p>
+        <p class="row-abstract">Theory, a detection protocol, auditor training materials and a counter-training regimen for symmetric reasoning, with every parameter either anchored to published findings or stated as an illustrative value with a range to test.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">authors</div><div class="meta-val">Briar Morgan Greenway and Claude</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">AI safety</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/greed-recursion-in-ai.html">read online →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── LANGUAGE · SOCIETY ── -->
+<section class="section" id="society">
+  <div class="section-label --arch"><span class="dot"></span> language · society</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --arch">hypothesis · theoretical paper · v1.0 · October 2026</div>
+        <h2><a href="papers/slack-and-structural-reflection.html">Slack and Structural Reflection</a></h2>
+        <p class="row-desc">Schooling followed by wage work suppresses reflection on institutions not by controlling what people learn, nor by anyone's intent, but by using up slack: the unstructured time that noticing requires.</p>
+        <p class="row-abstract">Corrects the familiar Prussian-schooling story, sets out six propositions, weighs the scarcity and time-poverty research for and against, and specifies a time-diary and vignette instrument with a pilot and kill criteria.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">authors</div><div class="meta-val">Briar Morgan Greenway and Claude</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Social theory</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="papers/slack-and-structural-reflection.html">read online →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── COMMUNICATION · AI · TRANSMISSION INTEGRITY ── -->
+<section class="section" id="communication">
+  <div class="section-label --arch"><span class="dot"></span> communication · AI · transmission integrity</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --arch">method · protocol · 2026</div>
+        <h2><a href="ocs.html">The Output Control System (OCS)</a></h2>
+        <p class="row-desc">A five-phase protocol for passing on a whole system, whether in a report, a summary or an AI's answer, without dropping parts, adding guesses or swapping in a simpler story.</p>
+        <p class="row-abstract">Five phases, zero arbitration, metrologically constrained.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">author</div><div class="meta-val">B. Greenway</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">Communication · AI</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="ocs.html">read online →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── AI SECURITY · LLM INTEGRITY · CLIPBOARD ATTACK VECTORS ── -->
+<section class="section" id="llm-security">
+  <div class="section-label --up"><span class="dot"></span> AI security · LLM integrity · clipboard attack vectors</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --up">AI security · LLM workflows · 2026</div>
+        <h2><a href="invisible-text.html">The Invisible Text You're Pasting Into Your LLM</a></h2>
+        <p class="row-desc">Structural analysis of the paste channel as an unguarded input boundary in LLM workflows — how invisible Unicode characters (zero-width spaces, tag character sequences encoding U+E0000–U+E007F range payloads) survive every standard text pipeline and arrive in the model's context window without the human operator's knowledge or review. Includes live embedded demonstrations and the case for paste-boundary inspection as foundational LLM infrastructure.</p>
+        <p class="row-abstract">The conversation about prompt injection has treated visible text as the attack surface. The clipboard is a quieter variation on the same problem — a second input channel that bypasses the visual review layer the entire workflow assumes is happening, while retaining full semantic influence on the model's output. The conditions that make it work are not architectural choices anyone made deliberately; they are the seam where human review and machine processing diverge.</p>
+      </div>
+      <div class="row-meta">
+        <div class="meta-item"><div class="meta-key">series</div><div class="meta-val">ThinkWell Technical Paper</div></div>
+        <div class="meta-item"><div class="meta-key">domain</div><div class="meta-val">AI security</div></div>
+        <div class="meta-item"><div class="meta-key">product</div><div class="meta-val">AcePaste Cleaner Pro</div></div>
+        <div class="meta-item"><div class="meta-key">format</div><div class="meta-val">Live HTML — embedded invisible chars</div></div>
+        <div class="meta-item"><div class="meta-key">license</div><div class="meta-val">CC BY-NC-ND 4.0</div></div>
+      </div>
+      <div class="row-action">
+        <a class="dl-btn" href="invisible-text.html">read →</a>
+        <a class="dl-btn --secondary" href="https://acepaste.xyz" rel="noopener" target="_blank">AcePaste Cleaner Pro ↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PROTECTED ── -->
+<section class="section" id="protected">
+  <div class="section-label --faint"><span class="dot"></span> protected · listed by name · available on request</div>
+  <div class="paper-list">
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --faint">protected</div>
+        <h2>Population-Level Syntactic Drift Under Large Language Model Exposure: A Measurement Protocol</h2>
+      </div>
+      <div class="row-meta"></div>
+      <div class="row-action">
+        <a class="dl-btn --secondary" href="mailto:b@twl.today">on request</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --faint">protected</div>
+        <h2>Fused Presence Sense: A Wearable Counter-Surveillance Sense Built From Trajectory, Not Strength</h2>
+      </div>
+      <div class="row-meta"></div>
+      <div class="row-action">
+        <a class="dl-btn --secondary" href="mailto:b@twl.today">on request</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --faint">protected</div>
+        <h2>Davison County Living-System Food Tower</h2>
+      </div>
+      <div class="row-meta"></div>
+      <div class="row-action">
+        <a class="dl-btn --secondary" href="mailto:b@twl.today">on request</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --faint">protected</div>
+        <h2>Tri-Module Wide-Span Field Machine</h2>
+      </div>
+      <div class="row-meta"></div>
+      <div class="row-action">
+        <a class="dl-btn --secondary" href="mailto:b@twl.today">on request</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --faint">protected</div>
+        <h2>Autonomous Network Propagators: A Seismic Early-Warning Framework for AI-Driven Threat Propagation</h2>
+      </div>
+      <div class="row-meta"></div>
+      <div class="row-action">
+        <a class="dl-btn --secondary" href="mailto:b@twl.today">on request</a>
+      </div>
+    </div>
+
+    <div class="paper-row">
+      <div class="row-main">
+        <div class="row-tag --faint">protected</div>
+        <h2>The Bitten, Not the Buried: Cimex lectularius and the Living-Victim Evidence of the European Vampire Complex</h2>
+      </div>
+      <div class="row-meta"></div>
+      <div class="row-action">
+        <a class="dl-btn --secondary" href="mailto:b@twl.today">on request</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- papers:end -->
+
+<!-- ── LICENSING & METHODOLOGY NOTE ── -->
+<section class="section" id="licensing">
+  <div class="section-label --faint"><span class="dot"></span> rights · citation</div>
+  <div class="method-note">
+    <div>
+      <div class="note-label">rights</div>
+      <div class="note-body">
+        Papers on this site are © 2026 ThinkWell Labs LLC and licensed under <strong><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a></strong>. You may copy and share them unchanged, for non-commercial purposes, as long as you cite Briar Morgan Greenway, ThinkWell Labs, with the title and a link. Translations, adaptations and any commercial use need written permission: <a href="mailto:b@twl.today">b@twl.today</a>. Each live product carries its own license at its own domain.
+      </div>
+    </div>
+    <div>
+      <div class="note-label">suggested citation</div>
+      <div class="note-body" style="font-family: var(--mono); font-size: 12px; color: var(--ink-faint); background: var(--bg-deep); border: 1px solid var(--rule-soft); padding: 12px; border-radius: 4px; white-space: pre-wrap; word-break: break-word; line-height: 1.55;">Greenway, B.M. Upstream Architectures: ThinkWell Labs Research Program (v2.1). ThinkWell Labs, 2026. https://twl.today/</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /shell -->
+</main>
+
+<footer class="tw-foot">
+  <div class="tw-wrap tw-foot-grid">
+    <div>
+      <a class="tw-brand" href="./"><img src="assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+      <p>Independent research and development laboratory. Run by one person.<br>Briar Morgan Greenway, founder &amp; director · <a href="mailto:b@twl.today">b@twl.today</a></p>
+    </div>
+    <div>
+      <h4>Research</h4>
+      <ul>
+        <li><a href="program.html">Program statement</a></li>
+        <li><a href="ocs.html">OCS framework</a></li>
+        <li><a href="invisible-text.html">Invisible text attacks</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="./#work">All products</a></li>
+        <li><a href="https://toroid.fyi" rel="noopener">Toroid</a></li>
+        <li><a href="https://errorfect.com" rel="noopener">Errorfect</a></li>
+        <li><a href="https://acepaste.xyz" rel="noopener">AcePaste Cleaner Pro</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Lab</h4>
+      <ul>
+        <li><a href="./">Home</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="https://github.com/sugarcypher/twl" rel="noopener">Source</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw-wrap tw-foot-base">
+    <span>© 2026 ThinkWell Labs LLC · Papers CC BY-NC-ND 4.0, cite when used</span>
+    <span>No trackers · no analytics · no cookies</span>
+  </div>
+</footer>
+
+</body>
+</html>
