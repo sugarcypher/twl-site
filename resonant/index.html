@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Resonant</title>
+<meta name="description" content="Resonant: a geometry game. Route sparks away from a living core with polygon reflectors, dampers, gates and prisms, then play the same rules across folded solids. Nine rounds, one physical parameter each.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script src="../shop.js"></script>
+<script src="../account/lucidlux-account.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<style>
+  /* Identity: a machined instrument. Three sources, one object —
+       metallurgy: brushed gunmetal plates, chamfered bevels, hairline highlights; nothing is flat paint
+       Star Trek (LCARS): rounded-end bars, elbowed frames, condensed uppercase labels, numerals as blocks
+       Tron: light lives only on edges — cyan traces for structure, hot orange for the thing that burns.
+     Layout unchanged: portrait, never scrolls, HUD above and below, two rails, a tall arena between. */
+  :root{ --bg:#05070a; --fg:#e6ecf0; --mute:#8d99a6; --faint:#4d5864;
+    --steel-hi:#343a43; --steel:#22272e; --steel-lo:#141820; --edge:#3b434d; --edge-lo:#0b0e13;
+    --cyan:#6cf3ff; --cyan-dim:rgba(108,243,255,.35); --orange:#ff8a2a; --red:#ff5a3c;
+    --spark:#ff8a2a; --seed:#7dffc9; --glass:#6cf3ff; --damp:#c39bff; --gate:#7dffc9; --prism:#ffd166; --core:#b8f4ff; --bad:#ff5a3c; --good:#6cf3ff; --amber:#6cf3ff;
+    --display:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif; --mono:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace; --rail:56px; color-scheme:dark;
+    --brush:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,rgba(0,0,0,0) 1px 3px);
+    --plate:linear-gradient(180deg,var(--steel-hi) 0%,var(--steel) 48%,var(--steel-lo) 100%);
+    --bevel:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.65),inset 1px 0 0 rgba(255,255,255,.05),inset -1px 0 0 rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.6);
+    --glow:0 0 10px rgba(108,243,255,.45),inset 0 0 14px rgba(108,243,255,.14); }
+  html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+  body{background:var(--bg) radial-gradient(ellipse at 50% 0%,#0b1119 0%,var(--bg) 60%);color:var(--fg);font:12px/1.4 var(--mono);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+  .app{height:100%;display:grid;grid-template-rows:auto 1fr auto;max-width:560px;margin:0 auto;box-sizing:border-box;padding-inline:8px;padding-block:6px 4px;gap:6px}
+  .lbl,.l,.phase,.o,.core .t,.num span,.tick .more,.sheet .k,.stick .lbl{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+  /* ---- top HUD: an LCARS elbow plate in brushed steel ---- */
+  .hud{display:grid;gap:5px;min-width:0;padding:6px 8px 6px 12px;border-radius:16px 4px 4px 4px;background:var(--brush),var(--plate);box-shadow:var(--bevel);position:relative}
+  .hud:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:16px 0 0 4px;background:var(--cyan);box-shadow:0 0 8px var(--cyan-dim)}
+  .hud .r1{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .hud .name{font:800 17px/1.1 var(--display);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hud .name small{font:400 11px var(--mono);color:var(--cyan);margin-left:8px;letter-spacing:.14em;text-transform:none}
+  .hud .phase{font-size:11px;color:var(--mute);white-space:nowrap}
+  .hud .phase b{color:var(--cyan);font-weight:700;text-shadow:0 0 8px var(--cyan-dim)}
+  .obj{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;min-width:0}
+  .obj::-webkit-scrollbar{display:none}
+  .o{display:inline-flex;align-items:center;gap:5px;padding:3px 7px 3px 3px;border:1px solid var(--edge);border-radius:999px 4px 4px 999px;font-size:9.5px;letter-spacing:.04em;color:var(--mute);white-space:nowrap;background:linear-gradient(180deg,#0f1319,#090c10);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:border-color .3s,color .3s;font-variant-numeric:tabular-nums}
+  .o i{width:15px;height:15px;border-radius:50%;border:1px solid var(--faint);display:grid;place-items:center;font-size:9px;font-style:normal;color:transparent;transition:all .3s;flex:none;background:#0a0d11}
+  .o.live{border-color:#3d4752;color:var(--fg)}
+  .o.live i{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 6px var(--cyan-dim);animation:pulse 1.8s ease-in-out infinite}
+  .o.done{border-color:var(--cyan-dim);color:var(--fg)}
+  .o.done i{background:var(--cyan);border-color:var(--cyan);color:#03262b;box-shadow:0 0 8px var(--cyan-dim);animation:none}
+  .o.fail{border-color:rgba(255,90,60,.6);color:var(--red)}
+  .o.fail i{border-color:var(--red);color:var(--red);box-shadow:0 0 8px rgba(255,90,60,.4);animation:none}
+  .o em{font-style:normal;color:var(--fg);font-family:var(--mono);letter-spacing:0}
+  .obj.n4 .o{padding:3px 5px 3px 3px;font-size:9px;gap:4px;letter-spacing:.02em} .obj.n4 .o i{width:13px;height:13px}
+  @keyframes pulse{0%,100%{box-shadow:0 0 4px rgba(108,243,255,.25)}50%{box-shadow:0 0 10px rgba(108,243,255,.7)}}
+
+  /* ---- middle: rails of machined keys + arena ---- */
+  .mid{display:grid;grid-template-columns:var(--rail) 1fr var(--rail);gap:6px;min-height:0}
+  .rail{display:flex;flex-direction:column;gap:5px;min-height:0;justify-content:space-between}
+  .grp{display:flex;flex-direction:column;gap:5px}
+  .rb{width:var(--rail);height:50px;border:1px solid var(--edge);border-bottom-color:var(--edge-lo);border-radius:14px 4px 4px 14px;background:var(--brush),var(--plate);box-shadow:var(--bevel);color:var(--mute);display:grid;place-items:center;cursor:pointer;padding:0;font:10px/1 var(--mono);transition:border-color .15s,color .15s,box-shadow .15s;position:relative;-webkit-tap-highlight-color:transparent;overflow:hidden}
+  .rail:last-child .rb{border-radius:4px 14px 14px 4px}
+  .rb:after{content:'';position:absolute;top:8px;bottom:8px;left:0;width:3px;border-radius:0 2px 2px 0;background:currentColor;opacity:0;transition:opacity .15s}
+  .rail:last-child .rb:after{left:auto;right:0;border-radius:2px 0 0 2px}
+  .rb .g{font-size:19px;line-height:1;font-family:var(--mono);transition:text-shadow .15s}
+  .rb .l{font-size:8px;margin-top:3px;letter-spacing:.06em}
+  .rb .c{position:absolute;top:3px;right:6px;font-size:9px;color:var(--faint)}
+  .rail:last-child .rb .c{right:auto;left:6px}
+  .rb:active{box-shadow:inset 0 2px 6px rgba(0,0,0,.7)}
+  .rb[aria-pressed="true"]{--k:var(--cyan);border-color:var(--k);color:var(--k);box-shadow:var(--bevel),var(--glow)}
+  .rb[aria-pressed="true"]:after{opacity:1;box-shadow:0 0 8px currentColor}
+  .rb[aria-pressed="true"] .g{text-shadow:0 0 8px currentColor}
+  .rb.sw[aria-pressed="true"]{box-shadow:var(--bevel),0 0 10px color-mix(in srgb,var(--k) 45%,transparent),inset 0 0 14px color-mix(in srgb,var(--k) 14%,transparent)}
+  .rb.go{background:linear-gradient(180deg,#8ff7ff,#4fd6e6 60%,#2fb3c6);color:#03262b;border-color:#9bf6ff;box-shadow:var(--bevel),0 0 14px var(--cyan-dim)}
+  .rb.go .g{text-shadow:none}
+  .rb:disabled{opacity:.3;cursor:default;box-shadow:var(--bevel)}
+  .rb:focus-visible{outline:2px solid var(--cyan);outline-offset:1px}
+  .stage{position:relative;min-width:0;min-height:0;border:1px solid var(--edge);border-radius:6px;overflow:hidden;background:#04060a;box-shadow:inset 0 0 0 1px rgba(108,243,255,.08),inset 0 0 40px rgba(0,0,0,.8),var(--bevel)}
+  canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+  /* thumb stick: a bezelled steel puck on a lit ring */
+  .stick{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:104px;height:104px;border-radius:50%;background:var(--brush),radial-gradient(circle at 50% 40%,#1b2027,#0b0e12 75%);border:1px solid var(--edge);box-shadow:var(--bevel),0 0 0 3px #0a0d11,0 0 0 4px var(--edge);display:none;touch-action:none;z-index:4}
+  .stick.show{display:block}
+  .stick:before{content:'';position:absolute;inset:12px;border-radius:50%;border:1px solid var(--cyan-dim);box-shadow:0 0 8px rgba(108,243,255,.2),inset 0 0 8px rgba(108,243,255,.12)}
+  .stick .knob{position:absolute;left:50%;top:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:var(--brush),radial-gradient(circle at 38% 32%,#6b747f,#2a3038 60%,#14181d);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -2px 3px rgba(0,0,0,.7),0 3px 8px rgba(0,0,0,.7),0 0 0 1px #0a0d11;transition:transform .12s}
+  .stick .knob:after{content:'';position:absolute;inset:16px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+  .stick.live .knob{transition:none}
+  .stick .lbl{position:absolute;left:0;right:0;bottom:-17px;text-align:center;font-size:9px;letter-spacing:.2em;color:var(--faint)}
+  .toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);max-width:88%;padding:6px 12px;border-radius:999px 4px 4px 999px;background:rgba(8,11,15,.9);border:1px solid var(--edge);border-left:3px solid var(--cyan);font-size:11px;color:var(--fg);opacity:0;transition:opacity .25s;pointer-events:none;text-align:center}
+  .toast.show{opacity:1}
+
+  /* ---- bottom HUD: plate with reactor bar, budget block, ticker line ---- */
+  .bot{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;min-width:0;padding:6px 12px 5px 8px;border-radius:4px 4px 4px 16px;background:var(--brush),var(--plate);box-shadow:var(--bevel);position:relative}
+  .bot:before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;border-radius:0 4px 4px 0;background:var(--steel-hi);box-shadow:inset 1px 0 0 rgba(255,255,255,.08)}
+  .core{display:grid;gap:4px;min-width:0}
+  .core .t{display:flex;justify-content:space-between;font-size:10.5px;color:var(--mute)}
+  .core .t b{color:var(--core);font-weight:400;font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:0;text-shadow:0 0 8px rgba(184,244,255,.5)}
+  .bar{height:8px;background:#080b0f;border-radius:2px;overflow:hidden;position:relative;box-shadow:inset 0 1px 2px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06)}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,#2fb3c6,var(--cyan));box-shadow:0 0 8px var(--cyan-dim);transition:width .25s,background .25s}
+  .bar:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 10px,#080b0f 10px 12px);z-index:1;pointer-events:none}
+  .bar:after{content:'';position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:rgba(230,236,240,.5);z-index:2}
+  .bar.bad i{background:linear-gradient(90deg,#b8481f,var(--orange));box-shadow:0 0 8px rgba(255,138,42,.5)}
+  .num{text-align:right;font-variant-numeric:tabular-nums;padding:2px 8px;border-radius:4px 12px 12px 4px;background:#080b0f;box-shadow:inset 0 1px 2px rgba(0,0,0,.9);min-width:52px}
+  .num b{display:block;font:800 21px/1 var(--display);color:var(--fg);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .num span{font-size:9px;color:var(--mute)}
+  .tick{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mute);min-width:0;cursor:pointer;padding:3px 0 0;border-top:1px solid rgba(0,0,0,.5);box-shadow:0 -1px 0 rgba(255,255,255,.05)}
+  .tick .dot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none;box-shadow:inset 0 1px 1px rgba(0,0,0,.6)}
+  .tick.hot .dot{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  .tick .m{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+  .tick .more{color:var(--faint);font-size:9.5px;white-space:nowrap}
+
+  /* ---- sheet (what happened) and end-of-round overlay ---- */
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;transform:translateY(105%);transition:transform .28s cubic-bezier(.3,.8,.3,1);background:var(--brush),linear-gradient(180deg,#1e232a,#10141a);border-top:1px solid var(--edge);border-radius:18px 4px 0 0;padding:14px 18px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;max-height:70%;overflow:auto;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -20px 60px rgba(0,0,0,.6)}
+  .sheet.show{transform:none}
+  .sheet .k{font-size:10.5px;color:var(--cyan);margin-bottom:10px;display:flex;justify-content:space-between;padding-bottom:6px;border-bottom:2px solid var(--cyan);border-image:linear-gradient(90deg,var(--cyan) 30%,var(--edge) 30%) 1}
+  .sheet .k button{background:none;border:0;color:var(--mute);font:11px var(--display);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:0}
+  .sheet h3{margin:0 0 6px;font:700 17px/1.25 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--cyan);text-shadow:0 0 10px var(--cyan-dim)}
+  .sheet p{margin:0 0 8px;font-size:12.5px;line-height:1.55;color:#cfd7de}
+  .sheet .log{margin-top:12px;border-top:1px solid var(--edge);padding-top:10px;color:var(--mute);font-size:11.5px}
+  .sheet .log div{padding:3px 0}
+  .sheet .log .t{color:var(--cyan)}
+  .sheet .rules{margin-top:12px;border-top:1px solid var(--edge);padding-top:10px;color:var(--faint);font-size:10.5px;line-height:1.5}
+  .scrim{position:fixed;inset:0;z-index:19;background:rgba(0,0,0,.45);display:none}
+  .scrim.show{display:block}
+  .overlay{position:absolute;inset:0;display:none;place-items:center;background:rgba(4,6,10,.86);backdrop-filter:blur(4px);z-index:5;padding:20px;text-align:center}
+  .overlay.show{display:grid}
+  .overlay h2{font:700 30px/1.1 var(--display);letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px}
+  .overlay h2 em{font-style:normal;color:var(--cyan);text-shadow:0 0 14px var(--cyan-dim)}
+  .overlay p{color:var(--mute);margin:0 0 16px;font-size:12px;max-width:300px}
+  .overlay button{font:700 13px var(--display);letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(180deg,#8ff7ff,#4fd6e6 60%,#2fb3c6);color:#03262b;border:0;border-radius:999px 6px 6px 999px;padding:11px 22px 11px 18px;cursor:pointer;box-shadow:var(--bevel),0 0 14px var(--cyan-dim)}
+  /* ---- the gate: rounds V–IX are the paid half; one plate, one sentence, one tap ---- */
+  .gate{position:absolute;inset:0;display:none;place-items:center;background:rgba(4,6,10,.92);backdrop-filter:blur(5px);z-index:6;padding:14px;overflow:auto}
+  .gate.show{display:grid}
+  .gate .pl{width:100%;max-width:300px;padding:16px 16px 14px;border-radius:16px 4px 4px 4px;background:var(--brush),var(--plate);box-shadow:var(--bevel);position:relative;text-align:left}
+  .gate .pl:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:16px 0 0 4px;background:var(--cyan);box-shadow:0 0 8px var(--cyan-dim)}
+  .gate h2{font:800 20px/1.1 var(--display);letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px}
+  .gate h2 em{font-style:normal;color:var(--cyan)}
+  .gate p{margin:0 0 10px;font-size:12px;line-height:1.5;color:var(--mute)}
+  .gate p b{color:var(--fg);font-weight:600}
+  .gate .q{font-family:var(--display);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:10px 0 6px;font-weight:600}
+  .gate .ages{display:flex;gap:6px;margin-bottom:12px}
+  .gate .ages button{flex:1;height:34px;white-space:nowrap;padding:0 4px;border:1px solid var(--edge);border-radius:999px 4px 4px 999px;background:linear-gradient(180deg,#0f1319,#090c10);color:var(--mute);font:600 11px var(--display);letter-spacing:.04em;cursor:pointer}
+  .gate .ages button[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 8px var(--cyan-dim)}
+  .gate .pay{display:block;width:100%;height:44px;border:0;border-radius:999px 6px 6px 999px;background:linear-gradient(180deg,#8ff7ff,#4fd6e6 60%,#2fb3c6);color:#03262b;font:800 13px var(--display);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:var(--bevel),0 0 14px var(--cyan-dim);text-decoration:none;display:grid;place-items:center}
+  .gate .pay[aria-disabled="true"]{opacity:.35;pointer-events:none}
+  .gate .row{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+  .gate .row button{background:none;border:0;color:var(--mute);font:600 10px var(--display);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:4px 0}
+  .gate .row button:hover{color:var(--cyan)}
+  .gate .msg{font-size:11px;color:var(--cyan);min-height:14px;margin-top:8px}
+  .gate .msg.bad{color:var(--red)}
+  .gate textarea{width:100%;box-sizing:border-box;height:64px;background:#080b0f;border:1px solid var(--edge);border-radius:4px;color:var(--fg);font:11px var(--mono);padding:6px;resize:none;margin-top:6px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (min-height:900px){ .rb{height:56px} }
+  @media (max-height:700px){ .rb{height:44px} .rb .l{display:none} .hud .name{font-size:15px} }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="hud">
+    <div class="r1"><div class="name" id="lvlName"></div><div class="phase" id="phase">planning</div></div>
+    <div class="obj" id="obj" aria-label="Round objectives"></div>
+  </header>
+
+  <div class="mid">
+    <nav class="rail" aria-label="Build">
+      <div class="grp" role="group" aria-label="Shape">
+        <button class="rb" data-shape="3" aria-pressed="true"><span class="g">△</span><span class="l">tri</span><span class="c">20</span></button>
+        <button class="rb" data-shape="4" aria-pressed="false"><span class="g">▢</span><span class="l">quad</span><span class="c">30</span></button>
+        <button class="rb" data-shape="5" aria-pressed="false"><span class="g">⬠</span><span class="l">pent</span><span class="c">40</span></button>
+      </div>
+      <div class="grp" role="group" aria-label="Role">
+        <button class="rb sw" data-role="reflector" style="--k:var(--glass)" aria-pressed="true"><span class="g">◇</span><span class="l">reflect</span></button>
+        <button class="rb sw" data-role="damper" style="--k:var(--damp)" aria-pressed="false" id="bDamper"><span class="g">◍</span><span class="l">damp</span></button>
+        <button class="rb sw" data-role="gate" style="--k:var(--gate)" aria-pressed="false" id="bGate"><span class="g">┊</span><span class="l">gate</span></button>
+        <button class="rb sw" data-role="prism" style="--k:var(--prism)" aria-pressed="false" id="bPrism"><span class="g">◭</span><span class="l">prism</span></button>
+      </div>
+    </nav>
+
+    <div class="stage" id="stage">
+      <canvas id="c" aria-label="Resonant arena"></canvas>
+      <div class="toast" id="toast"></div>
+      <div class="stick" id="stick" aria-label="Turn the solid"><div class="knob" id="knob"></div><div class="lbl">turn</div></div>
+      <div class="overlay" id="overlay"><div><h2 id="ovTitle"></h2><p id="ovText"></p><button id="ovBtn">Continue</button></div></div>
+      <div class="gate" id="gate" role="dialog" aria-label="The paid half">
+        <div class="pl">
+          <h2>The <em>solids</em></h2>
+          <p>Rounds I–IV are free, always. Rounds V–IX are the paid half: fields, dispersion, the cube, the dual and the dodecahedron. <b>One key, every Lucid Lux game, every device.</b> Pay what you like above the floor, by card or in stablecoin.</p>
+          <div class="q">How old are you? (counted, never stored with you)</div>
+          <div class="ages"><button data-age="u13" aria-pressed="false">Under 13</button><button data-age="13-17" aria-pressed="false">13 – 17</button><button data-age="18+" aria-pressed="false">18 +</button></div>
+          <a class="pay" data-pay aria-disabled="true" href="#" rel="noopener">Get the key</a>
+          <div class="msg"></div>
+          <div class="keybox" style="display:none"><textarea placeholder="Paste your key" spellcheck="false"></textarea><button class="pay" data-go style="margin-top:6px;height:36px">Unlock</button></div>
+          <div class="row"><button data-have>I have a key</button><button data-back>Not now</button></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="rail" aria-label="Act">
+      <div class="grp">
+        <button class="rb" id="bRot"><span class="g">↻</span><span class="l">rotate</span></button>
+        <button class="rb" id="bDel"><span class="g">✕</span><span class="l">remove</span></button>
+        <button class="rb" id="bPrev" aria-pressed="true"><span class="g">⋰</span><span class="l">paths</span></button>
+      </div>
+      <div class="grp">
+        <button class="rb go" id="bStart"><span class="g">▶</span><span class="l">wave</span></button>
+        <button class="rb" id="bPause"><span class="g">❚❚</span><span class="l">pause</span></button>
+        <button class="rb" id="bReset"><span class="g">↺</span><span class="l">reset</span></button>
+      </div>
+    </nav>
+  </div>
+
+  <footer class="bot">
+    <div class="core"><div class="t"><span>core integrity</span><b id="mCore">100</b></div><div class="bar" id="coreBar"><i style="width:100%"></i></div></div>
+    <div class="num"><b id="mBudget">0</b><span>budget</span></div>
+    <div class="tick" id="tick"><span class="dot"></span><span class="m" id="tickMsg">Place pieces, then start the wave.</span><span class="more">what happened ↑</span></div>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-label="What happened">
+  <div class="k"><span>what happened</span><button id="sheetClose">close ✕</button></div>
+  <div id="card"><p style="color:var(--mute)">Cards appear here when something you built causes an effect worth naming. Each fires once.</p></div>
+  <div class="log" id="log"></div>
+  <div class="rules">Deterministic simulation, fixed step. Reflection keeps 92% of a spark's energy, a wall 60%, the medium takes 12% a second, a damper keeps 45% and pays 12% of the rest into your budget; below 18 a spark dissipates. Speed is √energy; a prism deviates by 0.6·√(60/energy) radians per face; a field adds a constant acceleration to sparks only. Model, not nature: the numbers are tuned for play and stated so you can reason with them.</div>
+</div>
+
+<script>
+(() => {
+'use strict';
+// =====================================================================
+// RESONANT — portrait vertical slice. Three flat rounds, then the arena folds
+// into a tetrahedron and the same rules run across its faces. Fixed-step,
+// seeded, simulation separated from rendering.
+// =====================================================================
+const W=540; let H=960; const DT=1/120;   // H follows the stage's aspect (see resize) so the arena fills it
+const CORE={x:270,y:720,r:32};
+const COST={3:20,4:30,5:40};
+const REST={reflector:0.92, gate:0.92};
+const WALL_REST=0.6, DAMP_KEEP=0.45, DAMP_PAY=0.12, MIN_E=18, DRAG=0.12;
+const COL={spark:'#ff8a2a',seed:'#7dffc9',reflector:'#6cf3ff',damper:'#c39bff',gate:'#7dffc9',prism:'#ffd166',core:'#b8f4ff'};
+const PRISM_K=0.6;   // prism deviation per face: PRISM_K·√(60/E) radians, so cool packets bend more than hot ones
+const FONT='ui-monospace, SF Mono, Menlo, Consolas, monospace';
+// metal fill for a polygon: brushed steel lit from above, one shared gradient per frame
+function steel(x0,y0,x1,y1){ const g=ctx.createLinearGradient(x0,y0,x1,y1); g.addColorStop(0,'#3a414b'); g.addColorStop(.5,'#1f242b'); g.addColorStop(1,'#12161c'); return g; }
+let seed=1; const rnd=()=>{ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; };
+
+// ---------- rounds: objectives are live predicates, checked off in the HUD ----------
+const resolved=s=>s.spawned-s.ents.filter(e=>e.alive).length;
+const LEVELS=[
+  { name:'Redirection', num:'I', budget:90, roles:['reflector'],
+    emit:[{x:270,y:36,aim:[0,1],jit:0.05,type:'spark',E:100,n:8,every:1.6,start:1}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'n',label:'resolved',total:8,val:s=>resolved(s),test:s=>resolved(s)>=8} ],
+    brief:'Sparks carry energy. The core loses what hits it. Turn them away.' },
+  { name:'Energy', num:'II', budget:120, roles:['reflector','damper'],
+    emit:[{x:70,y:36,aim:[0.42,1],jit:0.10,type:'spark',E:160,n:6,every:1.4,start:1},{x:470,y:36,aim:[-0.42,1],jit:0.10,type:'spark',E:160,n:6,every:1.4,start:1.7}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'diss',label:'dissipated',total:8,val:s=>s.diss,test:s=>s.diss>=8},
+                 {k:'n',label:'resolved',total:12,val:s=>resolved(s),test:s=>resolved(s)>=12} ],
+    brief:'Hot sparks: 160 energy. A clean reflection keeps 92%, so they come back. Dampers take the heat.' },
+  { name:'Selective routing', num:'III', budget:120, roles:['reflector','damper','gate'],
+    emit:[{x:270,y:36,aim:[0,1],jit:0.07,type:'mix',E:120,n:14,every:1.1,start:1}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'fed',label:'delivered',total:5,val:s=>s.fed,test:s=>s.fed>=5},
+                 {k:'n',label:'resolved',total:14,val:s=>resolved(s),test:s=>resolved(s)>=14} ],
+    brief:'A mixed stream. Seeds feed the core (+8); sparks burn it. The gate passes seeds and reflects sparks.' },
+  { name:'The fold', num:'IV', budget:100, roles:['reflector','damper'], fold:'tet', coreFace:2, card:'fold',
+    emit:[{face:0,at:[-60,-70],aim:[0.35,1],jit:0.10,type:'spark',E:110,n:8,every:1.5,start:1}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'n',label:'resolved',total:8,val:s=>resolved(s),test:s=>resolved(s)>=8} ],
+    brief:'The arena folded into a tetrahedron. Sparks cross edges and keep going. Use the stick to turn it; tap a face to build.' },
+  { name:'Field', num:'V', budget:120, roles:['reflector','damper','gate'], field:[70,0],
+    emit:[{x:120,y:36,aim:[0.3,1],jit:0.06,type:'mix',E:110,n:12,every:1.2,start:1}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'fed',label:'delivered',total:3,val:s=>s.fed,test:s=>s.fed>=3},
+                 {k:'n',label:'resolved',total:12,val:s=>resolved(s),test:s=>resolved(s)>=12} ],
+    brief:'Flat again, but a field pushes everything charged to the right. Sparks curve; seeds are neutral and go straight.' },
+  { name:'Dispersion', num:'VI', budget:130, roles:['reflector','damper','prism'],
+    emit:[{x:270,y:36,aim:[0,1],jit:0.04,type:'mix',E:130,n:15,every:1.1,start:1}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'fed',label:'delivered',total:5,val:s=>s.fed,test:s=>s.fed>=5},
+                 {k:'diss',label:'dissipated',total:6,val:s=>s.diss,test:s=>s.diss>=6} ],
+    brief:'One tight stream, two kinds in it. A prism bends by energy: cool seeds bend hard, hot sparks barely. Sort them by physics, not by a gate.' },
+  { name:'The cube', num:'VII', budget:110, roles:['reflector','damper'], fold:'cube', coreFace:0, card:'defect',
+    emit:[{face:1,at:[0,-80],aim:[0.2,1],jit:0.12,type:'spark',E:120,n:5,every:1.5,start:1},{face:2,at:[0,-80],aim:[-0.2,1],jit:0.12,type:'spark',E:120,n:5,every:1.5,start:1.8}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'n',label:'resolved',total:10,val:s=>resolved(s),test:s=>resolved(s)>=10} ],
+    brief:'Six square faces. Two emitters on faces next to the core. At every corner three right angles meet and 90° is missing: that is where straight paths disagree.' },
+  { name:'The dual', num:'VIII', budget:120, roles:['reflector','gate','prism'], fold:'oct', coreFace:0, card:'dual',
+    emit:[{face:7,at:[0,-60],aim:[0.3,1],jit:0.10,type:'mix',E:120,n:12,every:1.2,start:1},{face:1,at:[0,50],aim:[0,-1],jit:0.14,type:'spark',E:140,n:6,every:1.6,start:1.5}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'fed',label:'delivered',total:2,val:s=>s.fed,test:s=>s.fed>=2},
+                 {k:'n',label:'resolved',total:18,val:s=>resolved(s),test:s=>resolved(s)>=18} ],
+    brief:'Eight triangles: the cube turned inside out, faces for corners. A mixed stream starts on the far side. Seeds expire after 14 s, so route them.' },
+  { name:'Twelve', num:'IX', budget:160, roles:['reflector','damper','gate','prism'], fold:'dodec', coreFace:0, card:'five',
+    emit:[{face:1,at:[-40,-55],aim:[0.59,0.81],jit:0.14,type:'mix',E:150,n:8,every:1.3,start:1},{face:4,at:[-40,-55],aim:[0.59,0.81],jit:0.14,type:'spark',E:150,n:8,every:1.3,start:1.6}],
+    objectives:[ {k:'core',label:'core > 50',live:true,test:s=>s.core>50,fail:s=>s.core<=50},
+                 {k:'diss',label:'dissipated',total:6,val:s=>s.diss,test:s=>s.diss>=6},
+                 {k:'fed',label:'delivered',total:2,val:s=>s.fed,test:s=>s.fed>=2},
+                 {k:'n',label:'resolved',total:16,val:s=>resolved(s),test:s=>resolved(s)>=16} ],
+    brief:'Twelve pentagons, the largest face this game allows. Every tool you have. Two streams, one of them mixed.' },
+];
+
+// ---------- geometry ----------
+const polyPts=p=>{ const n=p.n,R=p.R||30,out=[]; for(let i=0;i<n;i++){ const a=p.rot+i/n*Math.PI*2-Math.PI/2; out.push([p.x+Math.cos(a)*R,p.y+Math.sin(a)*R]); } return out; };
+function segNearest(px,py,ax,ay,bx,by){ const dx=bx-ax,dy=by-ay,L2=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L2; t=Math.max(0,Math.min(1,t)); return [ax+dx*t,ay+dy*t]; }
+function pointInPoly(px,py,pts){ let c=false; for(let i=0,j=pts.length-1;i<pts.length;j=i++){ const [xi,yi]=pts[i],[xj,yj]=pts[j]; if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi)) c=!c; } return c; }
+
+// ---------- solids: each face is its own 2D space; crossing an edge is a rigid transform.
+// Faces are found as the convex hull of the vertex set, so one builder serves every solid. ----------
+const V3={ sub:(a,b)=>a.map((x,i)=>x-b[i]), dot:(a,b)=>a.reduce((s,x,i)=>s+x*b[i],0), cross:(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]], norm:a=>{const l=Math.hypot(...a)||1;return a.map(x=>x/l)} };
+function buildSolid(V){ const {sub,dot,cross,norm}=V3; const eps=1e-6*Math.hypot(...V[0]); const seen=new Set(); const faces=[];
+  for(let i=0;i<V.length;i++) for(let j=i+1;j<V.length;j++) for(let k=j+1;k<V.length;k++){ let n=cross(sub(V[j],V[i]),sub(V[k],V[i])); if(Math.hypot(...n)<eps) continue; n=norm(n); let d=dot(n,V[i]); let pos=0,neg=0; const on=[];
+    V.forEach((v,q)=>{ const s=dot(n,v)-d; if(s>eps) pos++; else if(s<-eps) neg++; else on.push(q); }); if(pos&&neg) continue; if(pos){ n=n.map(x=>-x); d=-d; }
+    const key=on.slice().sort((a,b)=>a-b).join(','); if(seen.has(key)) continue; seen.add(key);
+    const c=[0,1,2].map(t=>on.reduce((s,q)=>s+V[q][t],0)/on.length); const u0=norm(sub(V[on[0]],c)),w0=cross(n,u0);
+    const idx=on.slice().sort((a,b)=>Math.atan2(dot(sub(V[a],c),w0),dot(sub(V[a],c),u0))-Math.atan2(dot(sub(V[b],c),w0),dot(sub(V[b],c),u0)));   // counter-clockwise seen from outside
+    const O=V[idx[0]],u=norm(sub(V[idx[1]],O)),w=cross(n,u); const loc=v=>[dot(sub(v,O),u),dot(sub(v,O),w)]; faces.push({idx,O,u,w,n,L:idx.map(q=>loc(V[q]))}); }
+  faces.forEach(f=>{ f.cen=[f.L.reduce((s,p)=>s+p[0],0)/f.L.length,f.L.reduce((s,p)=>s+p[1],0)/f.L.length]; f.inr=Math.min(...f.L.map((a,e)=>{ const b=f.L[(e+1)%f.L.length]; return Math.abs((b[0]-a[0])*(f.cen[1]-a[1])-(b[1]-a[1])*(f.cen[0]-a[0]))/Math.hypot(b[0]-a[0],b[1]-a[1]); })); });
+  faces.forEach((f,fi)=>{ f.edges=[]; const m=f.idx.length; for(let e=0;e<m;e++){ const A=f.idx[e],B=f.idx[(e+1)%m]; const gi=faces.findIndex((g,j)=>j!==fi&&g.idx.includes(A)&&g.idx.includes(B)); const g=faces[gi]; const a1=f.L[e],b1=f.L[(e+1)%m],a2=g.L[g.idx.indexOf(A)],b2=g.L[g.idx.indexOf(B)]; const ang=Math.atan2(b2[1]-a2[1],b2[0]-a2[0])-Math.atan2(b1[1]-a1[1],b1[0]-a1[0]); f.edges.push({to:gi,cos:Math.cos(ang),sin:Math.sin(ang),a1,a2}); } });
+  const E=faces.reduce((s,f)=>s+f.idx.length,0)/2;
+  return {V,faces,E,toWorld:(fi,x,y)=>{const f=faces[fi]; return [0,1,2].map(i=>f.O[i]+f.u[i]*x+f.w[i]*y);}}; }
+const PHI=(1+Math.sqrt(5))/2, SOLIDS={};
+{ const R=250; const sc=(vs,r)=>vs.map(v=>v.map(x=>x*R/r));
+  SOLIDS.tet=buildSolid(sc([[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],Math.sqrt(3)));
+  const cube=[]; for(const a of [-1,1]) for(const b of [-1,1]) for(const c of [-1,1]) cube.push([a,b,c]); SOLIDS.cube=buildSolid(sc(cube,Math.sqrt(3)));
+  SOLIDS.oct=buildSolid(sc([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],1));
+  const dod=cube.slice(); for(const a of [-1,1]) for(const b of [-1,1]){ dod.push([0,a/PHI,b*PHI]); dod.push([a/PHI,b*PHI,0]); dod.push([a*PHI,0,b/PHI]); } SOLIDS.dodec=buildSolid(sc(dod,Math.sqrt(3)).map(v=>v.map(x=>x*1.08))); }
+let SOL=SOLIDS.tet;
+function xfer(edge,x,y,vx,vy){ const dx=x-edge.a1[0],dy=y-edge.a1[1]; return {x:edge.a2[0]+edge.cos*dx-edge.sin*dy,y:edge.a2[1]+edge.sin*dx+edge.cos*dy,vx:edge.cos*vx-edge.sin*vy,vy:edge.sin*vx+edge.cos*vy}; }
+// signed distance to each edge line of a face: positive inside (faces wind counter-clockwise)
+function edgeDists(f,x,y){ const Lp=SOL.faces[f].L,m=Lp.length,out=[]; for(let e=0;e<m;e++){ const a=Lp[e],b=Lp[(e+1)%m]; const len=Math.hypot(b[0]-a[0],b[1]-a[1])||1; out.push(((b[0]-a[0])*(y-a[1])-(b[1]-a[1])*(x-a[0]))/len); } return out; }
+let FOLD_CORE={face:0,x:0,y:0,r:28};
+// ---------- state ----------
+const S={lvl:0,pieces:[],ents:[],t:0,phase:'plan',core:100,budget:0,diss:0,fed:0,spawned:0,sel:null,shape:3,role:'reflector',preview:true,paused:false,taught:{},log:[],cam:{yaw:0.6,pitch:-0.45},fold:false};
+const $=id=>document.getElementById(id); const L=()=>LEVELS[S.lvl];
+let toastT=null;
+function say(m,hot){ S.log.unshift({t:S.t.toFixed(1),m}); if(S.log.length>10) S.log.length=10; $('tickMsg').textContent=m; $('tick').classList.toggle('hot',!!hot); $('log').innerHTML=S.log.map(l=>`<div><span class="t">${l.t}s</span> ${l.m}</div>`).join(''); }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1600); }
+
+function loadLevel(i){ if(locked(i)){ gateShow(); return; } window.__llStart=Date.now(); const lv=LEVELS[i]; $('overlay').classList.remove('show'); if(lv.fold){ SOL=SOLIDS[lv.fold]; const f=SOL.faces[lv.coreFace]; FOLD_CORE={face:lv.coreFace,x:f.cen[0],y:f.cen[1],r:28}; S.cam={yaw:0.6,pitch:-0.45}; }
+  lv.emit.forEach(em=>{ em._k=0; if(em.at){ const f=SOL.faces[em.face]; em.x=f.cen[0]+em.at[0]; em.y=f.cen[1]+em.at[1]; } });
+  Object.assign(S,{lvl:i,pieces:[],ents:[],t:0,phase:'plan',core:100,budget:lv.budget,diss:0,fed:0,spawned:0,sel:null,fold:!!lv.fold,paused:false,log:[],role:lv.roles[0],shape:3}); seed=17+i*101;
+  $('lvlName').innerHTML=`${lv.name}<small>round ${lv.num} of ${LEVELS.length}</small>`;
+  $('bDamper').disabled=!lv.roles.includes('damper'); $('bGate').disabled=!lv.roles.includes('gate'); $('bPrism').disabled=!lv.roles.includes('prism');
+  document.querySelectorAll('[data-role]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.role===S.role)));
+  document.querySelectorAll('[data-shape]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.shape===S.shape)));
+  $('bStart').disabled=false; $('bPause').setAttribute('aria-pressed','false'); $('stick').classList.toggle('show',S.fold);
+  say(lv.brief); ui(); }
+
+// ---------- entities ----------
+const speedOf=E=>22*Math.sqrt(E);   // sparks: speed ∝ √energy. Seeds are cool packets: fixed energy, fixed pace, no drag.
+const SEED_SPEED=150;
+function setSpeed(e){ const sp=e.type==='seed'?SEED_SPEED:speedOf(e.E),v=Math.hypot(e.vx,e.vy)||1; e.vx*=sp/v; e.vy*=sp/v; }
+function spawnFrom(em,k){ let type=em.type; if(type==='mix') type=(k%3===2)?'spark':'seed'; const jit=(rnd()-0.5)*2*em.jit; const a=Math.atan2(em.aim[1],em.aim[0])+jit; const E=type==='seed'?30:em.E,sp=type==='seed'?SEED_SPEED:speedOf(E); S.ents.push({type,E,x:em.x,y:em.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,face:em.face??0,trail:[],alive:true,bounces:0,age:0}); }
+
+// ---------- simulation ----------
+function step(){ const lv=L(); S.t+=DT;
+  lv.emit.forEach(em=>{ while(em._k<em.n&&S.t>=em.start+em._k*em.every){ spawnFrom(em,em._k); em._k++; S.spawned++; } });
+  for(const e of S.ents){ if(!e.alive) continue; e.age+=DT; const px=e.x,py=e.y; if(lv.field&&e.type==='spark'){ e.vx+=lv.field[0]*DT; e.vy+=lv.field[1]*DT; e.E=(e.vx*e.vx+e.vy*e.vy)/484; if(e.age>0.8) teach('field'); } e.x+=e.vx*DT; e.y+=e.vy*DT; if(e.type==='spark'){ e.E*=(1-DRAG*DT); if(e.age%0.5<DT) setSpeed(e); }
+    if(S.fold) crossEdges(e,px,py); else { if(e.x<4){e.x=4;e.vx=-e.vx;lose(e,WALL_REST,'wall');} if(e.x>W-4){e.x=W-4;e.vx=-e.vx;lose(e,WALL_REST,'wall');} if(e.y<4){e.y=4;e.vy=-e.vy;lose(e,WALL_REST,'wall');} if(e.y>H-4){e.y=H-4;e.vy=-e.vy;lose(e,WALL_REST,'wall');} }
+    for(const p of S.pieces){ if(S.fold&&p.face!==e.face) continue; hitPiece(e,p); }
+    const c=S.fold?FOLD_CORE:CORE; if(!S.fold||e.face===c.face){ const d=Math.hypot(e.x-c.x,e.y-c.y); if(d<c.r+4){ if(e.type==='spark'){ const dmg=Math.round(e.E/5); S.core=Math.max(0,S.core-dmg); say(`Spark hit the core with ${Math.round(e.E)} energy: −${dmg}.`,true); } else { S.core=Math.min(100,S.core+8); S.fed++; say('Seed reached the core: +8.'); } e.alive=false; } }
+    if(e.type==='spark'&&e.E<MIN_E){ e.alive=false; S.diss++; teach('dissipate'); }
+    if(e.type==='seed'&&e.age>14){ e.alive=false; }   // a seed that never finds the core expires
+    e.trail.push([e.face,e.x,e.y]); if(e.trail.length>24) e.trail.shift(); }
+  S.ents=S.ents.filter(e=>e.alive||e.age<0.4);
+  const allOut=lv.emit.every(em=>em._k>=em.n), none=S.ents.every(e=>!e.alive);
+  if(S.core<=0){ finish(false); } else if(allOut&&none){ finish(lv.objectives.every(o=>o.test(S))); } }
+function lose(e,k,why){ if(e.type==='spark') e.E*=k; e.bounces++; setSpeed(e); if(why==='wall'&&e.type==='spark') teach('wall'); }
+function hitPiece(e,p){ const pts=polyPts(p); let best=null;
+  for(let i=0;i<pts.length;i++){ const a=pts[i],b=pts[(i+1)%pts.length]; const [nx,ny]=segNearest(e.x,e.y,a[0],a[1],b[0],b[1]); const d=Math.hypot(e.x-nx,e.y-ny); if(d<4.5&&(!best||d<best.d)) best={d,nx,ny,a,b}; }
+  if(!best) return;
+  if(p.role==='gate'&&e.type==='seed'){ if(!p._pass) p._pass=new Set(); if(!p._pass.has(e)){ p._pass.add(e); teach('gate'); } return; }
+  let nx=-(best.b[1]-best.a[1]),ny=(best.b[0]-best.a[0]); const l=Math.hypot(nx,ny)||1; nx/=l; ny/=l; if(nx*(p.x-best.nx)+ny*(p.y-best.ny)>0){nx=-nx;ny=-ny;}
+  const vn=e.vx*nx+e.vy*ny; const inside=pointInPoly(e.x,e.y,pts); if(vn>0&&!inside) return;
+  if(p.role==='prism'){ // refract on entry and again on exit; deviation falls with energy (dispersion)
+    if(vn<0&&inside) return; const th=Math.min(1.2,PRISM_K*Math.sqrt(60/Math.max(e.E,1))); const side=Math.sign(e.vx*(p.y-e.y)-e.vy*(p.x-e.x))||1; const a=Math.atan2(e.vy,e.vx)+side*th; const sp=Math.hypot(e.vx,e.vy); e.vx=Math.cos(a)*sp; e.vy=Math.sin(a)*sp; const out=vn>0?1:-1; e.x=best.nx+nx*5*out; e.y=best.ny+ny*5*out; p.flash=1; teach('prism'); return; }
+  e.vx-=2*vn*nx; e.vy-=2*vn*ny; e.x=best.nx+nx*5; e.y=best.ny+ny*5; p.flash=1;
+  if(p.role==='damper'){ const paid=e.E*(1-DAMP_KEEP); e.E*=DAMP_KEEP; S.budget+=Math.round(paid*DAMP_PAY); setSpeed(e); e.bounces++; teach('damper'); }
+  else { lose(e,REST[p.role]||0.92,'reflect'); teach('reflect'); } }
+function crossEdges(e,px,py){ for(let g=0;g<3;g++){ const d=edgeDists(e.face,e.x,e.y); let i=-1; d.forEach((v,k)=>{ if(v<0&&(i<0||v<d[i])) i=k; }); if(i<0) return; const edge=SOL.faces[e.face].edges[i]; const d0=Math.max(0,edgeDists(e.face,px,py)[i]); const t=d0/(d0-d[i]||1); const ex=px+(e.x-px)*t,ey=py+(e.y-py)*t; const o=xfer(edge,ex,ey,e.vx,e.vy); const rest=1-t; e.face=edge.to; e.x=o.x+o.vx*DT*rest; e.y=o.y+o.vy*DT*rest; e.vx=o.vx; e.vy=o.vy; px=o.x; py=o.y; teach(L().card||'fold'); } }
+// ---------- the key: rounds V–IX unlock with an Ed25519-signed token minted by the shop worker after a paid checkout ----------
+// ---------- the key: shared across every Lucid Lux game (see /shop.js). Rounds V–IX need it once the shop is on. ----------
+const FREE=4;
+const locked=i=>i>=FREE&&!LL.ok();
+LL.mount({ gate:$('gate'), onUnlock:()=>{ setTimeout(()=>{ LL.hide(); loadLevel(FREE); },900); }, onBack:()=>{ LL.hide(); loadLevel(0); }, onShow:()=>$('overlay').classList.remove('show') });
+const gateShow=()=>LL.show(); const verifyKey=t=>LL.verify(t);
+function finish(won){
+  // Lucid Lux account: remember the best round held on this device and report the result.
+  try { const b=JSON.parse(localStorage.getItem('resonant_best')||'null')||{round:0,integrity:0};
+    if(won&&(S.lvl+1>b.round||(S.lvl+1===b.round&&S.core>b.integrity))) localStorage.setItem('resonant_best',JSON.stringify({round:S.lvl+1,integrity:S.core}));
+    window.dispatchEvent(new CustomEvent('lucidlux:result',{detail:{kind:'round',level:S.lvl+1,score:Math.max(0,Math.min(100,Math.round(S.core))),durationMs:Date.now()-(window.__llStart||Date.now()),won:!!won}}));
+  } catch(e) {}
+  S.phase='done'; $('bStart').disabled=true; ui(); const ov=$('overlay'); ov.classList.add('show'); const last=S.lvl>=LEVELS.length-1;
+  if(won){ $('ovTitle').innerHTML=last?'The solid <em>held.</em>':'Core <em>held.</em>'; $('ovText').textContent=last?`Integrity ${S.core}. Nine rounds, nine parameters: reflection, restitution, permeability, folding, fields, dispersion, defect, duality, and why five.`:`Integrity ${S.core}. Next: ${LEVELS[S.lvl+1].name}.`; $('ovBtn').textContent=last?'Play again':(locked(S.lvl+1)?'The solids →':'Next round'); $('ovBtn').onclick=()=>{ const n=last?0:S.lvl+1; locked(n)?gateShow():loadLevel(n); }; }
+  else if(S.core>0){ const miss=L().objectives.filter(o=>!o.test(S)).map(o=>o.label).join(', '); $('ovTitle').innerHTML='Core held, <em>target missed.</em>'; $('ovText').textContent=`Integrity ${S.core}. Short on: ${miss}. Same seed, same stream: change the geometry.`; $('ovBtn').textContent='Retry with my pieces'; $('ovBtn').onclick=()=>{ const keep=S.pieces; loadLevel(S.lvl); S.pieces=keep; S.budget=L().budget-keep.reduce((s,p)=>s+COST[p.n],0); ui(); }; }
+  else { $('ovTitle').innerHTML='Core <em>lost.</em>'; $('ovText').textContent=`Integrity ${S.core}. Same seed, same sparks: change the geometry.`; $('ovBtn').textContent='Retry with my pieces'; $('ovBtn').onclick=()=>{ const keep=S.pieces; loadLevel(S.lvl); S.pieces=keep; S.budget=L().budget-keep.reduce((s,p)=>s+COST[p.n],0); ui(); }; } }
+
+// ---------- teaching cards: one per cause, fired by the player's own geometry ----------
+const CARDS={
+  reflect:['Reflection and restitution','A spark meeting a reflector leaves at the mirror angle: the velocity component along the surface normal reverses, the rest is kept. It leaves with 92% of its energy. That number is the coefficient of restitution; in a real collision it depends on the materials and is rarely 1.','Speed is √energy, so a slower spark is a cooler one.'],
+  wall:['Lossy boundary','The walls keep 60% of a spark\'s energy per hit and the medium takes 12% a second in flight. Nothing ricochets forever: every bounce is a withdrawal from a finite account, and below 18 the spark dissipates.','This is the rule that forbids infinite-bounce exploits. It is stated, not hidden.'],
+  damper:['Damping converts, it does not destroy','A damper returns the spark with 45% of its energy and books 12% of what it took into your budget. The rest is modelled as heat. Kept + paid + heat = what came in.','Real dampers do the same accounting, with heat the usual destination.'],
+  dissipate:['Dissipation','A spark fell below 18 energy and stopped. Nothing destroyed it; its energy was spread across bounces, walls, the medium and dampers until too little was left to matter at the scale the core measures.','Count the bounces in a trail. Each is a known fraction.'],
+  gate:['Selective permeability','The gate let a seed through and reflects sparks. It sorts by kind, not by energy: a membrane that admits one species and refuses another, which is what cell membranes do with ions and filters do with wavelengths.','Sorting is the step between redirecting and transforming.'],
+  field:['A field bends the path','Every charged spark is accelerated sideways at a constant rate, so its path is a parabola, the same curve a thrown stone draws under gravity. The mirror rule still holds at the instant of contact; only the flight between contacts has changed. Energy rises as the field does work and falls as walls take it.','Seeds carry no charge: the field does not see them. Same space, different rule, sorted by a property.'],
+  prism:['Dispersion','The prism deviates whatever passes through it, twice, by an angle that falls with energy: cool packets bend hard, hot ones barely. A mixed stream fans out into an energy spectrum. A glass prism does this to light by wavelength; a mass spectrometer does it to ions by mass-to-charge.','A gate sorts by kind. A prism sorts by a continuous quantity. Both are selection; only one needs a label.'],
+  defect:['Angular defect','At a cube corner three right angles meet: 270°, so 90° is missing. A path crossing edges near that corner comes round to find itself turned by exactly the defect. Eight corners × 90° = 720°, the same total as the tetrahedron\'s four × 180°. Every closed convex solid sums to 720°: that is Descartes\' theorem, and it is why a flat sheet cannot be closed without corners.','Curvature is not in the faces. It is parked at the vertices.'],
+  dual:['Duality','The octahedron is the cube turned inside out: 6 vertices for its 6 faces, 8 faces for its 8 corners, 12 edges either way. Vertices minus edges plus faces is 2 for both, and for every solid in this game. Each corner here carries 120° of defect: six × 120° = 720° again.','Two shapes, one set of relations read in opposite directions.'],
+  five:['Why five','Pentagons are the largest regular face that can close a solid on its own. Three pentagon corners total 324°, leaving 36° of defect; twenty corners × 36° = 720°. Three hexagon corners total 360°: nothing missing, so hexagons tile a plane and never curl shut. That is the rule behind this game\'s five-sided limit, and behind why a football needs its pentagons.','A constraint stated as geometry rather than as a rule reads as a fact about the world.'],
+  fold:['Crossing an edge','A spark left one face and continued on the next; its velocity was rotated by the dihedral angle so it stays in the new plane. Locally nothing changed: it still goes straight. Globally, the far side of the solid is next door.','Local direction and global position are different questions on a folded surface.'],
+};
+function teach(k){ if(S.taught[k]) return; S.taught[k]=true; const [h,a,b]=CARDS[k]; $('card').innerHTML=`<h3>${h}</h3><p>${a}</p><p>${b}</p>`; say(`${h} — tap for the card.`,true); }
+const openSheet=()=>{ $('sheet').classList.add('show'); $('scrim').classList.add('show'); $('tick').classList.remove('hot'); };
+const closeSheet=()=>{ $('sheet').classList.remove('show'); $('scrim').classList.remove('show'); };
+$('tick').onclick=openSheet; $('sheetClose').onclick=closeSheet; $('scrim').onclick=closeSheet;
+
+// ---------- rendering (arena letterboxed into the stage, uniform scale) ----------
+const cv=$('c'),ctx=cv.getContext('2d'); let sc=1,ox=0,oy=0;
+function resize(){ const r=cv.getBoundingClientRect(); const dpr=Math.min(devicePixelRatio||1,2); cv.width=Math.max(1,r.width*dpr); cv.height=Math.max(1,r.height*dpr);
+  if(S.phase==='plan'){ H=Math.round(Math.max(760,Math.min(1700,W*r.height/Math.max(1,r.width)))); CORE.y=H-230; }   // geometry settles when the wave starts
+  sc=Math.min(cv.width/W,cv.height/H); ox=(cv.width-W*sc)/2; oy=(cv.height-H*sc)/2; }
+addEventListener('resize',resize); new ResizeObserver(resize).observe($('stage')); resize();
+function draw(){ ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,cv.width,cv.height); ctx.setTransform(sc,0,0,sc,ox,oy);
+  if(S.fold){ drawFold(); return; }
+  // Tron floor: hairline grid, every third trace lit a little harder, frame edge lit
+  ctx.lineWidth=1; for(let x=0;x<=W;x+=60){ ctx.strokeStyle=x%180?'rgba(108,243,255,0.045)':'rgba(108,243,255,0.11)'; ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke(); } for(let y=0;y<=H;y+=60){ ctx.strokeStyle=y%180?'rgba(108,243,255,0.045)':'rgba(108,243,255,0.11)'; ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke(); }
+  ctx.strokeStyle='rgba(108,243,255,0.35)'; ctx.lineWidth=1.5; ctx.strokeRect(1,1,W-2,H-2); ctx.strokeStyle='rgba(108,243,255,0.08)'; ctx.lineWidth=5; ctx.strokeRect(1,1,W-2,H-2); ctx.lineWidth=1;
+  L().emit.forEach(em=>drawEmitter(em.x,em.y,em.type==='mix'?'#d9dde2':COL[em.type]));
+  drawCore(CORE.x,CORE.y,CORE.r);
+  if(S.preview&&S.phase==='plan') drawPreview();
+  for(const p of S.pieces) drawPiece(p,polyPts(p),p===S.sel);
+  for(const e of S.ents) drawEnt(e,(f,x,y)=>[x,y]); }
+// emitter: a machined port — steel collar, lit bore
+function drawEmitter(x,y,c){ ctx.fillStyle=steel(x-14,y-14,x+14,y+14); ctx.beginPath(); ctx.arc(x,y,14,0,7); ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(x,y,14,0,7); ctx.stroke(); ctx.fillStyle='#05070a'; ctx.beginPath(); ctx.arc(x,y,8,0,7); ctx.fill(); ctx.fillStyle=c; ctx.shadowColor=c; ctx.shadowBlur=10; ctx.beginPath(); ctx.arc(x,y,4.5,0,7); ctx.fill(); ctx.shadowBlur=0; }
+// core: a reactor — steel housing ring, segmented containment, plasma that cools from cyan-white to orange as integrity falls
+function drawCore(x,y,r){ const k=S.core/100; const t=performance.now()/1000; const hot=k<0.5; const col=hot?'255,138,42':'184,244,255';
+  const g=ctx.createRadialGradient(x,y,2,x,y,r*2.6); g.addColorStop(0,`rgba(${col},${0.35+0.35*k})`); g.addColorStop(0.4,`rgba(${col},${0.10*k+0.03})`); g.addColorStop(1,`rgba(${col},0)`); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r*2.6,0,7); ctx.fill();
+  ctx.fillStyle=steel(x-r,y-r,x+r,y+r); ctx.beginPath(); ctx.arc(x,y,r+6,0,7); ctx.arc(x,y,r-1,0,7,true); ctx.fill('evenodd'); ctx.strokeStyle='rgba(255,255,255,.16)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(x,y,r+6,0,7); ctx.stroke();
+  ctx.strokeStyle=`rgba(${col},${0.5+0.5*k})`; ctx.lineWidth=3; ctx.setLineDash([r*0.5,r*0.22]); ctx.lineDashOffset=-t*18; ctx.beginPath(); ctx.arc(x,y,r+2.5,0,7); ctx.stroke(); ctx.setLineDash([]);
+  const pr=r*0.55*k+3+Math.sin(t*3)*1.2; const p=ctx.createRadialGradient(x,y,0,x,y,pr); p.addColorStop(0,'#ffffff'); p.addColorStop(0.5,`rgb(${col})`); p.addColorStop(1,`rgba(${col},0.15)`); ctx.fillStyle=p; ctx.shadowColor=`rgb(${col})`; ctx.shadowBlur=14; ctx.beginPath(); ctx.arc(x,y,pr,0,7); ctx.fill(); ctx.shadowBlur=0; }
+// piece: a machined plate — steel body, chamfer highlight, luminous edge in the role colour. Gates are open frames (membranes), dampers carry a heat-sink ring.
+function drawPiece(p,pts,sel){ const c=COL[p.role]; let xs=pts.map(q=>q[0]),ys=pts.map(q=>q[1]); const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const path=()=>{ ctx.beginPath(); pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.closePath(); };
+  path(); if(p.role==='gate'){ ctx.fillStyle=c; ctx.globalAlpha=0.07+(p.flash||0)*0.4; ctx.fill(); ctx.globalAlpha=1; } else { ctx.fillStyle=steel(x0,y0,x0,y1); ctx.fill(); ctx.fillStyle=c; ctx.globalAlpha=0.08+(p.flash||0)*0.55; ctx.fill(); ctx.globalAlpha=1; }
+  // chamfer: a thin inner highlight offset toward the light
+  if(p.role!=='gate'){ ctx.save(); ctx.clip(); ctx.strokeStyle='rgba(255,255,255,.22)'; ctx.lineWidth=1; ctx.translate(0,1.5); path(); ctx.stroke(); ctx.restore(); }
+  path(); ctx.shadowColor=c; ctx.shadowBlur=sel?16:9; ctx.strokeStyle=sel?'#ffffff':c; ctx.lineWidth=sel?2.4:1.6; if(p.role==='gate') ctx.setLineDash([6,4]); ctx.stroke(); ctx.setLineDash([]); ctx.shadowBlur=0;
+  if(p.role==='damper'){ ctx.strokeStyle=c; ctx.lineWidth=1; ctx.globalAlpha=.7; for(let k=0;k<3;k++){ ctx.beginPath(); ctx.arc(p.x,p.y,4+k*4,0,7); ctx.stroke(); } ctx.globalAlpha=1; }
+  if(p.role==='reflector'){ ctx.fillStyle='rgba(255,255,255,.55)'; ctx.beginPath(); ctx.arc(p.x,p.y,1.6,0,7); ctx.fill(); }
+  if(p.role==='prism'){ ctx.lineWidth=1; [['#ff8a2a',-0.35],['#ffd166',0],['#7dffc9',0.35]].forEach(([col,a])=>{ ctx.strokeStyle=col; ctx.globalAlpha=.8; ctx.beginPath(); ctx.moveTo(p.x-6,p.y+6); ctx.lineTo(p.x+6+Math.sin(a)*8,p.y-6+Math.cos(a)*-4); ctx.stroke(); }); ctx.globalAlpha=1; }
+  p.flash=Math.max(0,(p.flash||0)-0.08); }
+// entity: a light-cycle ribbon — wide faint halo under a thin bright line — and a white-hot head
+function drawEnt(e,map){ const c=COL[e.type]; if(e.trail.length>1){ ctx.lineCap='round'; for(const pass of [[4.5,0.16],[1.3,0.75]]){ ctx.lineWidth=pass[0]; for(let i=1;i<e.trail.length;i++){ const [fa,ax,ay]=e.trail[i-1],[fb,bx,by]=e.trail[i]; if(fa!==fb) continue; const A=map(fa,ax,ay),B=map(fb,bx,by); if(!A||!B) continue; ctx.strokeStyle=c; ctx.globalAlpha=(i/e.trail.length)*pass[1]; ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); ctx.stroke(); } } ctx.globalAlpha=1; ctx.lineCap='butt'; }
+  const P=map(e.face,e.x,e.y); if(!P) return; const r=e.alive?3+Math.sqrt(e.E)/5:2; ctx.globalAlpha=e.alive?1:0.3; if(e.alive){ ctx.shadowColor=c; ctx.shadowBlur=12; } ctx.fillStyle=c; ctx.beginPath(); ctx.arc(P[0],P[1],r,0,7); ctx.fill(); ctx.shadowBlur=0; if(e.alive){ ctx.fillStyle='#ffffff'; ctx.beginPath(); ctx.arc(P[0],P[1],Math.max(1,r*0.45),0,7); ctx.fill(); } ctx.globalAlpha=1;
+  if(e.alive&&!S.fold){ ctx.fillStyle='rgba(230,236,240,.7)'; ctx.font='10px '+FONT; ctx.fillText(Math.round(e.E),P[0]+7,P[1]-5); } }
+function drawPreview(){ // ghost runs, centre aim plus the jitter cone, no side effects
+  const lv=L(); if(S.fold){ drawFoldPreview(); return; } const save={budget:S.budget,core:S.core,diss:S.diss,fed:S.fed}; const hold=S.taught; S.taught=new Proxy({},{get:()=>true,set:()=>true});
+  lv.emit.forEach(em=>{ const types=em.type==='mix'?['seed','spark']:[em.type]; types.forEach((ty,ti)=>[0,-1,1].forEach(side=>{ const a=Math.atan2(em.aim[1],em.aim[0])+side*em.jit; const E=ty==='seed'?30:em.E,sp=ty==='seed'?SEED_SPEED:speedOf(E); const e={type:ty,E,x:em.x,y:em.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,face:0,trail:[],alive:true,bounces:0,age:0}; const pts=[[e.x,e.y]];
+    for(let i=0;i<900&&e.alive;i++){ if(lv.field&&ty==='spark'){ e.vx+=lv.field[0]*DT; e.vy+=lv.field[1]*DT; e.E=(e.vx*e.vx+e.vy*e.vy)/484; } e.x+=e.vx*DT; e.y+=e.vy*DT; if(ty==='spark') e.E*=(1-DRAG*DT); if(e.x<4){e.x=4;e.vx=-e.vx;e.E*=WALL_REST;setSpeed(e);} if(e.x>W-4){e.x=W-4;e.vx=-e.vx;e.E*=WALL_REST;setSpeed(e);} if(e.y<4){e.y=4;e.vy=-e.vy;e.E*=WALL_REST;setSpeed(e);} if(e.y>H-4){e.y=H-4;e.vy=-e.vy;e.E*=WALL_REST;setSpeed(e);} for(const p of S.pieces) hitPiece(e,p); if(Math.hypot(e.x-CORE.x,e.y-CORE.y)<CORE.r+4) e.alive=false; if(ty==='spark'&&e.E<MIN_E) e.alive=false; if(i%3===0) pts.push([e.x,e.y]); }
+    ctx.setLineDash([3,5]); ctx.strokeStyle=COL[ty]; ctx.globalAlpha=side?.16:.5; ctx.lineWidth=1; ctx.beginPath(); pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1; })); });
+  S.pieces.forEach(p=>{ p.flash=0; if(p._pass) p._pass.clear(); }); Object.assign(S,save); S.taught=hold; }
+function drawFoldPreview(){ const lv=L(); const save={budget:S.budget,core:S.core,diss:S.diss,fed:S.fed}; const hold=S.taught; S.taught=new Proxy({},{get:()=>true,set:()=>true}); const front=SOL.faces.map(f=>cam3(f.n)[2]-cam3([0,0,0])[2]<0);
+  lv.emit.forEach(em=>{ const types=em.type==='mix'?['seed','spark']:[em.type]; types.forEach(ty=>[0,-1,1].forEach(side=>{ const a=Math.atan2(em.aim[1],em.aim[0])+side*em.jit; const E=ty==='seed'?30:em.E,sp=ty==='seed'?SEED_SPEED:speedOf(E); const e={type:ty,E,x:em.x,y:em.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,face:em.face,trail:[],alive:true,bounces:0,age:0}; const pts=[[e.face,e.x,e.y]];
+    for(let i=0;i<700&&e.alive;i++){ const px=e.x,py=e.y; e.x+=e.vx*DT; e.y+=e.vy*DT; if(ty==='spark') e.E*=(1-DRAG*DT); crossEdges(e,px,py); for(const p of S.pieces){ if(p.face===e.face) hitPiece(e,p); } if(e.face===FOLD_CORE.face&&Math.hypot(e.x-FOLD_CORE.x,e.y-FOLD_CORE.y)<FOLD_CORE.r+4) e.alive=false; if(ty==='spark'&&e.E<MIN_E) e.alive=false; if(i%3===0) pts.push([e.face,e.x,e.y]); }
+    ctx.setLineDash([3,5]); ctx.strokeStyle=COL[ty]; ctx.globalAlpha=side?.22:.7; ctx.lineWidth=1.2; ctx.beginPath(); for(let k=1;k<pts.length;k++){ const [fa,ax,ay]=pts[k-1],[fb,bx,by]=pts[k]; if(fa!==fb||!front[fa]) continue; const A=faceMap(fa,ax,ay),B=faceMap(fb,bx,by); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); } ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1; })); });
+  S.pieces.forEach(p=>{ p.flash=0; if(p._pass) p._pass.clear(); }); Object.assign(S,save); S.taught=hold; }
+// ---- fold: 3D projection, faces as translucent glass ----
+function cam3(v){ const {yaw,pitch}=S.cam; const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch); const x=v[0]*cy-v[2]*sy,z=v[0]*sy+v[2]*cy,y=v[1]; const y2=y*cp-z*sp,z2=y*sp+z*cp; const d=900,s=1.25*d/(d+z2+420); return [W/2+x*s,H/2-y2*s,z2]; }
+const faceMap=(f,x,y)=>cam3(SOL.toWorld(f,x,y));
+const cen=f=>f.cen;
+function drawFloor(a){ ctx.lineWidth=1; for(let x=0;x<=W;x+=60){ ctx.strokeStyle=`rgba(108,243,255,${x%180?a:a*2.4})`; ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke(); } for(let y=0;y<=H;y+=60){ ctx.strokeStyle=`rgba(108,243,255,${y%180?a:a*2.4})`; ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke(); } }
+function drawFold(){ drawFloor(0.02); const order=SOL.faces.map((f,i)=>({i,z:faceMap(i,...cen(f))[2]})).sort((a,b)=>b.z-a.z);
+  for(const {i} of order){ const f=SOL.faces[i]; const P=f.L.map(([x,y])=>faceMap(i,x,y)); const front=cam3(f.n)[2]-cam3([0,0,0])[2]<0;
+    ctx.beginPath(); P.forEach((p,k)=>k?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.closePath(); if(front){ const g=ctx.createLinearGradient(P[0][0],P[0][1],P[2][0],P[2][1]); g.addColorStop(0,'rgba(58,65,75,0.55)'); g.addColorStop(0.5,'rgba(24,29,36,0.55)'); g.addColorStop(1,'rgba(14,18,24,0.6)'); ctx.fillStyle=g; } else ctx.fillStyle='rgba(108,243,255,0.03)'; ctx.fill();
+    if(front){ ctx.save(); ctx.clip(); ctx.strokeStyle='rgba(108,243,255,0.05)'; ctx.lineWidth=1; for(let k=1;k<6;k++){ const t=k/6; ctx.beginPath(); ctx.moveTo(P[0][0]+(P[1][0]-P[0][0])*t,P[0][1]+(P[1][1]-P[0][1])*t); ctx.lineTo(P[0][0]+(P[2][0]-P[0][0])*t,P[0][1]+(P[2][1]-P[0][1])*t); ctx.stroke(); } ctx.restore(); }
+    if(!front) ctx.setLineDash([4,5]); ctx.shadowColor='#6cf3ff'; ctx.shadowBlur=front?14:0; ctx.strokeStyle=front?'#9ff8ff':'rgba(108,243,255,0.22)'; ctx.lineWidth=front?2:1; ctx.stroke(); ctx.setLineDash([]); ctx.shadowBlur=0;
+    ctx.globalAlpha=front?1:0.3;
+    if(i===FOLD_CORE.face){ const c=faceMap(i,FOLD_CORE.x,FOLD_CORE.y); drawCore(c[0],c[1],FOLD_CORE.r*0.9); }
+    L().emit.forEach(em=>{ if(em.face!==i) return; const p=faceMap(i,em.x,em.y); drawEmitter(p[0],p[1],em.type==='mix'?'#d9dde2':COL[em.type]); });
+    for(const p of S.pieces){ if(p.face!==i) continue; drawPiece(p,polyPts(p).map(([x,y])=>faceMap(i,x,y).slice(0,2)),p===S.sel); }
+    for(const e of S.ents){ if(e.face!==i) continue; drawEnt(e,(ff,x,y)=>ff===i?faceMap(ff,x,y):null); }
+    ctx.globalAlpha=1; const c=faceMap(i,...cen(f)); ctx.fillStyle=front?'rgba(108,243,255,.6)':'rgba(108,243,255,.18)'; ctx.font='11px '+FONT; ctx.fillText(String.fromCharCode(65+i),c[0]-4,c[1]+4); }
+  if(S.preview&&S.phase==='plan') drawPreview(); }
+function pickFace(mx,my){ let best=null; SOL.faces.forEach((f,i)=>{ const P=f.L.map(([x,y])=>faceMap(i,x,y)); if(!(cam3(f.n)[2]-cam3([0,0,0])[2]<0)) return; if(!pointInPoly(mx,my,P.map(p=>[p[0],p[1]]))) return; const [A,B,C]=P; const d=(B[1]-C[1])*(A[0]-C[0])+(C[0]-B[0])*(A[1]-C[1]); const l0=((B[1]-C[1])*(mx-C[0])+(C[0]-B[0])*(my-C[1]))/d,l1=((C[1]-A[1])*(mx-C[0])+(A[0]-C[0])*(my-C[1]))/d,l2=1-l0-l1; best={face:i,x:l0*f.L[0][0]+l1*f.L[1][0]+l2*f.L[2][0],y:l0*f.L[0][1]+l1*f.L[1][1]+l2*f.L[2][1]}; }); return best; }
+
+// ---------- input ----------
+let drag=null,downAt=null;
+function toArena(ev){ const r=cv.getBoundingClientRect(); const dpr=cv.width/r.width; return [((ev.clientX-r.left)*dpr-ox)/sc,((ev.clientY-r.top)*dpr-oy)/sc]; }
+const pieceAt=(x,y,face)=>S.pieces.find(p=>(!S.fold||p.face===face)&&pointInPoly(x,y,polyPts(p)));
+cv.addEventListener('pointerdown',ev=>{ cv.setPointerCapture(ev.pointerId); const [mx,my]=toArena(ev); downAt={mx,my,moved:false};
+  if(S.fold){ const pk=pickFace(mx,my); const hit=pk&&pieceAt(pk.x,pk.y,pk.face); if(hit){S.sel=hit;drag={p:hit,ox:pk.x-hit.x,oy:pk.y-hit.y};} }
+  else { const hit=pieceAt(mx,my); if(hit){S.sel=hit;drag={p:hit,ox:mx-hit.x,oy:my-hit.y};} } ui(); });
+cv.addEventListener('pointermove',ev=>{ if(!drag) return; const [mx,my]=toArena(ev); if(downAt&&Math.hypot(mx-downAt.mx,my-downAt.my)>4) downAt.moved=true;
+  if(S.phase!=='plan') return; if(S.fold){ const pk=pickFace(mx,my); if(pk&&pk.face===drag.p.face){drag.p.x=pk.x-drag.ox;drag.p.y=pk.y-drag.oy;} } else { drag.p.x=Math.max(28,Math.min(W-28,mx-drag.ox)); drag.p.y=Math.max(28,Math.min(H-28,my-drag.oy)); } });
+cv.addEventListener('pointerup',ev=>{ const [mx,my]=toArena(ev); const was=drag; drag=null; if(!downAt) return; const moved=downAt.moved; downAt=null; if(moved||(was&&was.p)){ui();return;} if(S.phase!=='plan') return;
+  if(S.fold){ const pk=pickFace(mx,my); if(!pk){S.sel=null;ui();return;} place(pk.x,pk.y,pk.face); } else if(mx>=0&&mx<=W&&my>=0&&my<=H) place(mx,my,0); ui(); });
+function place(x,y,face){ const cost=COST[S.shape]; if(S.budget<cost){ toast(`Budget ${S.budget}: a ${['','','','triangle','quad','pentagon'][S.shape]} costs ${cost}.`); return; }
+  const c=S.fold?FOLD_CORE:CORE; if((!S.fold||face===c.face)&&Math.hypot(x-c.x,y-c.y)<c.r+40){ toast('Too close to the core.'); return; }
+  if(S.fold&&edgeDists(face,x,y).some(v=>v<34)){ toast('Keep clear of the face edges.'); return; }
+  const p={n:S.shape,role:S.role,x,y,rot:0,face,R:30}; S.pieces.push(p); S.budget-=cost; S.sel=p; }
+const rotateSel=()=>{ if(S.sel&&S.phase==='plan') S.sel.rot+=Math.PI/12; };
+const removeSel=()=>{ if(S.sel&&S.phase==='plan'){ S.budget+=COST[S.sel.n]; S.pieces=S.pieces.filter(p=>p!==S.sel); S.sel=null; ui(); } };
+addEventListener('keydown',ev=>{ if(ev.target.tagName==='BUTTON') return; if(ev.key==='r'||ev.key==='R') rotateSel(); if(ev.key==='Delete'||ev.key==='Backspace') removeSel(); if(ev.key===' '){ev.preventDefault(); S.phase==='plan'?startWave():togglePause();} if(ev.key==='Escape') closeSheet(); });
+document.querySelectorAll('[data-shape]').forEach(b=>b.addEventListener('click',()=>{ S.shape=+b.dataset.shape; document.querySelectorAll('[data-shape]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
+document.querySelectorAll('[data-role]').forEach(b=>b.addEventListener('click',()=>{ if(b.disabled) return; S.role=b.dataset.role; document.querySelectorAll('[data-role]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); if(S.sel&&S.phase==='plan') S.sel.role=S.role; }));
+$('bRot').onclick=rotateSel; $('bDel').onclick=removeSel; $('bPrev').onclick=()=>{ S.preview=!S.preview; $('bPrev').setAttribute('aria-pressed',String(S.preview)); };
+function startWave(){ if(S.phase!=='plan') return; S.phase='wave'; S.sel=null; $('bStart').disabled=true; say('Wave started.'); ui(); }
+function togglePause(){ if(S.phase!=='wave') return; S.paused=!S.paused; $('bPause').setAttribute('aria-pressed',String(S.paused)); ui(); }
+$('bStart').onclick=startWave; $('bPause').onclick=togglePause; $('bReset').onclick=()=>loadLevel(S.lvl);
+
+// ---------- thumb stick: displacement sets the turn rate; release recentres ----------
+const stick=$('stick'),knob=$('knob'); let js={x:0,y:0,id:null};
+function stickSet(ev){ const r=stick.getBoundingClientRect(); const cx=r.left+r.width/2,cy=r.top+r.height/2; let dx=ev.clientX-cx,dy=ev.clientY-cy; const m=Math.hypot(dx,dy),max=r.width/2-18; if(m>max){dx*=max/m;dy*=max/m;} js.x=dx/max; js.y=dy/max; knob.style.transform=`translate(${dx}px,${dy}px)`; }
+stick.addEventListener('pointerdown',ev=>{ js.id=ev.pointerId; stick.setPointerCapture(ev.pointerId); stick.classList.add('live'); stickSet(ev); ev.preventDefault(); });
+stick.addEventListener('pointermove',ev=>{ if(js.id===ev.pointerId) stickSet(ev); });
+const stickEnd=ev=>{ if(js.id!==ev.pointerId) return; js={x:0,y:0,id:null}; stick.classList.remove('live'); knob.style.transform=''; };
+stick.addEventListener('pointerup',stickEnd); stick.addEventListener('pointercancel',stickEnd);
+function stickTick(dt){ if(!S.fold||js.id===null) return; S.cam.yaw+=js.x*2.2*dt; S.cam.pitch=Math.max(-1.3,Math.min(1.3,S.cam.pitch+js.y*2.2*dt)); }
+
+// ---------- HUD ----------
+function ui(){ $('mCore').textContent=S.core; const bar=$('coreBar'); bar.firstElementChild.style.width=S.core+'%'; bar.classList.toggle('bad',S.core<=50); $('mBudget').textContent=S.budget;
+  $('phase').innerHTML=S.phase==='plan'?'planning':S.phase==='wave'?(S.paused?'<b>paused</b>':`wave <b>${S.t.toFixed(1)}s</b>`):'resolved';
+  const obj=$('obj'); obj.classList.toggle('n4',L().objectives.length>3); const html=L().objectives.map(o=>{ const met=o.test(S); const fail=o.fail&&o.fail(S)&&S.phase!=='plan'; const cls=fail?'fail':met?(o.live&&S.phase!=='done'?'live':'done'):''; const v=o.total!=null?`<em>${o.val(S)}</em>/${o.total}`:''; return `<span class="o ${cls}"><i>${fail?'!':'✓'}</i>${o.label} ${v}</span>`; }).join(''); if(obj.innerHTML!==html) obj.innerHTML=html; }
+
+// ---------- loop ----------
+let acc=0,last=performance.now();
+function frame(now){ requestAnimationFrame(frame); const el=Math.min(0.1,(now-last)/1000); last=now; stickTick(el); if(S.phase==='wave'&&!S.paused){ acc+=el; let n=0; while(acc>=DT&&n<8){step();acc-=DT;n++;} ui(); } draw(); }
+loadLevel(0); requestAnimationFrame(frame);
+window.__resonant={S,loadLevel,startWave,place,CORE,H:()=>H,SOLIDS,LEVELS,solid:()=>SOL,LL,gateShow,verifyKey};
+LL.init().then(()=>{ if(LL.justPaid&&LL.ok()){ LL.show(); LL.say('Unlocked. Your key is under "I have a key": copy it to use on another device.'); setTimeout(()=>{ LL.hide(); loadLevel(FREE); },1800); } else if(LL.justPaid){ LL.show(); LL.say('Payment seen but the key did not verify. Tap "I have a key" to paste one, or try again.',true); } });
+})();
+</script>
+
+<script>LucidLuxAccount.attach({ game: 'resonant', keys: ['resonant_best'], version: 'resonant',
+  progress: function (st) { var b = st && st.keys && st.keys.resonant_best; return b ? b.round * 1000 + b.integrity : 0; },
+  button: { dark: true, compact: true, position: 'left-middle' } });</script>
+</body>
+</html>
