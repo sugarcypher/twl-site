@@ -86,6 +86,8 @@ p { margin: 0; }
 /* ── Sections with a SEAM-style rail ── */
 .section { position: relative; padding: clamp(72px, 10vw, 128px) 0; }
 .section-alt { background: var(--paper-2); }
+#work { background: #ebe8f2; } /* light gray lavender so the white cards read as cards */
+#work .rail { border-right-color: #d8d3e3; }
 .section-black { background: var(--night); color: #fff; }
 .section-yellow { background: var(--yellow); color: var(--ink); }
 .rail { position: absolute; left: 0; top: 0; bottom: 0; width: 44px; border-right: 1px solid var(--rule); display: flex; justify-content: center; padding-top: clamp(72px, 10vw, 128px); }
