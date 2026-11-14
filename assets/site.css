@@ -149,8 +149,7 @@ div.card:hover { transform: none; box-shadow: none; }
 .shelf-books { display: grid; grid-template-columns: 1.2fr 1fr 1fr; align-items: start; }
 .book { display: flex; flex-direction: column; text-decoration: none; color: inherit; min-width: 0; }
 .book-stand { position: relative; height: 320px; padding: 0 16px; display: flex; align-items: flex-end; justify-content: center; perspective: 1100px; border-bottom: 10px solid #2a2f37; box-shadow: 0 16px 22px -14px #000; }
-.book-cover { position: relative; display: block; height: 76%; transform: rotateY(-16deg); transform-origin: left bottom; box-shadow: 14px 10px 24px -8px rgba(0,0,0,.85); border-radius: 1px 3px 3px 1px; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
-.book.is-lead .book-cover { height: 94%; }
+.book-cover { position: relative; display: block; height: calc(var(--trim-h, 9) / 11 * 94%); transform: rotateY(-16deg); transform-origin: left bottom; box-shadow: 14px 10px 24px -8px rgba(0,0,0,.85); border-radius: 1px 3px 3px 1px; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
 .book-cover img { display: block; height: 100%; width: auto; max-width: 100%; border-radius: inherit; }
 .book-cover::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(255,255,255,.22) 0, rgba(0,0,0,.35) 2.5%, rgba(255,255,255,.06) 5%, transparent 9%); pointer-events: none; }
 .book:hover .book-cover, .book:focus-visible .book-cover { transform: rotateY(0) translateY(-10px); box-shadow: 0 22px 30px -12px rgba(0,0,0,.9); }
@@ -170,7 +169,8 @@ div.card:hover { transform: none; box-shadow: none; }
   .shelf-books { grid-template-columns: 1fr; }
   .book { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: start; padding: 18px 0; border-top: 1px solid #23272e; }
   .book-stand, .book.is-lead .book-stand { height: auto; padding: 0; perspective: none; border-bottom-width: 6px; }
-  .book-cover, .book.is-lead .book-cover { height: auto; width: 100%; transform: none; }
+  .book-stand { align-items: flex-end; }
+  .book-cover { height: auto; width: calc(var(--trim-h, 9) / 11 * 100%); transform: none; }
   .book-cover img { width: 100%; height: auto; }
   .book:hover .book-cover { transform: none; }
   .book-body { padding: 0; }
