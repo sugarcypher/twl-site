@@ -167,11 +167,9 @@ div.card:hover { transform: none; box-shadow: none; }
 }
 @media (max-width: 640px) {
   .shelf-books { grid-template-columns: 1fr; }
-  .book { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: start; padding: 18px 0; border-top: 1px solid #23272e; }
-  .book-stand, .book.is-lead .book-stand { height: auto; padding: 0; perspective: none; border-bottom-width: 6px; }
-  .book-stand { align-items: flex-end; }
-  .book-cover { height: auto; width: calc(var(--trim-h, 9) / 11 * 100%); transform: none; }
-  .book-cover img { width: 100%; height: auto; }
+  .book { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 16px; align-items: start; padding: 18px 0; border-top: 1px solid #23272e; }
+  .book-stand { height: 154px; padding: 0; perspective: none; border-bottom-width: 6px; justify-content: flex-start; }
+  .book-cover { height: calc(var(--trim-h, 9) / 11 * 100%); transform: none; }
   .book:hover .book-cover { transform: none; }
   .book-body { padding: 0; }
   .book h4, .book.is-lead h4 { font-size: 24px; }
