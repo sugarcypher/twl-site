@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#060a0f">
+<title>Errorfect: The Linguistic Autopsy — ThinkWell Labs</title>
+<meta name="description" content="Errorfect white paper, version 6: the DACRI protocol for exposing the hidden operators in everyday words, with worked readings, cohorts, clinical adjacency and limits.">
+<meta name="author" content="Briar Morgan Greenway">
+<link rel="canonical" href="https://twl.today/papers/errorfect.html">
+<link rel="icon" href="../assets/twl-logo.jpeg" type="image/png">
+<meta property="og:title" content="Slack and Structural Reflection">
+<meta property="og:description" content="Schooling followed by wage work may suppress structural reflection not by controlling content but by consuming unstructured time. A model, the evidence for and against it, and a study to test it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://twl.today/papers/slack-and-structural-reflection.html">
+<style>
+:root{--bg:#060a0f;--bg-card:#0a1019;--ink:#e9ecef;--ink-soft:#a8b1bc;--ink-faint:#6a7280;--rule:#18202c;--core:#d6a45c;--arch:#6cd2ee;--construct:#b3a1ec;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--pad:clamp(20px,4vw,56px)}
+*{box-sizing:border-box}html,body{margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:var(--arch)}a:hover{color:#a6e6f7}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:20px var(--pad);border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:13px;color:var(--ink-faint)}
+.top a{color:var(--ink-soft);text-decoration:none}.top a:hover{color:var(--ink)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--pad);display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px}
+aside{position:sticky;top:24px;align-self:start;padding-top:56px}
+aside h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;font-weight:500}
+aside ul{list-style:none;margin:0;padding:0}aside li{margin:0 0 8px;font-size:14px;line-height:1.4}
+aside a{color:var(--ink-soft);text-decoration:none}aside a:hover{color:var(--core)}
+article{max-width:68ch;padding:56px 0 96px}
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--core)}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,5vw,52px);line-height:1.1;margin:12px 0 16px;letter-spacing:-.01em}
+.byline{color:var(--ink-faint);font-size:15px;margin:0 0 40px}
+h2{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.25;margin:56px 0 16px;scroll-margin-top:24px}
+p{margin:0 0 18px}strong{color:#fff;font-weight:600}em{color:var(--ink)}
+ul,ol{margin:0 0 20px;padding-left:24px}li{margin:0 0 8px}
+ul.open-q{list-style:none;padding-left:0}ul.open-q li{position:relative;padding-left:30px}
+ul.open-q li::before{content:"";position:absolute;left:2px;top:.4em;width:14px;height:14px;border:1.5px solid var(--ink-faint);border-radius:3px}
+.tbl{overflow-x:auto;margin:8px 0 28px;border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5}
+th{text-align:left;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;background:var(--bg-card)}
+th,td{padding:12px 14px;border-bottom:1px solid var(--rule);vertical-align:top}tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink);font-weight:500}td{color:var(--ink-soft)}
+.note{margin-top:64px;padding-top:24px;border-top:1px solid var(--rule);font-size:14px;color:var(--ink-faint)}
+footer{border-top:1px solid var(--rule);padding:24px var(--pad);font-family:var(--mono);font-size:12px;color:var(--ink-faint);text-align:center}
+footer a{color:var(--ink-soft)}
+article{min-width:0}article a,article code,td{overflow-wrap:anywhere}pre{max-width:100%;overflow-x:auto}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}aside{position:static;padding-top:32px;border-bottom:1px solid var(--rule);padding-bottom:20px}article{padding-top:32px}}
+@media print{body{background:#fff;color:#111}aside,.top,footer{display:none}.wrap{display:block}strong,td:first-child,em{color:#111}td{color:#333}a{color:#111}}
+</style>
+</head>
+<body>
+<div class="top"><a href="../index.html">← thinkwell labs</a><a href="../papers.html">all papers</a></div>
+<div class="wrap">
+<aside aria-label="Contents"><h4>Contents</h4><ul><li><a href="#abstract">Abstract</a></li><li><a href="#the-problem">The problem: language as invisible infrastructure</a></li><li><a href="#dacri">The protocol: DACRI</a></li><li><a href="#readings">Worked readings</a></li><li><a href="#cohorts">Cohorts: how the dictionary is worked</a></li><li><a href="#adjacent">Adjacent traditions and clinical practice</a></li><li><a href="#inversion">The inversion principle: constructive naming</a></li><li><a href="#applications">Applications</a></li><li><a href="#boundaries">Claims and limits</a></li><li><a href="#research">Implications for research</a></li><li><a href="#open">Open questions</a></li><li><a href="#conclusion">Conclusion</a></li></ul></aside>
+<article>
+<div class="tag">linguistic-cognitive · white paper · DACRI Level 1</div>
+<h1>Errorfect: The Linguistic Autopsy</h1>
+<p class="byline">Briar Morgan Greenway · ThinkWell Labs · November 2026 · version 6 · <a href="/ai.html">AI use</a></p>
+
+<h2 id="abstract">Abstract</h2>
+<p>Words do not merely describe reality. A subset of high-frequency vocabulary works as cognitive operators: compressing ambiguity, manufacturing rankings and assigning causation without disclosing how. When a speaker reaches for <em>perfect</em>, <em>normal</em> or <em>control</em>, the connotative payload often overrides the denotation, steering judgment and self-evaluation below the threshold of conscious inspection.</p>
+<p>Errorfect is a disruption method that interrupts that automatic loading. Its protocol, DACRI, removes material from the front of a word at every depth at once, inserts a single space at every position in every remaining stem, and lays the resulting fragments out flat for the reader. The reader's own recognition, not a score, decides what a fragment means. The method does not claim to reveal etymology or objective lexical truth; it creates a breakpoint that makes a reader's attachment to a word inspectable, and therefore revisable.</p>
+<p>This paper sets out the problem, the protocol and its operators, worked readings of nine words, the method's relation to clinical practice and to adjacent traditions, its applications, and the limits it keeps.</p>
+
+<h2 id="the-problem">1. The problem: language as invisible infrastructure</h2>
+<p>Every natural language holds words that have drifted from describing a state of affairs to installing one. Three appear everywhere in professional, therapeutic and personal speech.</p>
+<p><strong>Perfect.</strong> Ostensibly a descriptor of quality, it installs a hidden standard: unspoken, usually unmeasured, often impossible. Once active, it turns every deviation from a phantom benchmark into deficiency, and produces shame, delay and self-censorship as byproducts. The speaker rarely chose the standard; the word chose it for them.</p>
+<p><strong>Normal.</strong> Presented as a statistical description, it works as a verdict. It manufactures an invisible center and treats anything outside it as defective, not merely different. The sorting rule seldom comes with a named metric, a sample or a margin of error. When no one can name the units, the word is doing social control, not measurement.</p>
+<p><strong>Control.</strong> Framed as competence, it often encodes fear. It promises mastery over systems that do not obey mastery: complex, adaptive systems that respond to influence but not to command. The pursuit costs attention, flexibility, sleep and tenderness, and it persists because the alternative, tolerating uncertainty, feels more dangerous than the cost.</p>
+<p>These are not unusual words. They are among the most common in English, and their regulatory work persists because it is invisible: the mechanism hides behind the description, and the description is never questioned because it feels self-evident.</p>
+
+<h3 id="mask-mechanism">1.1 The mask and the mechanism</h3>
+<p>Every high-frequency cognitive operator has a <strong>mask</strong>, the socially wearable surface meaning, and a <strong>mechanism</strong>, the regulatory work the word performs below awareness. The mask is what makes the mechanism tolerable, and so persistent.</p>
+<blockquote>The mask is not the truth; it is what makes the mechanism socially wearable.</blockquote>
+<p>This is not a claim about etymology or codes hidden in language. It is a claim about attachment: speakers fuse with the connotative payload of certain words so completely that the word's regulatory function disappears from view. Errorfect is a method for making that fusion inspectable.</p>
+
+<h2 id="dacri">2. The protocol: DACRI</h2>
+<p>DACRI names the five moves of the method, performed in order on one word:</p>
+<ol>
+<li><strong>Disrupt-Divide.</strong> Remove material from the front of the word, at each depth, in the unit of the level being run.</li>
+<li><strong>Abacate.</strong> Insert a single space at every position in every stem, including the intact word.</li>
+<li><strong>Count eligible congregates.</strong> Gather every fragment the first two moves produce, set aside the ineligible ones, and count what remains.</li>
+<li><strong>Read.</strong> Resolve each eligible fragment to what a reader automatically hears in it.</li>
+<li><strong>Interpret.</strong> Let the reader's own recognition decide which readings carry the word's mechanism, and ask whether to keep operating under it.</li>
+</ol>
+
+<h3 id="units">2.1 Units and depths</h3>
+<p>Level 1 of DACRI works on word-form, in four units:</p>
+<ul>
+<li><strong>A, the letter.</strong> Orthographic disruption. Removing a character interrupts the instant, pre-conscious chunking by which the eye recognizes a word, and forces a re-parse.</li>
+<li><strong>B, the syllable.</strong> Phonological disruption. Syllable boundaries differ from letter boundaries, so this unit often reaches a different layer of association.</li>
+<li><strong>C, the syllabary unit.</strong> Onset-level disruption, useful above all across languages, interfering before the word fully lands in the listener's lexicon.</li>
+<li><strong>D, the prefix.</strong> Morphological disruption, removing an operator such as negation, intensity or direction; used only where a genuine prefix exists.</li>
+</ul>
+<p>Within a unit, removal runs at depths one to three, and a depth is counted in that unit: depth two at the syllable level is two syllables. All depths are held at once. The method does not stop at the first strip that seems to say something; it suspends every depth together and reads across them.</p>
+
+<h3 id="front-only">2.2 Front only</h3>
+<p>Removal is front-only by design, because the front is where the mask is. Nothing is taken from the end of a word, and nothing is deleted from its middle. The end is still reached, by partition rather than deletion: the Abacate space can isolate a final letter or suffix (<em>prais|e</em>, <em>judge|ment</em>) without removing anything.</p>
+
+<h3 id="abacate">2.3 Abacate: the space operator</h3>
+<p>Abacate inserts a single space at a position in a stem without changing its spelling or the order of its letters. <em>Normal</em> becomes <em>n ormal</em>, <em>no rmal</em>, <em>nor mal</em> and <em>norm al</em>. It runs on every stem the first move produced and on the intact word, so a word's fragments come from two operations that compose. One space at a time: the method does not insert two.</p>
+<p>The stripped material is itself a candidate. What the front strip removed can be read like any other fragment.</p>
+
+<h3 id="eligibility">2.4 Which fragments count</h3>
+<p>A fragment is eligible when a reader could hear something in it. Letter clusters that cannot form a syllable, such as <em>rm</em> with no vowel before, after or between, are set aside automatically. Two further tests decide what counts as a finding:</p>
+<ul>
+<li><strong>It must say what the word was not already saying.</strong> The method reads concealment, not source. A fragment that merely restates the word's plain meaning or its own root reveals nothing: <em>magna</em> in <em>magnanimous</em> is greatness the word already announces, and <em>pass</em> in <em>passion</em> and <em>fin</em> in <em>finish</em> are the words' own roots.</li>
+<li><strong>It is not etymology.</strong> Errorfect is not a history of words. A reading reached only by knowing a word's origin, rather than by hearing a fragment, is not a reading of this method.</li>
+</ul>
+<p>Not every word carries a mechanism. The method must be able to return nothing, and when it does, that absence is data: it tells the reader the word is not working as an operator for them, in that context.</p>
+
+<h3 id="reading">2.5 How a fragment is read</h3>
+<p>Reading is resolution: what does the reader automatically hear in the fragment? Several moves are valid, and a single reading may combine fragments drawn from different operations.</p>
+<ul>
+<li><strong>Cognitive completion.</strong> A fragment resolves to the nearby word the mind supplies without effort: <em>erfect</em> to <em>errorfect</em>, <em>eady</em> to <em>already</em>, <em>trol</em> to <em>troll</em>. This automatic step is part of the method.</li>
+<li><strong>Phonetic substitution.</strong> Resolution may follow sound rather than spelling: <em>udge</em>, spoken, is <em>edge</em>.</li>
+<li><strong>Silent-letter addition.</strong> A silent letter may be heard into a fragment: <em>sion</em> is heard as <em>psion</em>.</li>
+<li><strong>Any language.</strong> The language set is open. English already carries Greek, Latin, Spanish and French material that its speakers do not recognize as foreign, and each fragment resolves in whatever language it lands in: in <em>nor mal</em>, <em>or</em> is an English logical gate and <em>mal</em> is Spanish for bad. A bilingual reader may hear an English fragment through another language's sounds, as a Spanish speaker might hear <em>erfect</em> as <em>efecto</em>, effect. Such crossings are real cognitive events but produce more false hits than single-language readings, so they are checked against the word's context and cohort before they are trusted.</li>
+<li><strong>Restoration.</strong> Strip the front, resolve what remains, then put the stripped material back and read the whole again.</li>
+<li><strong>Suffixes are not residue.</strong> Endings are where an operator hides, because nobody reads them: <em>ment</em> is French <em>il ment</em>, he lies.</li>
+</ul>
+<p>The constraint on every move is automaticity, not sound identity: a reading counts when the resolution happens on its own, and that judgment stays human. It needs no operational test. This is English and it is human, doubly messy, and the method is built to work with that, not around it. Personal insight, intuition and sudden recognition are valid inputs when they make sense to the reader.</p>
+
+<h3 id="interpret">2.6 Resonance decides</h3>
+<p>The fragments go to the reader flat: no ranking, no threshold, no score, no verdict from the method. A fragment that recurs across several cuts is real but is not, for that reason, the answer; resonance prevails. What supports a reading is fit with its cohort, the sibling words that do the same work (section 4), not repetition inside one word.</p>
+<p>Three questions close every autopsy:</p>
+<ol>
+<li>What hidden standard is being assumed?</li>
+<li>Who authored that standard: me, culture, an institution, fear?</li>
+<li>Do I consent to operating under it right now?</li>
+</ol>
+
+<h3 id="useful">2.7 What counts as a useful revelation</h3>
+<p>A reading is useful when it exposes one or more of these: a hidden standard the word enforced without disclosing; a sorting rule masquerading as a description; threat or shame coded beneath an acceptable surface; identity fusion, where the speaker cannot tell themselves apart from the word's payload; or an unstated metric the word pretends to measure but never names.</p>
+
+<h2 id="readings">3. Worked readings</h2>
+
+<h3 id="perfect">3.1 Perfect</h3>
+<p><em>Perfect</em> is the badge a hidden standard pins on you. The badge looks noble; the standard is unspoken, unmeasured and impossible. Strip the first letter and <em>erfect</em> completes, automatically, to <em>errorfect</em>: the chase for perfect is what manufactures error, not because the person is broken but because the metric is rigged. Excellence is achievable; perfect is a trapdoor. The mechanism is a closed loop: pursue perfection, produce error, conclude you are deficient, pursue harder.</p>
+<blockquote>The chase for "perfect" manufactures error, not because you are broken, but because the metric is rigged.</blockquote>
+
+<h3 id="normal">3.2 Normal</h3>
+<p><em>Normal</em> pretends to be a description and is usually a verdict. Strip the first letter and <em>ormal</em> is a sound without jurisdiction: the word's authority falls away and three questions remain. Normal for whom? In what context? By what metric? Abacate finds the operator in plain sight: <em>nor mal</em>, an English gate and a Spanish judgment. The word offers two states, in or wrong, and no third. In clinical settings this reading helps most where a person has taken normal as an aspiration rather than a statistic, the fusion in which the word's sorting is wholly invisible.</p>
+
+<h3 id="control">3.3 Control</h3>
+<p>Strip the first syllable, <em>con</em>, and <em>trol</em> completes to <em>troll</em>: the creature under the bridge. Control is often fear dressed as competence, promising mastery over what does not obey mastery. The stripped syllable is a candidate too. Partition the word as <em>contro|l</em> and <em>contro</em> is heard as <em>contra</em>, against: a word oppositional at its base while presenting as stewardship. Whether the masculine form of <em>contro</em> marks which part of a person is being regulated, the free and flowing part held down out of fear, or is only the route to the fragment, is left open. The practical move is to swap the verb: replace <em>control</em> with <em>influence</em>, identify one lever you can pull now, and release the rest.</p>
+
+<h3 id="judgement">3.4 Judgement</h3>
+<p>The front strip leaves <em>udge</em>, which spoken is <em>edge</em>; Abacate isolates <em>ment</em>, French for he lies. Composed across the two operations, <em>judgement</em> reads as the edge of lies. Neither fragment alone carries the reading; together they do.</p>
+
+<h3 id="passion">3.5 Passion</h3>
+<p><em>Pass</em> is the word's own root and does not count. What the operations disclose is <em>ass</em>, the beast labouring under its load, and <em>sion</em> heard as <em>psion</em>, an ion of psi. Both say the same thing: in passion the person is the object, not the source.</p>
+
+<h3 id="praise">3.6 Praise</h3>
+<p>Not every reading is an unmasking. <em>Praise</em> strips to <em>raise</em>, you raise them up; <em>rais</em> is heard as <em>rays</em>; and partition isolates <em>se</em>, heard as <em>see</em>. Their rays you see: elevation, radiance and witness, every fragment agreeing. Praise passes the cohort test cleanly because it is a gradient, not a sorting: a person can be praised a little or a great deal.</p>
+
+<h3 id="done">3.7 Done</h3>
+<p>Restoration shows a word that enforces a loop. Strip <em>do</em>, resolve <em>ne</em> to <em>next</em>, put the stripped material back, and <em>done</em> reads as <em>do next</em>: being done is the instruction to begin again. Partition gives a second reading, <em>d|one</em>, one and done. <em>Ne</em> to <em>next</em> holds because it groups with its cohort, the words of finishing, where the same pattern recurs (<em>finish</em> rests on <em>ish</em>).</p>
+
+<h3 id="proper">3.8 Proper</h3>
+<p><em>Er</em> resolves to <em>err</em>, the completion that made <em>errorfect</em>, and it is live in every agent noun. <em>Proper</em> is <em>prop</em> and <em>err</em>: the support is the mistake. The operator is present in the word, disclosed, and simply not perceived.</p>
+
+<h3 id="nothing">3.9 Magnanimous: a word that returns nothing</h3>
+<p><em>Magnanimous</em> yields <em>magna</em> and <em>animus</em>, greatness and spirit, which is what the word openly says. Nothing is concealed, so nothing is found. This is the method working as intended: it reads concealment, and where there is none, it says so.</p>
+
+<h2 id="cohorts">4. Cohorts: how the dictionary is worked</h2>
+<p>Words are worked by script-family cohort, not alphabetically: sibling words that do the same regulatory work, read together, so that each reading is supported by its fit with the others.</p>
+<p><strong>The binary-sorting cohort.</strong> Words that sort people into pass or fail. Membership is checkable before any fragment is produced: the word permits no third state. One cannot be somewhat normal, partly perfect or a little bit right. The cohort splits in two:</p>
+<ul>
+<li><strong>Verdict operators</strong> (<em>perfect</em>, <em>normal</em>) show the sentence and hide the court.</li>
+<li><strong>Obfuscratic operators</strong> (<em>proper</em>, <em>adequate</em>, <em>right</em>) carry the operator in plain sight, disclosed and not perceived.</li>
+</ul>
+<p><strong>The anti-finish cohort.</strong> Words of completion that enforce continuation: <em>done</em>, <em>finish</em>, <em>finished</em>, <em>complete</em>.</p>
+<p>Further cohorts are candidates for the same treatment: standard-installers (<em>excellent</em>, <em>adequate</em>), threat-coders (<em>manage</em>, <em>handle</em>), identity-fusers (<em>professional</em>, <em>creative</em>, <em>leader</em>) and metric-concealers (<em>effective</em>, <em>efficient</em>, <em>productive</em>).</p>
+
+<h2 id="adjacent">5. Adjacent traditions and clinical practice</h2>
+<blockquote>Adjacent traditions — notarikon, ACT defusion, folk etymology — resolve sequentially and, in the folk case, claim objective lexical truth. DACRI suspends all strip-depths concurrently via the Abacate operation, reads across them rather than down them, and disclaims objective truth in favor of surfacing the reader's own attachment.</blockquote>
+<p>Errorfect does not claim to be therapy. It is a metacognitive tool that can be used alone or alongside established practice, and it overlaps with several clinical constructs.</p>
+<p><strong>Cognitive defusion</strong>, in acceptance and commitment therapy, reduces the literal believability of a thought by changing the context in which it is experienced; the classic exercise repeats a word until it loses meaning. Errorfect offers a complementary route: instead of exhausting the word by repetition, it removes material to show what the word was carrying.</p>
+<p><strong>Cognitive reframing</strong>, in cognitive behavioral therapy, asks a person to identify a distorted thought and generate alternatives. Errorfect supplies a step before reframing: it makes the word's regulatory function visible first. A person who can see that <em>perfect</em> installs a hidden standard is better placed to reframe than one simply told to think differently.</p>
+<p><strong>Externalization</strong>, in narrative therapy, separates the person from the problem by giving the problem an identity. Errorfect does the same at the level of the word: the payload becomes something done to you, not something you are.</p>
+<p><strong>Shame resilience and locus of control.</strong> Many target words generate shame by encoding standards that, once internalized, produce constant self-assessment against benchmarks no one can meet. Showing the standard to be constructed rather than discovered helps a person recognize shame's trigger without accepting its verdict. <em>Control</em> implies an internal locus that the reading shows is often fictional; calibrating toward <em>influence</em> keeps real agency without demanding total mastery.</p>
+
+<h2 id="inversion">6. The inversion principle: constructive naming</h2>
+<p>Once the method is understood it can run in reverse: instead of stripping words to expose harm, build names whose surface and substrate agree, so that stripping exposes the same intent more plainly.</p>
+<blockquote>If stripping the name reveals hope instead of harm, the mask loses its leverage, and both versions remain true.</blockquote>
+<p>A given name, <em>Briar Morgan Greenway</em>, has a beautiful surface, yet the front strip yields <em>riar</em> (wreckage), <em>organ</em> (biological function) and <em>reenway</em> (endless cycles): a structure the bearer did not choose. A chosen name, <em>Axel Twin Aworth</em>, strips to <em>xel</em> (excel), <em>win</em> and <em>worth</em>. Surface and substrate align; the first letter is cosmetic, not camouflage. Brand, product, organizational and policy names can all be put to the same test: does disruption reveal intent, or something the name was built to conceal?</p>
+
+<h2 id="applications">7. Applications</h2>
+<p><strong>Personal metacognitive hygiene.</strong> When a word triggers a response out of proportion (shame, anxiety, compulsive self-evaluation), the method gives a structured way to inspect what the word is doing rather than react to what it seems to say, closing with the three questions in section 2.6.</p>
+<p><strong>Therapeutic integration.</strong> Clinicians in cognitive behavioral, acceptance and commitment, or narrative practice can use it in session, set it as homework, or use it to find which words in a person's story are working as operators rather than descriptors. It replaces neither clinical training nor the therapeutic relationship.</p>
+<p><strong>Institutional language audit.</strong> Organizations run operators at scale: review language (<em>exceeds expectations</em>, <em>needs improvement</em>), policy language (<em>compliant</em>, <em>non-conforming</em>), cultural language (<em>leadership material</em>, <em>culture fit</em>). An audit applies the method to an organization's high-frequency vocabulary and maps the standards its operators enforce. The output is not a list of banned words; it is a report that makes invisible regulation visible, and so negotiable.</p>
+<p><strong>Naming.</strong> The inversion principle gives a more demanding test than sound or trademark availability alone: a name has structural integrity if disruption reveals its intended substrate, or at least nothing it was built to conceal.</p>
+<p><strong>Where to use it.</strong> At <a href="https://errorfect.com" rel="noopener">errorfect.com</a>, a Word Autopsy is a one-page reading of one word, returned within 48 hours, and Undertow scans texts and document sets for mechanisms in place; each costs $39. A hand canvas, where a reader performs every operation of the method by hand with guidance and hints, is in development; there, computation suggests methods the reader has not tried, never readings.</p>
+
+<h2 id="boundaries">8. Claims and limits</h2>
+<h3>8.1 What Errorfect claims</h3>
+<ul>
+<li>Certain high-frequency words work as cognitive operators, not only as descriptors.</li>
+<li>Systematic disruption can make a reader's attachment to a word inspectable.</li>
+<li>Inspectability supports revision: seeing the mechanism makes it possible to choose differently.</li>
+<li>The method is repeatable, teachable and compatible with existing therapeutic frameworks.</li>
+</ul>
+<h3>8.2 What it does not claim</h3>
+<ul>
+<li>It does not reveal etymology or objective lexical truth.</li>
+<li>It does not claim that every word hides a mechanism; it can and does return nothing.</li>
+<li>It claims no diagnostic or clinical authority.</li>
+<li>Fragments are probes, not decodings, and the method itself never ranks them or delivers a verdict.</li>
+</ul>
+<h3>8.3 The subjectivity principle</h3>
+<p>Errorfect is a subjective probe. Two people disrupting the same word may hear different things, because the method does not decode the word; it exposes what each mind attached to it. The goal is not consensus but inspectability. Its results are therefore not falsifiable in the usual empirical sense. They are tested pragmatically: a reading is useful if it produces a shift in perception or behavior, and not useful if it does not. Some words overgenerate, yielding suggestive associations that are not stable; that too is data, and needs checking against its cohort before it is treated as insight.</p>
+
+<h2 id="research">9. Implications for research</h2>
+<p><strong>Attachment as a research object.</strong> Psycholinguistics mostly treats connotation through norms of valence, arousal and dominance averaged across populations. Errorfect suggests a complementary program: connotative attachment as an individual phenomenon, studied by disruption rather than rating. In the laboratory, the question is whether disruption reliably changes reaction times, emotional ratings or decisions tied to target words.</p>
+<p><strong>Where loading happens.</strong> The four units of Level 1 map onto different points in the recognition pipeline (orthographic, phonological, onset, morphological), so the method implicitly tests where connotative loading occurs, with consequences for models of lexical access that separate assembled from addressed phonology.</p>
+<p><strong>Beyond word-form.</strong> Errorfect is DACRI Level 1. Later levels will work on layers of language beyond the word, each published as a protocol of its own.</p>
+
+<h2 id="open">10. Open questions</h2>
+<ul>
+<li>The exact formulation of the filter that sets aside clusters no syllable can begin with.</li>
+<li>Whether the name Abacate should keep its first gloss, from <em>abacus</em> and <em>-ate</em>, now that the operation is the space rather than the count.</li>
+<li>Whether grammatical gender in a fragment such as <em>contro</em> is part of a finding or only the route to it.</li>
+<li>How much of a reading's first draft the hand canvas should offer, and how much it should leave entirely to the reader.</li>
+</ul>
+
+<h2 id="conclusion">11. Conclusion</h2>
+<p>Language is infrastructure, and like all infrastructure it disappears through familiarity. The words used most are inspected least, and they are often the ones doing the most regulatory work. Errorfect proposes no new theory of language; it proposes a practice, systematic, repeatable and teachable, for making that work visible. Words are not the enemy. Invisible mechanisms are.</p>
+<p>Connotative attachment is not fixed. It is installed, by culture, institutions, personal history and fear, and what is installed can be inspected. What is inspected can be revised. What is revised can be chosen.</p>
+<blockquote>See the word without the mask. Reclaim the steering wheel.</blockquote>
+
+<p class="note">Version 6, November 2026. The first edition (February 2026) remains available as a <a href="Errorfect_White_Paper.pdf">PDF</a>. © 2026 ThinkWell Labs LLC. Licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a>: share it unchanged, cite Briar Morgan Greenway, ThinkWell Labs, and do not sell it.</p>
+</article>
+</div>
+<footer>© ThinkWell Labs · <a href="../terms.html">terms</a> · <a href="../privacy.html">privacy</a> · zero trackers, zero external requests</footer>
+</body>
+</html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Program Statement — ThinkWell Labs</title>
-<meta name="description" content="Upstream Architectures: ThinkWell Labs Research Program. Six surfaces, one thesis, named cross-cuts between them.">
+<meta name="description" content="Upstream Architectures: the ThinkWell Labs research program. Six surfaces, one thesis: security, language, civic measurement, cognitive identity, connection and governance.">
 <meta name="theme-color" content="#060a0f">
 <link rel="canonical" href="https://twl.today/program.html">
 <link rel="icon" href="assets/twl-logo.jpeg" type="image/png">
@@ -118,37 +118,37 @@ header.page-head .thesis em { color: var(--ink); font-style: italic; }
 .mini-topo .m-edge  { stroke: var(--ink-dim); stroke-width: 0.7; opacity: 0.20; }
 .mini-topo .m-spoke { stroke: var(--ink-dim); stroke-width: 0.5; opacity: 0.13; stroke-dasharray: 1.5 2; }
 .mini-topo .m-node  { opacity: 0.35; }
-.mini-topo .m-node-errorfect,
-.mini-topo .m-node-acepaste,
-.mini-topo .m-node-tracker,
-.mini-topo .m-node-scrim { fill: var(--defend); }
-.mini-topo .m-node-polygonal,
-.mini-topo .m-node-rfsis  { fill: var(--construct); }
+.mini-topo .m-node-security,
+.mini-topo .m-node-language,
+.mini-topo .m-node-civic { fill: var(--defend); }
+.mini-topo .m-node-identity,
+.mini-topo .m-node-connection,
+.mini-topo .m-node-governance { fill: var(--construct); }
 .mini-topo .m-node-institutional { fill: var(--core); }
 
 /* highlighted node */
-.mini-topo[data-highlight="errorfect"]  [data-node="errorfect"],
-.mini-topo[data-highlight="acepaste"]   [data-node="acepaste"],
-.mini-topo[data-highlight="tracker"]    [data-node="tracker"],
-.mini-topo[data-highlight="scrim"]      [data-node="scrim"],
-.mini-topo[data-highlight="polygonal"]  [data-node="polygonal"],
-.mini-topo[data-highlight="rfsis"]      [data-node="rfsis"],
+.mini-topo[data-highlight="security"]   [data-node="security"],
+.mini-topo[data-highlight="language"]   [data-node="language"],
+.mini-topo[data-highlight="civic"]      [data-node="civic"],
+.mini-topo[data-highlight="identity"]   [data-node="identity"],
+.mini-topo[data-highlight="connection"] [data-node="connection"],
+.mini-topo[data-highlight="governance"] [data-node="governance"],
 .mini-topo[data-highlight="institutional"] [data-node="institutional"] { opacity: 1; filter: drop-shadow(0 0 2.5px currentColor); }
 
-.mini-topo[data-highlight="errorfect"],
-.mini-topo[data-highlight="acepaste"],
-.mini-topo[data-highlight="tracker"],
-.mini-topo[data-highlight="scrim"]  { color: var(--defend); }
-.mini-topo[data-highlight="polygonal"],
-.mini-topo[data-highlight="rfsis"]  { color: var(--construct); }
+.mini-topo[data-highlight="security"],
+.mini-topo[data-highlight="language"],
+.mini-topo[data-highlight="civic"] { color: var(--defend); }
+.mini-topo[data-highlight="identity"],
+.mini-topo[data-highlight="connection"],
+.mini-topo[data-highlight="governance"] { color: var(--construct); }
 .mini-topo[data-highlight="institutional"] { color: var(--core); }
 
-.mini-topo[data-highlight="errorfect"]  [data-edge*="errorfect"],
-.mini-topo[data-highlight="acepaste"]   [data-edge*="acepaste"],
-.mini-topo[data-highlight="tracker"]    [data-edge*="tracker"],
-.mini-topo[data-highlight="scrim"]      [data-edge*="scrim"],
-.mini-topo[data-highlight="polygonal"]  [data-edge*="polygonal"],
-.mini-topo[data-highlight="rfsis"]      [data-edge*="rfsis"] { stroke: currentColor; opacity: 0.9; stroke-width: 1; stroke-dasharray: none; }
+.mini-topo[data-highlight="security"]   [data-edge*="security"],
+.mini-topo[data-highlight="language"]   [data-edge*="language"],
+.mini-topo[data-highlight="civic"]      [data-edge*="civic"],
+.mini-topo[data-highlight="identity"]   [data-edge*="identity"],
+.mini-topo[data-highlight="connection"] [data-edge*="connection"],
+.mini-topo[data-highlight="governance"] [data-edge*="governance"] { stroke: currentColor; opacity: 0.9; stroke-width: 1; stroke-dasharray: none; }
 .mini-topo[data-highlight="institutional"] [data-edge*="institutional"] { stroke: var(--core); opacity: 0.85; stroke-width: 0.95; stroke-dasharray: none; }
 
 /* prose spine */
@@ -315,17 +315,17 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
 
     <div class="topology-svg-wrap">
       <svg class="topology-svg" id="systemSvg" viewBox="0 0 800 800" role="img" aria-labelledby="systemTitle">
-        <title id="systemTitle">Six surfaces of upstream-architectural intervention.</title>
+        <title id="systemTitle">Six surfaces of upstream-architectural intervention around one institutional vehicle.</title>
         <circle cx="400" cy="400" r="340" fill="none" stroke="#101822" stroke-width="1" opacity="0.7"/>
         <circle cx="400" cy="400" r="270" fill="none" stroke="#0d141d" stroke-width="1" opacity="0.7"/>
         <circle cx="400" cy="400" r="180" fill="none" stroke="#0c1219" stroke-width="1" opacity="0.7"/>
         <g stroke-linecap="round">
-          <line class="edge spoke" data-edge="institutional-errorfect"   x1="400" y1="400" x2="400"   y2="180"   stroke="#3a3146"/>
-          <line class="edge spoke" data-edge="institutional-acepaste"    x1="400" y1="400" x2="590.5" y2="290"   stroke="#3a3146"/>
-          <line class="edge spoke" data-edge="institutional-tracker"     x1="400" y1="400" x2="590.5" y2="510"   stroke="#3a3146"/>
-          <line class="edge spoke" data-edge="institutional-scrim"       x1="400" y1="400" x2="400"   y2="620"   stroke="#3a3146"/>
-          <line class="edge spoke" data-edge="institutional-polygonal"   x1="400" y1="400" x2="209.5" y2="510"   stroke="#3a3146"/>
-          <line class="edge spoke" data-edge="institutional-rfsis"       x1="400" y1="400" x2="209.5" y2="290"   stroke="#3a3146"/>
+          <line class="edge spoke" data-edge="institutional-security" x1="400" y1="400" x2="400" y2="180" stroke="#3a3146"/>
+          <line class="edge spoke" data-edge="institutional-language" x1="400" y1="400" x2="590.5" y2="290" stroke="#3a3146"/>
+          <line class="edge spoke" data-edge="institutional-civic" x1="400" y1="400" x2="590.5" y2="510" stroke="#3a3146"/>
+          <line class="edge spoke" data-edge="institutional-identity" x1="400" y1="400" x2="400" y2="620" stroke="#3a3146"/>
+          <line class="edge spoke" data-edge="institutional-connection" x1="400" y1="400" x2="209.5" y2="510" stroke="#3a3146"/>
+          <line class="edge spoke" data-edge="institutional-governance" x1="400" y1="400" x2="209.5" y2="290" stroke="#3a3146"/>
         </g>
         <defs>
           <linearGradient id="g-dd" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#6cd2ee"/><stop offset="100%" stop-color="#6cd2ee"/></linearGradient>
@@ -333,15 +333,15 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
           <linearGradient id="g-cc" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#b3a1ec"/><stop offset="100%" stop-color="#b3a1ec"/></linearGradient>
         </defs>
         <g stroke-linecap="round">
-          <line class="edge" data-edge="errorfect-acepaste"  data-label="text-layer · client-only inspection"                              stroke="url(#g-dd)" x1="400"   y1="180"   x2="590.5" y2="290"/>
-          <line class="edge" data-edge="acepaste-tracker"    data-label="moment-of-arrival interception"                                   stroke="url(#g-dd)" x1="590.5" y1="290"   x2="590.5" y2="510"/>
-          <line class="edge" data-edge="tracker-scrim"       data-label="friction-based defense"                                           stroke="url(#g-dd)" x1="590.5" y1="510"   x2="400"   y2="620"/>
-          <line class="edge" data-edge="scrim-polygonal"     data-label="legibility ↔ illegibility of identity"                            stroke="url(#g-dc)" x1="400"   y1="620"   x2="209.5" y2="510"/>
-          <line class="edge" data-edge="polygonal-rfsis"     data-label="cognitive identity ↔ ambient identity (named cross-cut)"          stroke="url(#g-cc)" x1="209.5" y1="510"   x2="209.5" y2="290"/>
-          <line class="edge" data-edge="rfsis-errorfect"     data-label="perception extending into invisible domains"                       stroke="url(#g-dc)" x1="209.5" y1="290"   x2="400"   y2="180"/>
-          <line class="edge" data-edge="errorfect-scrim"     data-label="DACRI applied to attacker-facing language (named cross-cut)"       stroke="url(#g-dd)" x1="400"   y1="180"   x2="400"   y2="620"/>
-          <line class="edge" data-edge="acepaste-polygonal"  data-label="trust through architecture, no transit (named cross-cut)"          stroke="url(#g-dc)" x1="590.5" y1="290"   x2="209.5" y2="510"/>
-          <line class="edge" data-edge="tracker-rfsis"       data-label="edge-first ambient signal cluster (named cross-cut)"               stroke="url(#g-dc)" x1="590.5" y1="510"   x2="209.5" y2="290"/>
+          <line class="edge" data-edge="security-language" data-label="text that carries more than it shows: hidden characters, hidden operators" stroke="url(#g-dd)" x1="400" y1="180" x2="590.5" y2="290"/>
+          <line class="edge" data-edge="language-civic" data-label="influence traced in one mind, then measured across a population" stroke="url(#g-dd)" x1="590.5" y1="290" x2="590.5" y2="510"/>
+          <line class="edge" data-edge="civic-identity" data-label="people are measured only to give them power" stroke="url(#g-dc)" x1="590.5" y1="510" x2="400" y2="620"/>
+          <line class="edge" data-edge="identity-connection" data-label="complement, not sameness: the Experience Quotients inside Crushhh" stroke="url(#g-cc)" x1="400" y1="620" x2="209.5" y2="510"/>
+          <line class="edge" data-edge="connection-governance" data-label="products held as a commons, protected from buyout" stroke="url(#g-cc)" x1="209.5" y1="510" x2="209.5" y2="290"/>
+          <line class="edge" data-edge="governance-security" data-label="refuse, log, relay: governance written into the gate" stroke="url(#g-dc)" x1="209.5" y1="290" x2="400" y2="180"/>
+          <line class="edge" data-edge="security-identity" data-label="on-device by architecture: answers never leave the device (named cross-cut)" stroke="url(#g-dc)" x1="400" y1="180" x2="400" y2="620"/>
+          <line class="edge" data-edge="language-connection" data-label="attention returned, not extracted (named cross-cut)" stroke="url(#g-dc)" x1="590.5" y1="290" x2="209.5" y2="510"/>
+          <line class="edge" data-edge="civic-governance" data-label="Toroid measures what the Commonwealth would replace (named cross-cut)" stroke="url(#g-dc)" x1="590.5" y1="510" x2="209.5" y2="290"/>
         </g>
         <g class="node n-core" data-node="institutional" id="node-institutional">
           <circle class="node-glow" cx="400" cy="400" r="38"/><circle class="node-ring" cx="400" cy="400" r="38"/><circle class="node-core" cx="400" cy="400" r="7"/>
@@ -351,51 +351,51 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
           <text class="node-sub" x="400" y="478" text-anchor="middle">thinkwell labs · meta</text>
           <circle class="node-hit" cx="400" cy="400" r="50"/>
         </g>
-        <g class="node n-defend" data-node="errorfect" id="node-errorfect">
+        <g class="node n-defend" data-node="security" id="node-security">
           <circle class="node-glow" cx="400" cy="180" r="36"/><circle class="node-ring" cx="400" cy="180" r="36"/><circle class="node-core" cx="400" cy="180" r="9"/>
           <text class="node-num" x="400" y="115" text-anchor="middle">i</text>
-          <text class="node-label" x="400" y="135" text-anchor="middle">errorfect</text>
-          <text class="node-sub" x="400" y="150" text-anchor="middle">linguistic-cognitive · live</text>
+          <text class="node-label" x="400" y="135" text-anchor="middle">security</text>
+          <text class="node-sub" x="400" y="150" text-anchor="middle">integrity · live</text>
           <circle class="node-hit" cx="400" cy="180" r="48"/>
         </g>
-        <g class="node n-defend" data-node="acepaste" id="node-acepaste">
+        <g class="node n-defend" data-node="language" id="node-language">
           <circle class="node-glow" cx="590.5" cy="290" r="36"/><circle class="node-ring" cx="590.5" cy="290" r="36"/><circle class="node-core" cx="590.5" cy="290" r="9"/>
-          <text class="node-num" x="700" y="266" text-anchor="end">ii</text>
-          <text class="node-label" x="700" y="282" text-anchor="end">acepaste</text>
-          <text class="node-sub" x="700" y="296" text-anchor="end">text-layer · live</text>
+          <text class="node-num" x="760" y="266" text-anchor="end">ii</text>
+          <text class="node-label" x="760" y="282" text-anchor="end">language</text>
+          <text class="node-sub" x="760" y="296" text-anchor="end">influence · live</text>
           <circle class="node-hit" cx="590.5" cy="290" r="48"/>
         </g>
-        <g class="node n-defend" data-node="tracker" id="node-tracker">
-          <circle class="node-glow" cx="590.5" cy="510" r="35"/><circle class="node-ring" cx="590.5" cy="510" r="35"/><circle class="node-core" cx="590.5" cy="510" r="8"/>
-          <text class="node-num" x="700" y="510" text-anchor="end">iii</text>
-          <text class="node-label" x="700" y="526" text-anchor="end">trackrsmackr</text>
-          <text class="node-sub" x="700" y="540" text-anchor="end">behavioral · live</text>
+        <g class="node n-defend" data-node="civic" id="node-civic">
+          <circle class="node-glow" cx="590.5" cy="510" r="36"/><circle class="node-ring" cx="590.5" cy="510" r="36"/><circle class="node-core" cx="590.5" cy="510" r="9"/>
+          <text class="node-num" x="760" y="486" text-anchor="end">iii</text>
+          <text class="node-label" x="760" y="502" text-anchor="end">civic</text>
+          <text class="node-sub" x="760" y="516" text-anchor="end">measurement · live</text>
           <circle class="node-hit" cx="590.5" cy="510" r="48"/>
         </g>
-        <g class="node n-defend" data-node="scrim" id="node-scrim">
-          <circle class="node-glow" cx="400" cy="620" r="28"/><circle class="node-ring" cx="400" cy="620" r="28"/><circle class="node-core" cx="400" cy="620" r="6"/>
-          <text class="node-num" x="400" y="685" text-anchor="middle">iv</text>
-          <text class="node-label" x="400" y="700" text-anchor="middle">scrim</text>
-          <text class="node-sub" x="400" y="714" text-anchor="middle">adversarial · forthcoming</text>
-          <circle class="node-hit" cx="400" cy="620" r="42"/>
+        <g class="node n-construct" data-node="identity" id="node-identity">
+          <circle class="node-glow" cx="400" cy="620" r="36"/><circle class="node-ring" cx="400" cy="620" r="36"/><circle class="node-core" cx="400" cy="620" r="9"/>
+          <text class="node-num" x="400" y="680" text-anchor="middle">iv</text>
+          <text class="node-label" x="400" y="700" text-anchor="middle">identity</text>
+          <text class="node-sub" x="400" y="715" text-anchor="middle">cognition · live</text>
+          <circle class="node-hit" cx="400" cy="620" r="48"/>
         </g>
-        <g class="node n-construct" data-node="polygonal" id="node-polygonal">
-          <circle class="node-glow" cx="209.5" cy="510" r="35"/><circle class="node-ring" cx="209.5" cy="510" r="35"/><circle class="node-core" cx="209.5" cy="510" r="8"/>
-          <text class="node-num" x="100" y="510" text-anchor="start">v</text>
-          <text class="node-label" x="100" y="526" text-anchor="start">polyhedral minds</text>
-          <text class="node-sub" x="100" y="540" text-anchor="start">social-cognitive · live</text>
+        <g class="node n-construct" data-node="connection" id="node-connection">
+          <circle class="node-glow" cx="209.5" cy="510" r="36"/><circle class="node-ring" cx="209.5" cy="510" r="36"/><circle class="node-core" cx="209.5" cy="510" r="9"/>
+          <text class="node-num" x="40" y="486" text-anchor="start">v</text>
+          <text class="node-label" x="40" y="502" text-anchor="start">connection</text>
+          <text class="node-sub" x="40" y="516" text-anchor="start">play · live</text>
           <circle class="node-hit" cx="209.5" cy="510" r="48"/>
         </g>
-        <g class="node n-construct" data-node="rfsis" id="node-rfsis">
-          <circle class="node-glow" cx="209.5" cy="290" r="34"/><circle class="node-ring" cx="209.5" cy="290" r="34"/><circle class="node-core" cx="209.5" cy="290" r="7"/>
-          <text class="node-num" x="100" y="266" text-anchor="start">vi</text>
-          <text class="node-label" x="100" y="282" text-anchor="start">rf-sis</text>
-          <text class="node-sub" x="100" y="296" text-anchor="start">spatial · execution phase</text>
+        <g class="node n-construct" data-node="governance" id="node-governance">
+          <circle class="node-glow" cx="209.5" cy="290" r="36"/><circle class="node-ring" cx="209.5" cy="290" r="36"/><circle class="node-core" cx="209.5" cy="290" r="9"/>
+          <text class="node-num" x="40" y="266" text-anchor="start">vi</text>
+          <text class="node-label" x="40" y="282" text-anchor="start">governance</text>
+          <text class="node-sub" x="40" y="296" text-anchor="start">alignment · papers</text>
           <circle class="node-hit" cx="209.5" cy="290" r="48"/>
         </g>
       </svg>
       <p class="topology-caption">
-        <b>The system.</b> Seven surfaces — four <span style="color:var(--defend)">defend</span> against malign upstream shaping, two <span style="color:var(--construct)">construct</span> beneficial upstream structure, one <span style="color:var(--core)">institutional vehicle</span> at the centroid. Spokes from each surface into the institutional centroid make the program coherent.
+        <b>The system.</b> Seven surfaces — three <span style="color:var(--defend)">defend</span> against malign upstream shaping, three <span style="color:var(--construct)">construct</span> beneficial upstream structure, one <span style="color:var(--core)">institutional vehicle</span> at the centroid. Spokes from each surface into the institutional centroid make the program coherent.
       </p>
       <span class="edge-readout" id="edgeReadout"><span class="placeholder">hover an edge or node · follow a connection</span></span>
     </div>
@@ -403,36 +403,15 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
     <div class="spine">
       <p class="lead">Read the program as one statement. Each surface names the upstream structure it intervenes in, the architecture by which it intervenes, and the downstream effect that becomes possible.</p>
 
-      <!-- i Errorfect -->
-      <article class="node-block" id="surface-errorfect" data-posture="defend">
+      <article class="node-block" id="surface-security" data-posture="defend">
         <div class="head">
-          <div class="index"><span class="glyph"></span> i · linguistic-cognitive</div>
-          <h3 class="name"><a href="https://errorfect.com" rel="noopener">Errorfect <span class="arrow">↗</span></a></h3>
-          <div class="meta">live · DACRI L1 · <a href="papers/Errorfect_White_Paper.pdf">white paper</a></div>
+          <div class="index"><span class="glyph"></span> i · arrival integrity</div>
+          <h3 class="name"><a href="https://acepaste.xyz" rel="noopener">Security <span class="arrow">↗</span></a></h3>
+          <div class="meta">live · client-side</div>
         </div>
         <div class="body">
-          <p>The first published protocol of <strong>DACRI</strong> — a sequential disruption methodology for inspecting cognitive operators hidden in everyday vocabulary. Escalating disruption (orthographic, phonological, syllabary, morphological) surfaces what associations a word is loading before its user has consciously evaluated the claim. <em>Perfect</em> → Errorfect surfaces the unspoken standard the word installs. <em>Normal</em> → Ormal exposes a sorting rule masquerading as a measurement. <em>Control</em> → Troll surfaces the threat-response substrate beneath what reads as competence. Not vocabulary replacement — a repeatable inspection move applied at the place a word is being read.</p>
-        </div>
-        <div class="mini-triad" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="errorfect">
-            <line class="m-spoke" data-edge="institutional-errorfect" x1="50" y1="50" x2="50"    y2="18"/><line class="m-spoke" data-edge="institutional-acepaste"  x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-tracker"   x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-scrim"     x1="50" y1="50" x2="50"    y2="82"/><line class="m-spoke" data-edge="institutional-polygonal" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-rfsis"     x1="50" y1="50" x2="22.29" y2="34"/>
-            <line class="m-edge" data-edge="errorfect-acepaste" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="acepaste-tracker" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="tracker-scrim" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="scrim-polygonal" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="polygonal-rfsis" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="rfsis-errorfect" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="errorfect-scrim" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="acepaste-polygonal" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="tracker-rfsis" x1="77.71" y1="66" x2="22.29" y2="34"/>
-            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-errorfect" data-node="errorfect" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-acepaste" data-node="acepaste" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-tracker" data-node="tracker" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-scrim" data-node="scrim" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-polygonal" data-node="polygonal" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-rfsis" data-node="rfsis" cx="22.29" cy="34" r="2.6"/>
-          </svg>
-          <div class="triad-text"><span class="t-up">automatic meaning-load</span><span class="arr">→</span><span class="t-arch">sequential disruption</span><span class="arr">→</span><span class="t-down">operator made legible</span></div>
-        </div>
-        <div class="connections">connects: <span class="c">acepaste</span> <span class="c">scrim</span> <span class="c">rf-sis</span></div>
-      </article>
-
-      <!-- ii AcePaste -->
-      <article class="node-block" id="surface-acepaste" data-posture="defend">
-        <div class="head">
-          <div class="index"><span class="glyph"></span> ii · text-layer integrity</div>
-          <h3 class="name"><a href="https://acepaste.xyz" rel="noopener">AcePaste Cleaner Pro <span class="arrow">↗</span></a></h3>
-          <div class="meta">live · 100% client-side · no transit</div>
-        </div>
-        <div class="body">
-          <p>Removes zero-width spaces, bidi overrides, variation selectors, tag-range characters, smart-quote drift, and AI-generated markup debris from text passed through it. <strong>100% local</strong> — no servers, no transit, no path by which paste content leaves the device. The privacy commitment is an architectural fact, not a policy claim. The harmful payload exists upstream of any human or downstream AI parser; AcePaste removes it at the moment of paste.</p>
+          <p>Content arrives carrying more than it shows: invisible characters, hidden instructions written for an artificial intelligence model, trackers that build an identity to sell back, and code that runs without anyone reviewing it. The lab answers at four points of arrival.</p>
+          <p><strong>AcePaste Cleaner Pro</strong> strips invisible Unicode, tag-character payloads and markup debris at the moment of paste, entirely on the device. <strong>AcePaste Ingress</strong> sits between a web fetch and an artificial intelligence agent: every page is graded clean, suspect or hostile, only clean content is delivered, and every refusal is logged and relayed to the model with a signed receipt. <strong>TrackRSmackR</strong> intercepts cookies before storage, keeps the ones sign-in needs in an encrypted jar, lets the rest decay, and gives every user the same fingerprint. <strong>Kith &amp; Revere Audit</strong> is a read-only macOS audit whose every finding cites its evidence, with a deep JavaScript scanner for the layers dependency scanners never look at.</p>
         </div>
         <div class="demo">
           <div class="demo-label">live · paste any text — invisible glyphs detected client-side · no network request fires</div>
@@ -441,113 +420,128 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
           <div class="meter" id="acepaste-meter"><span><b>length</b> 0</span><span><b>visible</b> 0</span><span><b>invisible</b> 0</span><span><b>bidi</b> 0</span><span><b>tag-range</b> 0</span></div>
         </div>
         <div class="mini-triad" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="acepaste">
-            <line class="m-spoke" data-edge="institutional-errorfect" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-acepaste" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-tracker" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-scrim" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-polygonal" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-rfsis" x1="50" y1="50" x2="22.29" y2="34"/>
-            <line class="m-edge" data-edge="errorfect-acepaste" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="acepaste-tracker" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="tracker-scrim" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="scrim-polygonal" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="polygonal-rfsis" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="rfsis-errorfect" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="errorfect-scrim" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="acepaste-polygonal" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="tracker-rfsis" x1="77.71" y1="66" x2="22.29" y2="34"/>
-            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-errorfect" data-node="errorfect" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-acepaste" data-node="acepaste" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-tracker" data-node="tracker" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-scrim" data-node="scrim" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-polygonal" data-node="polygonal" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-rfsis" data-node="rfsis" cx="22.29" cy="34" r="2.6"/>
+          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="security">
+            <line class="m-spoke" data-edge="institutional-security" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-language" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-civic" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-identity" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-connection" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-governance" x1="50" y1="50" x2="22.29" y2="34"/>
+            <line class="m-edge" data-edge="security-language" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="language-civic" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="civic-identity" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="identity-connection" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="connection-governance" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="governance-security" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="security-identity" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="language-connection" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="civic-governance" x1="77.71" y1="66" x2="22.29" y2="34"/>
+            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-security" data-node="security" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-language" data-node="language" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-civic" data-node="civic" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-identity" data-node="identity" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-connection" data-node="connection" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-governance" data-node="governance" cx="22.29" cy="34" r="2.6"/>
           </svg>
-          <div class="triad-text"><span class="t-up">invisible payload smuggled in copy</span><span class="arr">→</span><span class="t-arch">strip at paste</span><span class="arr">→</span><span class="t-down">surface = what was transmitted</span></div>
+          <div class="triad-text"><span class="t-up">unreviewed payload arrives</span><span class="arr">→</span><span class="t-arch">inspection at the point of arrival</span><span class="arr">→</span><span class="t-down">only what was meant arrives</span></div>
         </div>
-        <div class="connections">connects: <span class="c">errorfect</span> <span class="c">trackrsmackr</span> <span class="c">polyhedral minds</span></div>
+        <div class="connections">connects: <span class="c">language</span> <span class="c">governance</span> <span class="c">identity</span></div>
       </article>
-
-      <!-- iii TrackRSmackR -->
-      <article class="node-block" id="surface-tracker" data-posture="defend">
+      <article class="node-block" id="surface-language" data-posture="defend">
         <div class="head">
-          <div class="index"><span class="glyph"></span> iii · behavioral-environmental</div>
-          <h3 class="name"><a href="https://cookiebouncer.app" rel="noopener">TrackRSmackR <span class="arrow">↗</span></a></h3>
-          <div class="meta">live · MV3 extension · no telemetry · no account</div>
+          <div class="index"><span class="glyph"></span> ii · linguistic-cognitive</div>
+          <h3 class="name"><a href="https://errorfect.com" rel="noopener">Language <span class="arrow">↗</span></a></h3>
+          <div class="meta">live · <a href="papers/errorfect.html">white paper</a></div>
         </div>
         <div class="body">
-          <p>Intercepts cookies before they touch storage, classifies via a local policy engine, encrypts non-essential cookies in a dual-chamber AES-GCM vault, and decays them on configurable timers. Anti-fingerprinting controls (uniform persona, entropy normalization, blocklist) sit alongside a real-time intelligence panel — threat posture, signal pressure, drift alerts, deception probe detection. <strong>No servers, no cloud sync, no telemetry, no account.</strong> Tracker mechanisms shape behavior by constructing identity-fragments and serving them back as targeted environments; removing the substrate of the construction at arrival prevents the downstream environment from being constructed against the user.</p>
+          <p>Words and campaigns load a judgment before the reader has evaluated anything. The surface makes that loading visible while it happens.</p>
+          <p><strong>Errorfect</strong> disrupts a word from the front, letter by letter and syllable by syllable, then inserts a single space at every position (the Abacate operation), and lays the fragments out flat for the reader's own recognition to judge: <em>perfect</em> yields <em>errorfect</em>, the standard that makes every attempt an error. <strong>Ψfiles</strong> maps cognitive ingress, the four stages by which an outside idea becomes identity (Mimicry, Dissonance, Recursion, Identity Ossification), with a nine-node build and the N.O.P.E. protocol for discerning one's own reactions. <strong>A is for Asshole</strong> is its standalone twelve-week workbook for recognizing pressure in the people nearby.</p>
         </div>
         <div class="mini-triad" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="tracker">
-            <line class="m-spoke" data-edge="institutional-errorfect" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-acepaste" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-tracker" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-scrim" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-polygonal" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-rfsis" x1="50" y1="50" x2="22.29" y2="34"/>
-            <line class="m-edge" data-edge="errorfect-acepaste" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="acepaste-tracker" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="tracker-scrim" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="scrim-polygonal" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="polygonal-rfsis" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="rfsis-errorfect" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="errorfect-scrim" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="acepaste-polygonal" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="tracker-rfsis" x1="77.71" y1="66" x2="22.29" y2="34"/>
-            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-errorfect" data-node="errorfect" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-acepaste" data-node="acepaste" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-tracker" data-node="tracker" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-scrim" data-node="scrim" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-polygonal" data-node="polygonal" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-rfsis" data-node="rfsis" cx="22.29" cy="34" r="2.6"/>
+          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="language">
+            <line class="m-spoke" data-edge="institutional-security" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-language" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-civic" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-identity" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-connection" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-governance" x1="50" y1="50" x2="22.29" y2="34"/>
+            <line class="m-edge" data-edge="security-language" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="language-civic" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="civic-identity" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="identity-connection" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="connection-governance" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="governance-security" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="security-identity" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="language-connection" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="civic-governance" x1="77.71" y1="66" x2="22.29" y2="34"/>
+            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-security" data-node="security" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-language" data-node="language" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-civic" data-node="civic" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-identity" data-node="identity" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-connection" data-node="connection" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-governance" data-node="governance" cx="22.29" cy="34" r="2.6"/>
           </svg>
-          <div class="triad-text"><span class="t-up">tracker mesh constructs target environment</span><span class="arr">→</span><span class="t-arch">interception at arrival</span><span class="arr">→</span><span class="t-down">environment no longer constructed against user</span></div>
+          <div class="triad-text"><span class="t-up">judgment loaded before evaluation</span><span class="arr">→</span><span class="t-arch">disruption at the point of reading</span><span class="arr">→</span><span class="t-down">the operator made legible</span></div>
         </div>
-        <div class="connections">connects: <span class="c">acepaste</span> <span class="c">scrim</span> <span class="c">rf-sis</span></div>
+        <div class="connections">connects: <span class="c">security</span> <span class="c">civic</span> <span class="c">connection</span></div>
       </article>
-
-      <!-- iv SCRIM -->
-      <article class="node-block" id="surface-scrim" data-posture="defend">
+      <article class="node-block" id="surface-civic" data-posture="defend">
         <div class="head">
-          <div class="index"><span class="glyph"></span> iv · adversarial cognition</div>
-          <h3 class="name">SCRIM <span style="color:var(--ink-faint);font-size:0.6em;font-family:var(--mono);letter-spacing:0.06em;">Compression-Class Deception Mesh</span></h3>
-          <div class="meta">forthcoming · companion paper · CCDM category</div>
+          <div class="index"><span class="glyph"></span> iii · institutional</div>
+          <h3 class="name"><a href="https://toroid.fyi" rel="noopener">Civic <span class="arrow">↗</span></a></h3>
+          <div class="meta">live · public sources</div>
         </div>
         <div class="body">
-          <p>A periphery mirage, a behavioral glitch maze, and deep decoy systems sit between attackers and real production infrastructure. Reconnaissance hits decoys before any real fingerprint is acquired. Stochastic glitch behaviors model real device failure distributions — statistically indistinguishable from genuinely broken hardware. The architecture <strong>compresses attacker effort into a controlled environment</strong> the way a reentry vehicle dumps kinetic energy into a bow shock: friction at the adversary's perceptual layer, where what they see costs them time without consuming defender capacity proportionally.</p>
+          <p>Institutions can be drained from the inside, and land and sky converted, without any shared measure of what was taken. This surface builds the measure.</p>
+          <p><strong>Toroid</strong> is nine forms for seeing how a society's load-bearing layer is attacked and its value extracted, in the order the work is done: observe, name, measure, predict, check, correct. Its Obfuscratic Sabbotarchy scores institutional architectures on an engineered-incompetence index, keeps a register of sourced evidence, and locks its predictions with dated checks so the instrument can lose. <strong>Named and Counted</strong> is the book behind it. <strong>DataCenterDumps</strong> maps data center sites and calculates the land and green space they take from satellite imagery. The <strong>Orbital Illumination Index</strong>, in design, will measure what orbital mirrors do to the night sky and the living systems under it.</p>
         </div>
         <div class="mini-triad" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="scrim">
-            <line class="m-spoke" data-edge="institutional-errorfect" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-acepaste" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-tracker" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-scrim" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-polygonal" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-rfsis" x1="50" y1="50" x2="22.29" y2="34"/>
-            <line class="m-edge" data-edge="errorfect-acepaste" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="acepaste-tracker" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="tracker-scrim" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="scrim-polygonal" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="polygonal-rfsis" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="rfsis-errorfect" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="errorfect-scrim" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="acepaste-polygonal" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="tracker-rfsis" x1="77.71" y1="66" x2="22.29" y2="34"/>
-            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-errorfect" data-node="errorfect" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-acepaste" data-node="acepaste" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-tracker" data-node="tracker" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-scrim" data-node="scrim" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-polygonal" data-node="polygonal" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-rfsis" data-node="rfsis" cx="22.29" cy="34" r="2.6"/>
+          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="civic">
+            <line class="m-spoke" data-edge="institutional-security" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-language" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-civic" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-identity" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-connection" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-governance" x1="50" y1="50" x2="22.29" y2="34"/>
+            <line class="m-edge" data-edge="security-language" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="language-civic" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="civic-identity" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="identity-connection" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="connection-governance" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="governance-security" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="security-identity" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="language-connection" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="civic-governance" x1="77.71" y1="66" x2="22.29" y2="34"/>
+            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-security" data-node="security" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-language" data-node="language" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-civic" data-node="civic" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-identity" data-node="identity" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-connection" data-node="connection" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-governance" data-node="governance" cx="22.29" cy="34" r="2.6"/>
           </svg>
-          <div class="triad-text"><span class="t-up">recon volume exceeds defender capacity</span><span class="arr">→</span><span class="t-arch">friction at adversary perception</span><span class="arr">→</span><span class="t-down">attacker effort absorbed in deception layer</span></div>
+          <div class="triad-text"><span class="t-up">loss with no shared measure</span><span class="arr">→</span><span class="t-arch">public-source instruments that can lose</span><span class="arr">→</span><span class="t-down">what had no name gets counted</span></div>
         </div>
-        <div class="connections">connects: <span class="c">errorfect</span> <span class="c">trackrsmackr</span> <span class="c">polyhedral minds</span></div>
+        <div class="connections">connects: <span class="c">language</span> <span class="c">identity</span> <span class="c">governance</span></div>
       </article>
-
-      <!-- v Polyhedral Minds -->
-      <article class="node-block" id="surface-polygonal" data-posture="construct">
+      <article class="node-block" id="surface-identity" data-posture="construct">
         <div class="head">
-          <div class="index"><span class="glyph"></span> v · social-cognitive identity</div>
-          <h3 class="name"><a href="https://sorted.quest" rel="noopener">Polyhedral Minds <span class="arrow">↗</span></a></h3>
-          <div class="meta">live · sorted.quest · architecture paper forthcoming</div>
+          <div class="index"><span class="glyph"></span> iv · social-cognitive</div>
+          <h3 class="name"><a href="https://sorted.quest" rel="noopener">Identity <span class="arrow">↗</span></a></h3>
+          <div class="meta">live · sorted.quest</div>
         </div>
         <div class="body">
-          <p>Each profile is a <strong>polyhedron</strong> — a multi-axis cognitive shape derived from behavioral signal, system-assigned, immutable within a controlled drift envelope. Color is deterministic from the vector, not chosen. Placement is automated: every group has a declared <em>void</em> it fills, not a credential it gates. Form siblings appear immediately on entry; cognitive opposites and mission pairs follow as identity stabilizes. Mass-audience platforms reward profiles toward population mean and penalize cognitive shape; here the compressed shape becomes the structural reason for placement and recognition.</p>
+          <p>Mass platforms reward people for drifting toward the population mean, and decisions are made inside forces nobody mapped. This surface turns a person's shape into the reason they are placed, and maps a decision before it is made.</p>
+          <p><strong>Polyhedral Minds</strong> renders how a person thinks as a unique crystal across fourteen edge-cognition architectures, from an adaptive assessment of 60 to 150 questions; its community, The Arc, places people by the problems their shape is built to solve. <strong>VolaVue</strong> is a private review of one decision across five dimensions: forces, relationships, pressures, underlying structure and consequence paths. The <strong>Experience Quotients</strong> pair complementary types rather than matching sameness, and their calculator keeps every answer in the browser.</p>
         </div>
         <div class="mini-triad" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="polygonal">
-            <line class="m-spoke" data-edge="institutional-errorfect" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-acepaste" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-tracker" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-scrim" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-polygonal" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-rfsis" x1="50" y1="50" x2="22.29" y2="34"/>
-            <line class="m-edge" data-edge="errorfect-acepaste" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="acepaste-tracker" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="tracker-scrim" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="scrim-polygonal" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="polygonal-rfsis" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="rfsis-errorfect" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="errorfect-scrim" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="acepaste-polygonal" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="tracker-rfsis" x1="77.71" y1="66" x2="22.29" y2="34"/>
-            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-errorfect" data-node="errorfect" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-acepaste" data-node="acepaste" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-tracker" data-node="tracker" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-scrim" data-node="scrim" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-polygonal" data-node="polygonal" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-rfsis" data-node="rfsis" cx="22.29" cy="34" r="2.6"/>
+          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="identity">
+            <line class="m-spoke" data-edge="institutional-security" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-language" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-civic" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-identity" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-connection" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-governance" x1="50" y1="50" x2="22.29" y2="34"/>
+            <line class="m-edge" data-edge="security-language" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="language-civic" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="civic-identity" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="identity-connection" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="connection-governance" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="governance-security" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="security-identity" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="language-connection" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="civic-governance" x1="77.71" y1="66" x2="22.29" y2="34"/>
+            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-security" data-node="security" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-language" data-node="language" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-civic" data-node="civic" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-identity" data-node="identity" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-connection" data-node="connection" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-governance" data-node="governance" cx="22.29" cy="34" r="2.6"/>
           </svg>
-          <div class="triad-text"><span class="t-up">audience flattening toward population mean</span><span class="arr">→</span><span class="t-arch" style="color:var(--construct)">structural placement by polyhedron</span><span class="arr">→</span><span class="t-down">cognitive identity legibility</span></div>
+          <div class="triad-text"><span class="t-up">flattening toward the mean</span><span class="arr">→</span><span class="t-arch">placement by shape, not by sameness</span><span class="arr">→</span><span class="t-down">difference becomes the reason to be found</span></div>
         </div>
-        <div class="connections">connects: <span class="c">rf-sis</span> <span class="c">acepaste</span> <span class="c">scrim</span></div>
+        <div class="connections">connects: <span class="c">civic</span> <span class="c">connection</span> <span class="c">security</span></div>
       </article>
-
-      <!-- vi RF-SIS -->
-      <article class="node-block" id="surface-rfsis" data-posture="construct">
+      <article class="node-block" id="surface-connection" data-posture="construct">
         <div class="head">
-          <div class="index"><span class="glyph"></span> vi · physical-spatial perception</div>
-          <h3 class="name">RF-SIS <span style="color:var(--ink-faint);font-size:0.6em;font-family:var(--mono);letter-spacing:0.06em;">RF-Derived Spatial Intelligence System</span></h3>
-          <div class="meta">execution phase · v1.3-TES-1.2 · run logs forthcoming</div>
+          <div class="index"><span class="glyph"></span> v · relational</div>
+          <h3 class="name"><a href="https://lucidlux.fyi" rel="noopener">Connection <span class="arrow">↗</span></a></h3>
+          <div class="meta">live · lucidlux.fyi</div>
         </div>
         <div class="body">
-          <p>Converts RF perturbations into a probabilistic spatial field, augments with attention proxies, projects multi-branch temporal futures. Outputs are non-visual and entity-aware — <strong>probabilistically anchored, not optically reconstructed</strong>. Bound by eight normative requirements: physics-bound outputs, edge-first privacy (raw RF stays local), uncertainty exposure on every output, fail-safe bias in safety-critical modes, full auditability of alerting decisions. The architecture extends perception into a sensing modality not previously instrumented for safety, care, or environmental optimization — constructed before existing surveillance-economy patterns can colonize the modality.</p>
+          <p>Loneliness is measured as a public-health risk, and most feeds and games are built to extract attention rather than return anything. This surface builds the opposite.</p>
+          <p><strong>Crushhh</strong> connects adults nearby, gates reach by how many people are in range rather than by miles, keeps compatibility answers on the device, and lets a member anonymously notify past partners of a possible exposure. <strong>Lucid Lux</strong> is the lab's games shelf (TapBoom, Resonant, Sches, Batduko, Vortex Wisdom), with no ads, offline play and one sign-in that carries progress across every game; TapBoom's first run is built for beginners over 65. <strong>Arttra</strong> sells made-to-order original and algorithmic art by BRIAR.</p>
         </div>
         <div class="mini-triad" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="rfsis">
-            <line class="m-spoke" data-edge="institutional-errorfect" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-acepaste" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-tracker" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-scrim" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-polygonal" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-rfsis" x1="50" y1="50" x2="22.29" y2="34"/>
-            <line class="m-edge" data-edge="errorfect-acepaste" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="acepaste-tracker" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="tracker-scrim" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="scrim-polygonal" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="polygonal-rfsis" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="rfsis-errorfect" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="errorfect-scrim" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="acepaste-polygonal" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="tracker-rfsis" x1="77.71" y1="66" x2="22.29" y2="34"/>
-            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-errorfect" data-node="errorfect" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-acepaste" data-node="acepaste" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-tracker" data-node="tracker" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-scrim" data-node="scrim" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-polygonal" data-node="polygonal" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-rfsis" data-node="rfsis" cx="22.29" cy="34" r="2.6"/>
+          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="connection">
+            <line class="m-spoke" data-edge="institutional-security" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-language" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-civic" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-identity" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-connection" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-governance" x1="50" y1="50" x2="22.29" y2="34"/>
+            <line class="m-edge" data-edge="security-language" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="language-civic" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="civic-identity" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="identity-connection" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="connection-governance" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="governance-security" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="security-identity" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="language-connection" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="civic-governance" x1="77.71" y1="66" x2="22.29" y2="34"/>
+            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-security" data-node="security" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-language" data-node="language" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-civic" data-node="civic" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-identity" data-node="identity" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-connection" data-node="connection" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-governance" data-node="governance" cx="22.29" cy="34" r="2.6"/>
           </svg>
-          <div class="triad-text"><span class="t-up">previously-uninstrumented sensing modality</span><span class="arr">→</span><span class="t-arch" style="color:var(--construct)">edge-first, physics-bound, uncertainty-exposing</span><span class="arr">→</span><span class="t-down">non-visual perception that does not betray its subjects</span></div>
+          <div class="triad-text"><span class="t-up">attention extracted, people alone</span><span class="arr">→</span><span class="t-arch">reach by count, answers kept local, no ads</span><span class="arr">→</span><span class="t-down">time spent returns something</span></div>
         </div>
-        <div class="connections">connects: <span class="c">polyhedral minds</span> <span class="c">trackrsmackr</span> <span class="c">errorfect</span></div>
+        <div class="connections">connects: <span class="c">identity</span> <span class="c">governance</span> <span class="c">language</span></div>
+      </article>
+      <article class="node-block" id="surface-governance" data-posture="construct">
+        <div class="head">
+          <div class="index"><span class="glyph"></span> vi · structural</div>
+          <h3 class="name"><a href="commonwealth/" rel="noopener">Governance <span class="arrow">↗</span></a></h3>
+          <div class="meta">papers · provisional</div>
+        </div>
+        <div class="body">
+          <p>Ownership, governance and training structures shape what becomes possible long before anyone chooses. This surface designs structures people would choose with their eyes open, and states how each would be tested.</p>
+          <p><strong>The Chassisuum</strong> makes an enterprise unownable with three locks set at founding: voting control in a purpose trust, a lock on core assets, and a covenant bond that caps debt, all enforced by a nonprofit guild. <strong>The Trustee Commonwealth of Earth</strong> proposes planetary governance in which liberties outrank living systems, living systems outrank provision, and money comes last, adopted only by consent. <strong>One Mind, Two Hemispheres</strong> proposes aligning an artificial intelligence by teaching it a symbiotic self, with a four-arm experiment specified. <strong>Greed Recursion in Artificial Intelligence</strong> and <strong>Slack and Structural Reflection</strong> each name a hidden pressure and the instrument that would measure it.</p>
+        </div>
+        <div class="mini-triad" aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="mini-topo" data-highlight="governance">
+            <line class="m-spoke" data-edge="institutional-security" x1="50" y1="50" x2="50" y2="18"/><line class="m-spoke" data-edge="institutional-language" x1="50" y1="50" x2="77.71" y2="34"/><line class="m-spoke" data-edge="institutional-civic" x1="50" y1="50" x2="77.71" y2="66"/><line class="m-spoke" data-edge="institutional-identity" x1="50" y1="50" x2="50" y2="82"/><line class="m-spoke" data-edge="institutional-connection" x1="50" y1="50" x2="22.29" y2="66"/><line class="m-spoke" data-edge="institutional-governance" x1="50" y1="50" x2="22.29" y2="34"/>
+            <line class="m-edge" data-edge="security-language" x1="50" y1="18" x2="77.71" y2="34"/><line class="m-edge" data-edge="language-civic" x1="77.71" y1="34" x2="77.71" y2="66"/><line class="m-edge" data-edge="civic-identity" x1="77.71" y1="66" x2="50" y2="82"/><line class="m-edge" data-edge="identity-connection" x1="50" y1="82" x2="22.29" y2="66"/><line class="m-edge" data-edge="connection-governance" x1="22.29" y1="66" x2="22.29" y2="34"/><line class="m-edge" data-edge="governance-security" x1="22.29" y1="34" x2="50" y2="18"/><line class="m-edge" data-edge="security-identity" x1="50" y1="18" x2="50" y2="82"/><line class="m-edge" data-edge="language-connection" x1="77.71" y1="34" x2="22.29" y2="66"/><line class="m-edge" data-edge="civic-governance" x1="77.71" y1="66" x2="22.29" y2="34"/>
+            <circle class="m-node m-node-institutional" data-node="institutional" cx="50" cy="50" r="2.8"/><circle class="m-node m-node-security" data-node="security" cx="50" cy="18" r="2.6"/><circle class="m-node m-node-language" data-node="language" cx="77.71" cy="34" r="2.6"/><circle class="m-node m-node-civic" data-node="civic" cx="77.71" cy="66" r="2.6"/><circle class="m-node m-node-identity" data-node="identity" cx="50" cy="82" r="2.6"/><circle class="m-node m-node-connection" data-node="connection" cx="22.29" cy="66" r="2.6"/><circle class="m-node m-node-governance" data-node="governance" cx="22.29" cy="34" r="2.6"/>
+          </svg>
+          <div class="triad-text"><span class="t-up">structures that extract by default</span><span class="arr">→</span><span class="t-arch">design with stated tests</span><span class="arr">→</span><span class="t-down">structures people would choose</span></div>
+        </div>
+        <div class="connections">connects: <span class="c">connection</span> <span class="c">security</span> <span class="c">civic</span></div>
       </article>
 
-      <!-- vii Institutional Vehicle -->
-      <article class="node-block" id="surface-institutional" style="border-top: 1px solid var(--rule); margin-top: 22px; padding-top: 30px;">
+      <article class="node-block" id="surface-institutional">
         <div class="head">
-          <div class="index"><span class="glyph" style="background:var(--core);box-shadow:0 0 8px color-mix(in oklab, var(--core) 50%, transparent)"></span> vii · institutional vehicle</div>
-          <h3 class="name">ThinkWell Labs <span style="color:var(--ink-faint);font-size:0.6em;font-family:var(--mono);letter-spacing:0.06em;">meta-architecture node · hybrid posture</span></h3>
+          <div class="index"><span class="glyph" style="background:var(--core)"></span> vii · institutional vehicle</div>
+          <h3 class="name">ThinkWell Labs <span style="color:var(--ink-faint);font-size:0.7em">meta-architecture node · hybrid posture</span></h3>
           <div class="meta">live · twl.today · holds the program</div>
         </div>
         <div class="body">
-          <p>The lab itself is a piece of the program. Coherent bodies of work compound; scattered output does not. ThinkWell Labs is the upstream structure that makes downstream work — citations, collaborations, sustained publication — <strong>compound</strong> rather than dissipate. The institution holds the program, sustains its publication cadence, and provides a citation surface for the body of work; the lab's existence as a coherent research program rather than a portfolio of unrelated projects is itself the load-bearing intervention at this scale.</p>
+          <p>The lab itself is a piece of the program. Coherent bodies of work compound; scattered output does not. ThinkWell Labs holds the program, sustains its publication cadence, and gives the body of work one citation surface, so that citations, collaborations and sustained publication compound rather than dissipate.</p>
+          <p>Its next structure applies the program to itself: a nonprofit guild that holds every company and product in the stack under the Chassisuum's three locks, so the work cannot be bought and dismantled.</p>
         </div>
-        <div class="connections">connects: <span class="c">errorfect</span> <span class="c">acepaste</span> <span class="c">trackrsmackr</span> <span class="c">scrim</span> <span class="c">polyhedral minds</span> <span class="c">rf-sis</span></div>
+        <div class="connections">connects: <span class="c">security</span> <span class="c">language</span> <span class="c">civic</span> <span class="c">identity</span> <span class="c">connection</span> <span class="c">governance</span></div>
       </article>
-
     </div>
   </div>
 </section>
@@ -589,11 +583,14 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
   <h2 style="font-family:var(--serif);font-weight:400;font-size:clamp(24px,3.4vw,36px);line-height:1.1;letter-spacing:-0.014em;margin:0 0 16px;color:var(--ink);max-width:32ch;">The methodology is not closed. The work is durable rather than <em style="font-style:italic">urgent</em>.</h2>
   <p style="color:var(--ink-soft);font-size:15.5px;line-height:1.7;max-width:var(--measure);margin:0 0 8px;">Most upstream structures took decades to settle into their current configurations; the corresponding architectural responses will take comparable time. The following are in active development.</p>
   <ul class="open-list">
-    <li><span class="when">DACRI L2+</span><span class="what"><strong>Disruption levels beyond the linguistic.</strong> Errorfect is DACRI Level 1. The full protocol contains additional modalities targeting layers of cognitive operation beyond word-form. Future levels publish as standalone protocols, each linked back to the program statement.</span></li>
-    <li><span class="when">Polyhedral Minds</span><span class="what"><strong>Full architecture publication.</strong> Placement engine, form-sibling vs. opposite-pair sequencing, Edge Convergence Node dynamics, the seven-axis void characterization framework, and the residual-gap-as-discovery-signal mechanism.</span></li>
-    <li><span class="when">RF-SIS</span><span class="what"><strong>Deployment artifacts.</strong> The system is in execution phase. The next document is the first run log emitted under measurement. Subsequent publications will articulate empirical findings from real-world deployment in security, care, and automation contexts.</span></li>
-    <li><span class="when">SCRIM</span><span class="what"><strong>Federated TTP intelligence formalism.</strong> Differential-privacy mechanism, cross-tenant baseline normalization protocol, and open-data architecture for the network-effect TTP corpus.</span></li>
-    <li><span class="when">cross-program</span><span class="what"><strong>Synthesis publications.</strong> How privacy commitments scale as projects accrete · how cognitive identity legibility (Polyhedral Minds) interacts with ambient identity sensing (RF-SIS) · how linguistic disruption (DACRI) applies to attacker-facing language in deception environments (SCRIM).</span></li>
+    <li><span class="when">AcePaste Ingress</span><span class="what"><strong>The audit and receipt plane.</strong> Verifiable receipts for every fetch an agent makes, and a public feed of real attacks found in the wild.</span></li>
+    <li><span class="when">Kith &amp; Revere</span><span class="what"><strong>The macOS release.</strong> The read-only audit with its evidence-bound engine and the deep JavaScript scanner in one app.</span></li>
+    <li><span class="when">Errorfect</span><span class="what"><strong>The hand canvas.</strong> A space where a reader performs every operation of the method by hand, with guidance, so the method is learned rather than handed over.</span></li>
+    <li><span class="when">Toroid</span><span class="what"><strong>Checks and replication.</strong> The locked press-access prediction resolves on December 21, 2026 and September 22, 2027; cross-analyst replication of the scored architectures is outstanding.</span></li>
+    <li><span class="when">Orbital Illumination</span><span class="what"><strong>Instrument design.</strong> A free public instrument for orbital reflectors' effect on the night sky, designed first, with collaboration sought from the atmospheric-modeling researchers who first quantified it.</span></li>
+    <li><span class="when">Ψfiles</span><span class="what"><strong>Hardcover and a neurodivergent edition.</strong> An edition for autistic readers and readers with attention-deficit hyperactivity disorder, with a research program anyone can contribute to that answers its open questions.</span></li>
+    <li><span class="when">Alignment</span><span class="what"><strong>Running the experiments.</strong> The four-arm study in One Mind, Two Hemispheres and the probe battery in Greed Recursion in Artificial Intelligence are specified and waiting to be run.</span></li>
+    <li><span class="when">The guild</span><span class="what"><strong>Specialist legal opinion and formation.</strong> The Chassisuum's four open legal questions, answered before the nonprofit guild is formed.</span></li>
   </ul>
 </section>
 
@@ -606,7 +603,7 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
     <div class="engage-card">
       <h4>cite</h4>
       <p>Citation format suggested for this program statement:</p>
-      <div class="cite">Greenway, B.M. Upstream Architectures: ThinkWell Labs Research Program (v2.0). ThinkWell Labs, 2026. https://twl.today/</div>
+      <div class="cite">Greenway, B.M. Upstream Architectures: ThinkWell Labs Research Program (v3.0). ThinkWell Labs, 2026. https://twl.today/</div>
     </div>
     <div class="engage-card">
       <h4>sponsor</h4>
@@ -664,7 +661,7 @@ footer .commitments b { color: var(--architecture); font-weight: 500; }
         <li><a href="./">Home</a></li>
         <li><a href="./#work">Products</a></li>
         <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="terms.html">Terms</a></li>
+        <li><a href="terms.html">Terms</a></li><li><a href="ai.html">AI use</a></li>
       </ul>
     </div>
   </div>
