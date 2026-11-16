@@ -79,8 +79,8 @@
       <span class="lbl"><b>Person</b>The whole team.</span>
     </div>
     <div class="counter" role="listitem">
-      <span class="num" data-count="15">15</span>
-      <span class="lbl"><b>Sites</b>Live, each on its own domain.</span>
+      <span class="num" data-count="14" data-count-hosts="#work a.card" data-count-add="1">14</span>
+      <span class="lbl"><b>Sites</b>Live, including this one.</span>
     </div>
     <div class="counter" role="listitem">
       <span class="num" data-count="4">4</span>
@@ -115,24 +115,56 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="kicker">01 · The work</p>
-      <h2 id="work-h">Fifteen sites, four games, two browser extensions, three npm packages and three books. <span class="muted">All designed, built and launched by one person.</span></h2>
+      <h2 id="work-h">Fourteen sites including this one, four games, two browser extensions, three npm packages and three books. <span class="muted">All designed, built and launched by one person.</span></h2>
     </div>
 
-    <div class="grid cards">
+    <h3 class="sub-head">AI security &amp; privacy</h3>
+    <div class="grid cards cards-2">
 
-      <a class="card card-feature" href="https://crushhh.ing" rel="noopener" style="--tone:#ff7a3d">
-        <div class="media"><img src="assets/work/crushhh.jpg" alt="Crushhh homepage" loading="lazy"></div>
+      <a class="card card-feature" href="https://acepaste.xyz/ingress/" rel="noopener" style="--tone:#19b9a8">
+        <div class="media media-art">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="250" fill="#0e1218"/>
+            <g stroke="#19b9a8" stroke-width="2" fill="none"><path d="M150 205 V95 a50 50 0 0 1 100 0 V205"/><path d="M168 205 V100 a32 32 0 0 1 64 0 V205"/></g>
+            <g font-family="ui-monospace,Menlo,monospace" font-size="11"><text x="40" y="128" fill="#8a93a3">&lt;div hidden&gt;</text><text x="52" y="148" fill="#ff4d6d">​‮</text><text x="262" y="138" fill="#19b9a8">clean text →</text></g>
+            <line x1="40" y1="205" x2="360" y2="205" stroke="#3a3f47"/></svg>
+        </div>
         <div class="body">
-          <p class="tag"><span class="badge">New</span> Connection · beta · 18+</p>
-          <h3>Crushhh</h3>
-          <p>A weapon against loneliness — and a tool for connection, of sorts. Crushhh finds the people nearby who want to do what you want to do: trivia night, a sunrise hike, karaoke, the big game. Built to protect you while you reach out, with photo location scrubbed on your device and sensitive details shared only by explicit consent.</p>
-          <span class="url">crushhh.ing ↗</span>
+          <p class="tag"><span class="badge">Live</span> AI security · 3 npm packages</p>
+          <h3>AcePaste Ingress</h3>
+          <p>Stands at the door between the web and your AI. Every page is checked before the AI reads it, for hidden text, invisible characters, look-alike letters and content shown only to AI. Anything poisoned is refused, logged and given a signed receipt.</p>
+          <p class="pkgs">On npm as <code>@acepaste/ingress</code> (the engine), <code>ingress-http</code> (an HTTP service you host) and <code>ingress-mcp</code> (an MCP server).</p>
+          <span class="url">acepaste.xyz/ingress ↗</span>
         </div>
       </a>
 
-      <a class="card" href="https://toroid.fyi" rel="noopener" style="--tone:#3cc4f0">
+      <a class="card" href="https://acepaste.xyz" rel="noopener" style="--tone:#19b9a8">
+        <div class="media"><img src="assets/work/acepaste.jpg" alt="AcePaste Cleaner Pro homepage" loading="lazy"></div>
+        <div class="body">
+          <p class="tag">AI security · extension</p>
+          <h3>AcePaste Cleaner Pro</h3>
+          <p>Strips invisible Unicode, prompt-injection tags and AI debris from text before it reaches your editor, prompt or codebase. Runs entirely on your device.</p>
+          <span class="url">acepaste.xyz ↗</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://cookiebouncer.app" rel="noopener" style="--tone:#f6c83e">
+        <div class="media"><img src="assets/work/trackrsmackr.jpg" alt="TrackRSmackR homepage" loading="lazy"></div>
+        <div class="body">
+          <p class="tag">Privacy · Chrome Web Store</p>
+          <h3>TrackRSmackR</h3>
+          <p>The cookie bouncer. Intercepts cookies before they land, seals trackers in an encrypted vault and smashes them on a timer. 100% local.</p>
+          <span class="url">cookiebouncer.app ↗</span>
+        </div>
+      </a>
+
+    </div>
+
+    <h3 class="sub-head">Instruments &amp; research tools</h3>
+    <div class="grid cards">
+
+      <a class="card card-feature" href="https://toroid.fyi" rel="noopener" style="--tone:#3cc4f0">
         <div class="media media-art">
-          <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#0b0d10"/><g fill="none" stroke="#3cc4f0" stroke-opacity=".55">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="250" fill="#0b0d10"/><g fill="none" stroke="#3cc4f0" stroke-opacity=".55">
             <ellipse cx="200" cy="125" rx="150" ry="52"/><ellipse cx="200" cy="125" rx="120" ry="40"/><ellipse cx="200" cy="125" rx="90" ry="29"/><ellipse cx="200" cy="125" rx="58" ry="17"/></g>
             <g fill="none" stroke="#a58cff" stroke-opacity=".5"><path d="M50 125 Q200 40 350 125"/><path d="M80 125 Q200 70 320 125"/><path d="M50 125 Q200 210 350 125" stroke-dasharray="3 4"/></g>
             <circle cx="200" cy="85" r="4" fill="#ffd23f"/><circle cx="292" cy="140" r="3" fill="#3cc4f0"/><circle cx="118" cy="146" r="3" fill="#a58cff"/></svg>
@@ -156,6 +188,50 @@
           <h3>PsiFiles</h3>
           <p>A study of the apparatus that designs the public mind: disinformation, psychographic targeting, algorithmic amplification, synthetic consensus and identity entrapment. With a working set of tools to live consciously inside it. Now also a book, <i>Ψfiles</i> (Kindle and hardcover).</p>
           <span class="url">psifiles.fyi ↗</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://datacenters.rooted.wang" rel="noopener" style="--tone:#7bd389">
+        <div class="media media-art">
+          <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#0c120e"/>
+            <g stroke="#7bd389" stroke-opacity=".18"><path d="M0 50H400M0 100H400M0 150H400M0 200H400M80 0V250M160 0V250M240 0V250M320 0V250"/></g>
+            <g fill="#7bd389" fill-opacity=".22" stroke="#7bd389" stroke-opacity=".5"><path d="M40 210 Q70 150 120 170 T200 140 T290 160 T370 120 V230 H40Z"/></g>
+            <g fill="#15181d" stroke="#ffd23f" stroke-width="1.5"><rect x="150" y="78" width="46" height="62" rx="2"/><rect x="204" y="92" width="58" height="48" rx="2"/></g>
+            <g stroke="#ffd23f" stroke-opacity=".7"><path d="M158 92H188M158 104H188M158 116H188M212 104H254M212 116H254"/></g>
+            <rect x="282" y="104" width="40" height="36" rx="2" fill="none" stroke="#ff6b8a" stroke-dasharray="4 4"/>
+            <circle cx="100" cy="70" r="4" fill="#3cc4f0"/><circle cx="330" cy="60" r="3" fill="#3cc4f0"/></svg>
+        </div>
+        <div class="body">
+          <p class="tag"><span class="badge">New</span> Tracker and calculator · land use</p>
+          <h3>DataCenterDumps</h3>
+          <p>Maps data center sites, built, under construction and abandoned, with their land footprint and the green space that stood there before, read from satellite vegetation data. The calculator estimates how much of a region's land they take up.</p>
+          <span class="url">datacenters.rooted.wang ↗</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://errorfect.com" rel="noopener" style="--tone:#ff2d6f">
+        <div class="media"><img src="assets/work/errorfect.jpg" alt="Errorfect homepage" loading="lazy"></div>
+        <div class="body">
+          <p class="tag">Cognitive tool · white paper</p>
+          <h3>Errorfect</h3>
+          <p>The linguistic autopsy. Disrupt a word to expose the standard hidden inside it — who installed it, and whether you agreed.</p>
+          <span class="url">errorfect.com ↗</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://sorted.quest" rel="noopener" style="--tone:#a58cff">
+        <div class="media media-art">
+          <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#10121a"/>
+            <g stroke="#a58cff" stroke-width="1.2" fill="#a58cff" fill-opacity=".08">
+              <polygon points="200,40 290,95 270,190 130,190 110,95"/><polygon points="200,40 230,120 290,95"/><polygon points="200,40 170,120 110,95"/>
+              <polygon points="170,120 230,120 270,190 130,190" fill-opacity=".18"/></g>
+            <g fill="#ffd23f"><circle cx="200" cy="40" r="3.5"/><circle cx="230" cy="120" r="3"/><circle cx="170" cy="120" r="3"/></g></svg>
+        </div>
+        <div class="body">
+          <p class="tag">Cognitive instrument</p>
+          <h3>Polyhedral Minds</h3>
+          <p>How you think has a shape. An assessment that renders your cognition as a personal polyhedron — a measurement, not a personality quiz.</p>
+          <span class="url">sorted.quest ↗</span>
         </div>
       </a>
 
@@ -198,106 +274,22 @@
         </div>
       </section>
 
-      <a class="card" href="https://datacenters.rooted.wang" rel="noopener" style="--tone:#7bd389">
-        <div class="media media-art">
-          <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#0c120e"/>
-            <g stroke="#7bd389" stroke-opacity=".18"><path d="M0 50H400M0 100H400M0 150H400M0 200H400M80 0V250M160 0V250M240 0V250M320 0V250"/></g>
-            <g fill="#7bd389" fill-opacity=".22" stroke="#7bd389" stroke-opacity=".5"><path d="M40 210 Q70 150 120 170 T200 140 T290 160 T370 120 V230 H40Z"/></g>
-            <g fill="#15181d" stroke="#ffd23f" stroke-width="1.5"><rect x="150" y="78" width="46" height="62" rx="2"/><rect x="204" y="92" width="58" height="48" rx="2"/></g>
-            <g stroke="#ffd23f" stroke-opacity=".7"><path d="M158 92H188M158 104H188M158 116H188M212 104H254M212 116H254"/></g>
-            <rect x="282" y="104" width="40" height="36" rx="2" fill="none" stroke="#ff6b8a" stroke-dasharray="4 4"/>
-            <circle cx="100" cy="70" r="4" fill="#3cc4f0"/><circle cx="330" cy="60" r="3" fill="#3cc4f0"/></svg>
-        </div>
-        <div class="body">
-          <p class="tag"><span class="badge">New</span> Tracker and calculator · land use</p>
-          <h3>DataCenterDumps</h3>
-          <p>Maps data center sites, built, under construction and abandoned, with their land footprint and the green space that stood there before, read from satellite vegetation data. The calculator estimates how much of a region's land they take up.</p>
-          <span class="url">datacenters.rooted.wang ↗</span>
-        </div>
-      </a>
+    </div>
+
+    <h3 class="sub-head">Games</h3>
+    <div class="grid cards">
 
       <a class="card card-feature" href="https://lucidlux.fyi" rel="noopener" style="--tone:#ff4d6d">
-        <div class="media"><img src="assets/work/lucidlux.jpg" alt="Lucid Lux games shelf" loading="lazy"></div>
+        <div class="media media-fit" style="--fit-bg:#0e0d14"><img src="assets/work/lucidlux.jpg" alt="Lucid Lux games shelf" loading="lazy"></div>
         <div class="body">
           <p class="tag"><span class="badge">New</span> Games</p>
           <h3>Lucid Lux</h3>
-          <p>The lab's games shelf. Its centerpiece is <b>Sches</b>, a model of how things actually work, whether it's a life, a government, a corporation or the weather: there are no turns. Everyone plans in secret and moves at the same moment, and the board has no edges, so no move happens in isolation and every action loops back around. You act without knowing what everyone else is doing, the same condition the rest of the lab's tools are built for. Alongside it: TapBoom, Resonant and Batduko. No accounts, no ads.</p>
+          <p>The lab's games shelf. Its centerpiece, <b>Sches</b>, has no turns: everyone plans in secret and moves at once, on a board with no edges, so every action loops back around. That's how a life, a government or the weather actually works. Alongside it: TapBoom, Resonant and Batduko. No accounts, no ads.</p>
           <span class="url">lucidlux.fyi ↗</span>
         </div>
       </a>
 
-      <a class="card" href="https://arttra.art" rel="noopener" style="--tone:#c9a35c">
-        <div class="media"><img src="assets/work/arttra.jpg" alt="Arttra homepage" loading="lazy"></div>
-        <div class="body">
-          <p class="tag">Original art</p>
-          <h3>Arttra</h3>
-          <p>Original and algorithmic art, made to order up to 60″ and shipped worldwide — previewed at true scale on your own wall first.</p>
-          <span class="url">arttra.art ↗</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://errorfect.com" rel="noopener" style="--tone:#ff2d6f">
-        <div class="media"><img src="assets/work/errorfect.jpg" alt="Errorfect homepage" loading="lazy"></div>
-        <div class="body">
-          <p class="tag">Cognitive tool · white paper</p>
-          <h3>Errorfect</h3>
-          <p>The linguistic autopsy. Disrupt a word to expose the standard hidden inside it — who installed it, and whether you agreed.</p>
-          <span class="url">errorfect.com ↗</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://acepaste.xyz" rel="noopener" style="--tone:#19b9a8">
-        <div class="media"><img src="assets/work/acepaste.jpg" alt="AcePaste Cleaner Pro homepage" loading="lazy"></div>
-        <div class="body">
-          <p class="tag">AI security · extension</p>
-          <h3>AcePaste Cleaner Pro</h3>
-          <p>Strips invisible Unicode, prompt-injection tags and AI debris from text before it reaches your editor, prompt or codebase. Runs entirely on your device.</p>
-          <span class="url">acepaste.xyz ↗</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://acepaste.xyz/ingress/" rel="noopener" style="--tone:#19b9a8">
-        <div class="media media-art">
-          <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#0e1218"/>
-            <g stroke="#19b9a8" stroke-width="2" fill="none"><path d="M150 205 V95 a50 50 0 0 1 100 0 V205"/><path d="M168 205 V100 a32 32 0 0 1 64 0 V205"/></g>
-            <g font-family="ui-monospace,Menlo,monospace" font-size="11"><text x="40" y="128" fill="#8a93a3">&lt;div hidden&gt;</text><text x="52" y="148" fill="#ff4d6d">​‮</text><text x="262" y="138" fill="#19b9a8">clean text →</text></g>
-            <line x1="40" y1="205" x2="360" y2="205" stroke="#3a3f47"/></svg>
-        </div>
-        <div class="body">
-          <p class="tag"><span class="badge">Live</span> AI security · npm</p>
-          <h3>AcePaste Ingress</h3>
-          <p>Stands at the door between the web and your AI. Every page is checked before the AI reads it, for hidden text, invisible characters, look-alike letters and content shown only to AI. Anything poisoned is refused, logged and given a signed receipt.</p>
-          <span class="url">acepaste.xyz/ingress ↗</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://cookiebouncer.app" rel="noopener" style="--tone:#f6c83e">
-        <div class="media"><img src="assets/work/trackrsmackr.jpg" alt="TrackRSmackR homepage" loading="lazy"></div>
-        <div class="body">
-          <p class="tag">Privacy · Chrome Web Store</p>
-          <h3>TrackRSmackR</h3>
-          <p>The cookie bouncer. Intercepts cookies before they land, seals trackers in an encrypted vault and smashes them on a timer. 100% local.</p>
-          <span class="url">cookiebouncer.app ↗</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://sorted.quest" rel="noopener" style="--tone:#a58cff">
-        <div class="media media-art">
-          <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#10121a"/>
-            <g stroke="#a58cff" stroke-width="1.2" fill="#a58cff" fill-opacity=".08">
-              <polygon points="200,40 290,95 270,190 130,190 110,95"/><polygon points="200,40 230,120 290,95"/><polygon points="200,40 170,120 110,95"/>
-              <polygon points="170,120 230,120 270,190 130,190" fill-opacity=".18"/></g>
-            <g fill="#ffd23f"><circle cx="200" cy="40" r="3.5"/><circle cx="230" cy="120" r="3"/><circle cx="170" cy="120" r="3"/></g></svg>
-        </div>
-        <div class="body">
-          <p class="tag">Cognitive instrument</p>
-          <h3>Polyhedral Minds</h3>
-          <p>How you think has a shape. An assessment that renders your cognition as a personal polyhedron — a measurement, not a personality quiz.</p>
-          <span class="url">sorted.quest ↗</span>
-        </div>
-      </a>
-
-      <a class="card card-feature" href="https://lucidlux.fyi/batduko/" rel="noopener" style="--tone:#b48cff">
+      <a class="card" href="https://lucidlux.fyi/batduko/" rel="noopener" style="--tone:#b48cff">
         <div class="media media-art">
           <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="320" fill="#0d0a18"/>
             <g transform="translate(110 70)" stroke="#3a2f55" fill="none">
@@ -319,6 +311,41 @@
         </div>
       </a>
 
+    </div>
+
+    <h3 class="sub-head">Connection</h3>
+    <div class="grid cards cards-2">
+
+      <a class="card" href="https://crushhh.ing" rel="noopener" style="--tone:#ff7a3d">
+        <div class="media"><img src="assets/work/crushhh.jpg" alt="Crushhh homepage" loading="lazy"></div>
+        <div class="body">
+          <p class="tag"><span class="badge">New</span> Connection · beta · 18+</p>
+          <h3>Crushhh</h3>
+          <p>A weapon against loneliness — and a tool for connection, of sorts. Crushhh finds the people nearby who want to do what you want to do: trivia night, a sunrise hike, karaoke, the big game. Built to protect you while you reach out, with photo location scrubbed on your device and sensitive details shared only by explicit consent.</p>
+          <span class="url">crushhh.ing ↗</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://plus1.my" rel="noopener" style="--tone:#ffb84d">
+        <div class="media media-art">
+          <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="250" fill="#14110d"/>
+            <g fill="#ffb84d" fill-opacity=".06" stroke="#ffb84d" stroke-width="2"><circle cx="168" cy="125" r="62" stroke-opacity=".85"/><circle cx="232" cy="125" r="62" stroke-opacity=".45"/></g>
+            <text x="200" y="135" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-weight="700" font-size="30" fill="#ffd9a0">+1</text>
+            <g fill="#ffb84d" fill-opacity=".6"><circle cx="70" cy="60" r="2"/><circle cx="330" cy="70" r="2.5"/><circle cx="310" cy="200" r="1.8"/><circle cx="90" cy="190" r="1.6"/></g></svg>
+        </div>
+        <div class="body">
+          <p class="tag"><span class="badge">New</span> Connection · platonic only</p>
+          <h3>plus1</h3>
+          <p>The platonic-only tool to end loneliness. Like Crushhh, it matches you through compatibility questions, but about personality rather than the bedroom: friends, never dates.</p>
+          <span class="url">plus1.my ↗</span>
+        </div>
+      </a>
+
+    </div>
+
+    <h3 class="sub-head">Services</h3>
+    <div class="grid cards">
+
       <a class="card" href="https://volavue.fyi" rel="noopener" style="--tone:#d9b25f">
         <div class="media media-art">
           <svg viewBox="0 0 400 250" aria-hidden="true"><defs><linearGradient id="vv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1813"/><stop offset="1" stop-color="#2b2417"/></linearGradient></defs>
@@ -333,13 +360,23 @@
         </div>
       </a>
 
-      <a class="card card-feature" href="https://gizmorx.com" rel="noopener" style="--tone:#5fd08a">
+      <a class="card" href="https://gizmorx.com" rel="noopener" style="--tone:#5fd08a">
         <div class="media"><img src="assets/work/gizmorx.jpg" alt="GizmoRx homepage" loading="lazy"></div>
         <div class="body">
           <p class="tag">Service · Palm Springs</p>
           <h3>GizmoRx</h3>
           <p>House calls for your sick tech. In-home support for smart-home setup, device rescue, account cleanup and calm, real-world help from a real human.</p>
           <span class="url">gizmorx.com ↗</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://arttra.art" rel="noopener" style="--tone:#c9a35c">
+        <div class="media"><img src="assets/work/arttra.jpg" alt="Arttra homepage" loading="lazy"></div>
+        <div class="body">
+          <p class="tag">Original art · commissions</p>
+          <h3>Arttra</h3>
+          <p>Original and algorithmic art, made to order up to 60″ and shipped worldwide — previewed at true scale on your own wall first.</p>
+          <span class="url">arttra.art ↗</span>
         </div>
       </a>
 
@@ -648,6 +685,7 @@
       <h4>Products</h4>
       <ul>
         <li><a href="https://crushhh.ing" rel="noopener">Crushhh</a></li>
+        <li><a href="https://plus1.my" rel="noopener">plus1</a></li>
         <li><a href="https://toroid.fyi" rel="noopener">Toroid</a></li>
         <li><a href="https://datacenters.rooted.wang" rel="noopener">DataCenterDumps</a></li>
         <li><a href="https://lucidlux.fyi" rel="noopener">Lucid Lux</a></li>
@@ -692,10 +730,16 @@
   /* ── Counters: count up once when they scroll into view ── */
   var nums = document.querySelectorAll('.counter .num');
   // A counter with data-count-of counts the matching items on the page, so it can't drift from the list.
+  // A counter with data-count-hosts counts the distinct web addresses those links point to,
+  // plus data-count-add for sites not in the list (the Sites counter adds 1 for twl.today itself).
   nums.forEach(function (el) {
-    var sel = el.getAttribute('data-count-of');
-    if (!sel) return;
-    var n = document.querySelectorAll(sel).length;
+    var sel = el.getAttribute('data-count-of'), hosts = el.getAttribute('data-count-hosts'), n = 0;
+    if (sel) n = document.querySelectorAll(sel).length;
+    else if (hosts) {
+      var seen = {};
+      document.querySelectorAll(hosts).forEach(function (a) { if (a.hostname) seen[a.hostname] = 1; });
+      n = Object.keys(seen).length + (+el.getAttribute('data-count-add') || 0);
+    } else return;
     if (n) { el.setAttribute('data-count', n); el.textContent = n; }
   });
   function run(el) {

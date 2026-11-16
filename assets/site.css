@@ -3,7 +3,7 @@
 :root {
   --ink: #0b0d10;
   --ink-2: #3a3f47;
-  --ink-3: #6b717b;
+  --ink-3: #5f656e; /* ≥4.5:1 on the lavender (#ebe8f2) and grey (#f3f3f0) sections */
   --paper: #ffffff;
   --paper-2: #f3f3f0;
   --rule: #e2e2dc;
@@ -35,7 +35,10 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: -0.02em; }
 p { margin: 0; }
 
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
-:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+/* Focus ring: dark on light and yellow sections, yellow on dark ones, so it is always visible. */
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.hero :focus-visible, .section-black :focus-visible, .shelf :focus-visible,
+.subscribe :focus-visible, .tw-foot :focus-visible { outline-color: var(--yellow); }
 
 .c-cyan { color: var(--cyan); }
 .c-violet { color: var(--violet); }
@@ -113,6 +116,10 @@ p { margin: 0; }
 div.card:hover { transform: none; box-shadow: none; }
 @media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+/* Work bands: the first band label sits right under the section heading; two-up bands for 3- and 2-card groups. */
+.sec-head + .sub-head { margin-top: 0; }
+.cards.cards-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 640px) { .cards.cards-2 { grid-template-columns: 1fr; } }
 .card { display: flex; flex-direction: column; text-decoration: none; background: #fff; border: 1px solid var(--rule); transition: transform .2s, box-shadow .2s, border-color .2s; }
 .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(11,13,16,.45); border-color: #cfcfc6; }
 .card .media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--night); border-bottom: 4px solid var(--tone, var(--yellow)); }
@@ -121,11 +128,16 @@ div.card:hover { transform: none; box-shadow: none; }
 .card .media-art svg { width: 100%; height: 100%; }
 .card .media-cover { display: flex; align-items: center; justify-content: center; padding: 16px; background: radial-gradient(120% 90% at 50% 40%, #1b1f26 0%, var(--night) 70%); }
 .card .media-cover img { width: auto; height: 100%; max-width: 100%; object-fit: contain; box-shadow: 0 14px 30px -12px rgba(0,0,0,.7); }
+/* Whole screenshot, never cropped: for shots whose content runs edge to edge. --fit-bg is the screenshot's own background, so the frame looks seamless. */
+.card .media-fit { background: var(--fit-bg, var(--night)); }
+.card .media-fit img { object-fit: contain; object-position: center; }
 .card .body { padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 .card .tag { font: 600 11.5px/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .badge { background: var(--ink); color: var(--yellow); padding: 3px 7px; letter-spacing: 0.1em; }
 .card h3 { font-size: 26px; letter-spacing: -0.03em; }
 .card p { color: var(--ink-2); font-size: 15.5px; }
+.card .pkgs { font-size: 14px; color: var(--ink-3); }
+.card .pkgs code { font: 600 12.5px var(--mono); color: var(--ink-2); }
 .card .url { margin-top: auto; padding-top: 8px; font: 600 13px/1 var(--mono); color: var(--ink); }
 .card:hover .url { text-decoration: underline; text-underline-offset: 4px; }
 .card-feature { grid-column: span 2; display: grid; grid-template-columns: 1.25fr 1fr; }
