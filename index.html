@@ -18,6 +18,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/chrome.css">
 <link rel="stylesheet" href="assets/site.css">
+<style>
+/* launch announcement bar (AcePaste Ingress, 2026-11-16) */
+.tw-announce { display: block; background: var(--yellow, #ffd23f); color: var(--ink, #0b0d10); text-decoration: none; border-bottom: 1px solid rgba(11,13,16,.18); }
+.tw-announce .wrap { display: flex; align-items: center; justify-content: center; gap: 10px 14px; flex-wrap: wrap; padding-top: 11px; padding-bottom: 11px; text-align: center; font-size: 15px; line-height: 1.45; }
+.tw-announce .tag { font: 700 11px/1 var(--mono, ui-monospace, Menlo, monospace); letter-spacing: .14em; text-transform: uppercase; background: var(--ink, #0b0d10); color: var(--yellow, #ffd23f); padding: 4px 8px; }
+.tw-announce .go { font: 600 13px/1 var(--mono, ui-monospace, Menlo, monospace); text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }
+.tw-announce:hover .go { text-decoration-thickness: 2px; }
+.tw-announce:focus-visible { outline: 3px solid var(--ink, #0b0d10); outline-offset: -3px; }
+</style>
 </head>
 <body>
 
@@ -40,6 +49,14 @@
 </header>
 
 <main id="main">
+
+<a class="tw-announce" href="https://acepaste.xyz/ingress/" rel="noopener" aria-label="AcePaste Ingress is live, up and running. Read more at acepaste.xyz/ingress">
+  <div class="wrap">
+    <span class="tag">Live</span>
+    <span><b>AcePaste Ingress is live, up and running:</b> a security gate between the web and your AI that refuses hidden instructions. Free on npm.</span>
+    <span class="go">acepaste.xyz/ingress ↗</span>
+  </div>
+</a>
 
 <!-- ── HERO ─────────────────────────────────────────── -->
 <section class="hero" aria-label="Introduction">
@@ -239,7 +256,7 @@
         </div>
       </a>
 
-      <a class="card" href="https://acepaste-ingress.fly.dev" rel="noopener" style="--tone:#19b9a8">
+      <a class="card" href="https://acepaste.xyz/ingress/" rel="noopener" style="--tone:#19b9a8">
         <div class="media media-art">
           <svg viewBox="0 0 400 250" aria-hidden="true"><rect width="400" height="250" fill="#0e1218"/>
             <g stroke="#19b9a8" stroke-width="2" fill="none"><path d="M150 205 V95 a50 50 0 0 1 100 0 V205"/><path d="M168 205 V100 a32 32 0 0 1 64 0 V205"/></g>
@@ -247,10 +264,10 @@
             <line x1="40" y1="205" x2="360" y2="205" stroke="#3a3f47"/></svg>
         </div>
         <div class="body">
-          <p class="tag"><span class="badge">New</span> AI security · npm</p>
+          <p class="tag"><span class="badge">Live</span> AI security · npm</p>
           <h3>AcePaste Ingress</h3>
-          <p>Stands at the door between the web and your AI. Every page is checked before the AI reads it, for hidden text, invisible characters, look-alike letters and content shown only to AI. Anything poisoned is refused, logged and given a signed receipt. A public feed lists the real attack pages it has caught.</p>
-          <span class="url">acepaste-ingress.fly.dev ↗</span>
+          <p>Stands at the door between the web and your AI. Every page is checked before the AI reads it, for hidden text, invisible characters, look-alike letters and content shown only to AI. Anything poisoned is refused, logged and given a signed receipt.</p>
+          <span class="url">acepaste.xyz/ingress ↗</span>
         </div>
       </a>
 
@@ -637,7 +654,7 @@
         <li><a href="https://arttra.art" rel="noopener">Arttra</a></li>
         <li><a href="https://errorfect.com" rel="noopener">Errorfect</a></li>
         <li><a href="https://acepaste.xyz" rel="noopener">AcePaste Cleaner Pro</a></li>
-        <li><a href="https://acepaste-ingress.fly.dev" rel="noopener">AcePaste Ingress</a></li>
+        <li><a href="https://acepaste.xyz/ingress/" rel="noopener">AcePaste Ingress</a></li>
       </ul>
     </div>
     <div>
