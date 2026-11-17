@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000"
+     viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Polyhedral Minds — sorted.quest</title>
+  <desc id="desc">
+    An iridescent, crystalline brain formed from asymmetric triangular
+    facets, suspended over a midnight background.
+  </desc>
+
+  <defs>
+    <radialGradient id="background">
+      <stop stop-color="#172345"/>
+      <stop offset=".6" stop-color="#0a1023"/>
+      <stop offset="1" stop-color="#050811"/>
+    </radialGradient>
+
+    <linearGradient id="crystal" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#a6fff1"/>
+      <stop offset=".35" stop-color="#48bde0"/>
+      <stop offset=".7" stop-color="#7870e8"/>
+      <stop offset="1" stop-color="#e4a4ff"/>
+    </linearGradient>
+
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#d3fff7"/>
+      <stop offset=".5" stop-color="#69d9f2"/>
+      <stop offset="1" stop-color="#bf8fff"/>
+    </linearGradient>
+
+    <radialGradient id="aura">
+      <stop stop-color="#706cff" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#706cff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <!-- Midnight field -->
+  <path fill="url(#background)" d="M0 0h1000v1000H0z"/>
+  <ellipse cx="500" cy="415" rx="365" ry="330" fill="url(#aura)"/>
+
+  <!-- Quiet orbital geometry -->
+  <g fill="none" stroke="#869ddd" stroke-width="1" opacity=".14">
+    <ellipse cx="500" cy="425" rx="355" ry="150"
+             transform="rotate(-24 500 425)"/>
+    <ellipse cx="500" cy="425" rx="315" ry="220"
+             transform="rotate(35 500 425)"/>
+    <path d="M500 110v590M180 425h640" stroke-dasharray="2 12"/>
+  </g>
+
+  <!-- Unified crystalline silhouette -->
+  <path d="M495 246 431 197 342 220 262 284 217 381
+           233 467 294 546 385 589 442 566 481 625
+           516 641 549 574 618 590 702 545 765 465
+           782 370 733 279 651 217 565 199 512 247
+           500 283Z"
+        fill="url(#crystal)" fill-opacity=".17"
+        stroke="url(#edge)" stroke-width="2"/>
+
+  <!-- Left hemisphere: aqua, petrol, moonstone -->
+  <g stroke="#b3f7ff" stroke-opacity=".38" stroke-width="1.2"
+     stroke-linejoin="round">
+    <path d="M431 197 342 220 386 300Z" fill="#b5fff0" fill-opacity=".70"/>
+    <path d="M431 197 495 246 454 330 386 300Z"
+          fill="#5adbd5" fill-opacity=".44"/>
+    <path d="M342 220 262 284 386 300Z" fill="#47d4d9" fill-opacity=".45"/>
+    <path d="M262 284 217 381 318 358Z" fill="#2699bb" fill-opacity=".39"/>
+    <path d="M262 284 386 300 318 358Z" fill="#b7faff" fill-opacity=".55"/>
+    <path d="M386 300 454 330 407 414 318 358Z"
+          fill="#2a759d" fill-opacity=".64"/>
+    <path d="M217 381 233 467 318 358Z" fill="#74e7e3" fill-opacity=".53"/>
+    <path d="M233 467 318 358 334 467Z" fill="#174568" fill-opacity=".83"/>
+    <path d="M318 358 407 414 334 467Z" fill="#6ee9ff" fill-opacity=".36"/>
+    <path d="M233 467 294 546 334 467Z" fill="#368bac" fill-opacity=".49"/>
+    <path d="M294 546 385 589 334 467Z" fill="#496bca" fill-opacity=".49"/>
+    <path d="M334 467 407 414 442 566Z" fill="#5987e7" fill-opacity=".47"/>
+    <path d="M334 467 385 589 442 566Z" fill="#b3c7ff" fill-opacity=".28"/>
+    <path d="M454 330 482 385 407 414Z" fill="#ddfff8" fill-opacity=".76"/>
+    <path d="M407 414 482 385 466 472 442 566Z"
+          fill="#224d83" fill-opacity=".74"/>
+  </g>
+
+  <!-- Right hemisphere: violet, quartz, ice -->
+  <g stroke="#d3c1ff" stroke-opacity=".40" stroke-width="1.2"
+     stroke-linejoin="round">
+    <path d="M565 199 651 217 609 302Z" fill="#e7cbff" fill-opacity=".71"/>
+    <path d="M565 199 512 247 545 336 609 302Z"
+          fill="#9590f2" fill-opacity=".48"/>
+    <path d="M651 217 733 279 609 302Z" fill="#8570da" fill-opacity=".56"/>
+    <path d="M733 279 782 370 689 353Z" fill="#ceb5ff" fill-opacity=".62"/>
+    <path d="M733 279 609 302 689 353Z" fill="#554cac" fill-opacity=".64"/>
+    <path d="M609 302 545 336 591 417 689 353Z"
+          fill="#adb6ff" fill-opacity=".49"/>
+    <path d="M782 370 765 465 689 353Z" fill="#7358bf" fill-opacity=".56"/>
+    <path d="M765 465 689 353 667 466Z" fill="#e0a7fa" fill-opacity=".54"/>
+    <path d="M689 353 591 417 667 466Z" fill="#484083" fill-opacity=".76"/>
+    <path d="M765 465 702 545 667 466Z" fill="#916bd3" fill-opacity=".63"/>
+    <path d="M702 545 618 590 667 466Z" fill="#657ddd" fill-opacity=".53"/>
+    <path d="M667 466 591 417 549 574Z" fill="#82cee9" fill-opacity=".43"/>
+    <path d="M667 466 618 590 549 574Z" fill="#c6abff" fill-opacity=".38"/>
+    <path d="M545 336 521 384 591 417Z" fill="#f2deff" fill-opacity=".75"/>
+    <path d="M591 417 521 384 535 473 549 574Z"
+          fill="#474b95" fill-opacity=".67"/>
+  </g>
+
+  <!-- Prismatic neural root -->
+  <g stroke="url(#edge)" stroke-opacity=".6" stroke-width="1.2">
+    <path d="M442 566 466 472 501 538 481 625Z"
+          fill="#4a8eaf" fill-opacity=".51"/>
+    <path d="M466 472 501 491 535 473 501 538Z"
+          fill="#d6ffff" fill-opacity=".58"/>
+    <path d="M535 473 549 574 516 641 501 538Z"
+          fill="#9784e9" fill-opacity=".58"/>
+    <path d="M501 538 481 625 516 641Z"
+          fill="#d0ceff" fill-opacity=".66"/>
+  </g>
+
+  <!-- The thought fissure: negative space illuminated -->
+  <path d="M500 283 492 329 501 365 491 410 505 451 501 491"
+        fill="none" stroke="#a1fff2" stroke-width="9"
+        opacity=".7" filter="url(#glow)"/>
+  <path d="M500 283 492 329 501 365 491 410 505 451 501 491"
+        fill="none" stroke="#e0fff9" stroke-width="2.2"/>
+
+  <!-- Internal connections -->
+  <g fill="none" stroke="#c5ffff" stroke-width="1" opacity=".35">
+    <path d="M386 300 501 365 609 302M334 467 501 451 667 466"/>
+    <path d="M318 358 501 491 689 353" stroke-dasharray="3 8"/>
+  </g>
+
+  <!-- Thought nodes -->
+  <g fill="#e3fffc">
+    <circle cx="386" cy="300" r="3.5"/>
+    <circle cx="318" cy="358" r="3"/>
+    <circle cx="407" cy="414" r="4"/>
+    <circle cx="334" cy="467" r="2.5"/>
+    <circle cx="609" cy="302" r="3.5"/>
+    <circle cx="591" cy="417" r="4"/>
+    <circle cx="689" cy="353" r="3"/>
+    <circle cx="501" cy="365" r="3"/>
+    <circle cx="501" cy="491" r="3"/>
+  </g>
+
+  <!-- Escaped crystal / emergent idea -->
+  <path d="M500 139 512 158 500 180 488 158Z"
+        fill="#bdfdf5" fill-opacity=".66"
+        stroke="#defffa" stroke-width="1"/>
+  <path d="M500 139v41" stroke="#ffffff" stroke-opacity=".65"/>
+
+  <!-- Wordmark -->
+  <text x="500" y="777" text-anchor="middle"
+        fill="#edf4ff" font-family="Avenir Next, Montserrat, Arial, sans-serif"
+        font-size="43" font-weight="500" letter-spacing="6">
+    POLYHEDRAL MINDS
+  </text>
+  <path d="M466 815h68" stroke="url(#edge)" stroke-opacity=".65"/>
+  <text x="500" y="857" text-anchor="middle"
+        fill="#a1b2cf" font-family="Avenir Next, Arial, sans-serif"
+        font-size="20" letter-spacing="5">
+    sorted.quest
+  </text>
+</svg>
