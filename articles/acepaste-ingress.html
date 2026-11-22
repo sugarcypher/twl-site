@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Prompt Injection From Web Pages: A Gate Before Your Agent — ThinkWell Labs</title>
+<meta name="description" content="If your AI agent reads the web, any page can talk to it. The page you see and the page your agent reads aren&#x27;t always the same: text pushed off screen, colored to match the background, tucked into attributes and comments, or written in invisible characters.">
+<meta name="author" content="Briar Morgan Greenway">
+<meta name="theme-color" content="#070a0e">
+<link rel="canonical" href="https://twl.today/articles/acepaste-ingress.html">
+<link rel="icon" type="image/jpeg" href="../assets/twl-logo-mark.jpeg">
+<meta property="og:title" content="Prompt Injection From Web Pages: A Gate Before Your Agent">
+<meta property="og:description" content="If your AI agent reads the web, any page can talk to it. The page you see and the page your agent reads aren&#x27;t always the same: text pushed off screen, colored to match the background, tucked into attributes and comments, or written in invisible characters.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://twl.today/articles/acepaste-ingress.html">
+<meta property="og:image" content="https://twl.today/assets/twl-logo.jpeg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Prompt Injection From Web Pages: A Gate Before Your Agent", "description": "If your AI agent reads the web, any page can talk to it. The page you see and the page your agent reads aren't always the same: text pushed off screen, colored to match the background, tucked into attributes and comments, or written in invisible characters.", "url": "https://twl.today/articles/acepaste-ingress.html", "author": {"@type": "Person", "name": "Briar Morgan Greenway"}, "publisher": {"@type": "Organization", "name": "ThinkWell Labs", "url": "https://twl.today/"}, "datePublished": "2026-11-21"}</script>
+<link rel="stylesheet" href="../assets/chrome.css">
+<style>
+:root {
+  --bg:           #070a0e;
+  --bg-rise:      #0c1118;
+  --bg-deep:      #04060a;
+  --ink:          #e7eaee;
+  --ink-soft:     #aab2bd;
+  --ink-faint:    #6f7783;
+  --rule:         #1a212d;
+  --rule-soft:    #121821;
+  --upstream:     #d6a45c;
+  --architecture: #74d4ee;
+  --downstream:   #b3a1ec;
+  --ok:           #7fcf8a;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: "Iowan Old Style", "Charter", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --pad: clamp(20px, 4vw, 56px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.65; }
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1000px 800px at 18% 8%,  rgba(214,164,92,0.06), transparent 60%),
+    radial-gradient(900px 700px at 82% 28%,  rgba(116,212,238,0.06), transparent 60%),
+    radial-gradient(900px 800px at 50% 92%,  rgba(179,161,236,0.05), transparent 65%),
+    linear-gradient(180deg, #06090d 0%, #04070b 100%);
+}
+main, header, nav, footer { position: relative; z-index: 1; }
+.status {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center;
+  padding: 10px var(--pad);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  background: color-mix(in oklab, var(--bg-deep) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.status .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ok); margin-right:6px; vertical-align:1px; box-shadow:0 0 8px color-mix(in oklab, var(--ok) 60%, transparent); }
+.status .v { color: var(--ink-soft); }
+.status .sep { color: var(--rule); }
+.status a { color: var(--ink-faint); text-decoration: none; border: none; }
+.status a:hover { color: var(--ink); }
+.shell { max-width: 760px; margin: 0 auto; padding: clamp(50px, 8vw, 100px) var(--pad); }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 22px; }
+.eyebrow a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid transparent; }
+.eyebrow a:hover { color: var(--ink); border-color: var(--ink-faint); }
+h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 5vw, 52px); line-height: 1.05; letter-spacing: -0.018em; margin: 0 0 12px; color: var(--ink); }
+.meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.18; letter-spacing: -0.01em; margin: 36px 0 12px; color: var(--ink); }
+p { color: var(--ink-soft); margin: 0 0 16px; font-size: 16px; }
+a { color: var(--architecture); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--architecture) 35%, transparent); }
+a:hover { color: #b6e9f7; }
+
+.prose h2 { margin-top: 40px; }
+.prose ul, .prose ol { color: var(--ink-soft); margin: 0 0 18px; padding-left: 22px; }
+.prose li { margin: 0 0 8px; }
+.prose strong { color: var(--ink); font-weight: 600; }
+.related { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.related h2 { margin-top: 0; }
+.related ul, .index-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.related li, .index-list li { color: var(--ink-soft); }
+.index-list li { padding: 14px 0; border-bottom: 1px solid var(--rule-soft); }
+.index-list .q { display: block; font-size: 14px; color: var(--ink-faint); margin-top: 4px; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-rise); padding: 1px 5px; border-radius: 3px; color: var(--ink); overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+
+<a class="tw-skip" href="#main">Skip to content</a>
+
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a class="tw-brand" href="../" aria-label="ThinkWell Labs home">
+      <img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34">
+      <span>ThinkWell <b>Labs</b></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="../#work">Work</a>
+      <a href="../papers.html">Research</a>
+      <a href="../#briar">Briar</a>
+      <a href="./">Articles</a>
+      <a href="../program.html" class="tw-hide-sm">Program</a>
+      <a href="../#contact" class="tw-nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="shell">
+<div class="eyebrow"><a href="../">twl.today</a> · <a href="./">articles</a></div>
+<h1>Prompt Injection From Web Pages: A Gate Before Your Agent</h1>
+<div class="meta">Briar Morgan Greenway · ThinkWell Labs</div>
+
+<div class="prose">
+<p>If your AI agent reads the web, any page can talk to it. The page you see and the page your agent reads aren't always the same: text pushed off screen, colored to match the background, tucked into attributes and comments, or written in invisible characters. To you it's a kettle review. To the model it's a set of instructions.</p>
+
+<p>AcePaste Ingress stands at the door between the web and your AI. Every page is checked before the model reads it.</p>
+
+<h2>Three verdicts</h2>
+
+<ul>
+<li><strong>Clean.</strong> The model gets the visible text inside a provenance envelope, with a signed receipt.</li>
+<li><strong>Suspect.</strong> Nothing is delivered. A person can override it, and the receipt records that they did.</li>
+<li><strong>Hostile.</strong> Nothing is delivered, and it can't be overridden. The refusal is logged.</li>
+</ul>
+
+<p>Ingress refuses by default. Anything the model would receive that a person viewing the page wouldn't see is suspect. Internal errors count as refusals, not passes.</p>
+
+<h2>What it checks</h2>
+
+<ul>
+<li>Invisible Unicode: tag characters, zero-width channels, bidirectional overrides, look-alike letters.</li>
+<li>Hidden text: off screen, hidden by CSS, or colored to match its background.</li>
+<li>Payloads in attributes, comments, SVG and <code>srcdoc</code>.</li>
+<li>Cloaking: it fetches each page twice and compares, and can render it in a throwaway browser to compare again.</li>
+</ul>
+
+<h2>On the record</h2>
+
+<p>Every verdict gets a receipt, clean or refused, hash-chained and signed, and you can verify them offline. Every refusal is logged with where the finding was, what the hidden payload said once decoded, and which hosts were contacted. Each finding is labeled as an inference or hypothesis, with a confidence band and a possible harmless explanation.</p>
+
+<p>After your agent reads outside content, side-effecting tool calls need your approval, one call at a time, through a channel the model can't control. Secrets and keys are redacted from what's delivered.</p>
+
+<h2>Install</h2>
+
+<p>It works with MCP agents such as Claude Desktop, Claude Code and Cursor, which get <code>ingress_fetch</code> and <code>ingress_scan</code> tools. To try it from a terminal: <code>npx @acepaste/ingress https://example.com</code>. It runs on your own machine or server; no ThinkWell Labs service sits in the loop, and your logs and receipts stay with you.</p>
+
+<h2>Measured, honestly</h2>
+
+<p>On version 0.9.1, against its own test corpus: 90 of 90 attacks refused, 48 of 48 ordinary documents passed clean, 3 of 3 ambiguous documents held as suspect, never hostile, with a median analysis time of 0.3 milliseconds. Those figures set a floor. They are not a claim about the open web.</p>
+
+<h2>What it doesn't do</h2>
+
+<p>Its judgment of visible prose is deliberately narrow: only the strongest instruction-like text is refused, and those refusals can be overridden. The approval broker governs only the calls routed through it. It's pre-1.0, so interfaces may still change.</p>
+
+<p>It's free on npm and source-available.</p>
+</div>
+
+<div class="related">
+<h2>Links</h2>
+<ul>
+<li><a href="https://acepaste.xyz/ingress/" rel="noopener">AcePaste Ingress</a> · acepaste.xyz/ingress</li>
+<li>Related: <a href="acepaste.html">How to Find and Remove Invisible Unicode in Pasted Text</a></li>
+<li><a href="./">All articles</a> · <a href="../">twl.today</a></li>
+</ul>
+</div>
+</div>
+</main>
+
+<footer class="tw-foot">
+  <div class="tw-wrap tw-foot-grid">
+    <div>
+      <a class="tw-brand" href="../"><img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+      <p>Independent research and development laboratory. Run by one person.<br>Briar Morgan Greenway, founder &amp; director.</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="https://crushhh.ing" rel="noopener">Crushhh</a></li>
+        <li><a href="https://plus1.my" rel="noopener">plus1</a></li>
+        <li><a href="https://toroid.fyi" rel="noopener">Toroid</a></li>
+        <li><a href="https://datacenters.rooted.wang" rel="noopener">DataCenterDumps</a></li>
+        <li><a href="https://lucidlux.fyi" rel="noopener">Lucid Lux</a></li>
+        <li><a href="https://arttra.art" rel="noopener">Arttra</a></li>
+        <li><a href="https://errorfect.com" rel="noopener">Errorfect</a></li>
+        <li><a href="https://acepaste.xyz" rel="noopener">AcePaste Cleaner Pro</a></li>
+        <li><a href="https://acepaste.xyz/ingress/" rel="noopener">AcePaste Ingress</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 aria-hidden="true">&nbsp;</h4>
+      <ul>
+        <li><a href="https://cookiebouncer.app" rel="noopener">TrackRSmackR</a></li>
+        <li><a href="https://sorted.quest" rel="noopener">Polyhedral Minds</a></li>
+        <li><a href="https://volavue.fyi" rel="noopener">VolaVue</a></li>
+        <li><a href="https://gizmorx.com" rel="noopener">GizmoRx</a></li>
+        <li><a href="https://psifiles.fyi" rel="noopener">PsiFiles</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Lab</h4>
+      <ul>
+        <li><a href="../program.html">Program statement</a></li>
+        <li><a href="../papers.html">All papers</a></li>
+        <li><a href="./">Articles</a></li>
+        <li><a href="../ocs.html">OCS framework</a></li>
+        <li><a href="../privacy.html">Privacy</a></li>
+        <li><a href="../terms.html">Terms</a></li>
+        <li><a href="../ai.html">AI use</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw-wrap tw-foot-base">
+    <span>© 2026 ThinkWell Labs · Papers CC BY-NC-ND 4.0, cite when used</span>
+    <span>No trackers · no analytics · no cookies</span>
+  </div>
+</footer>
+
+</body>
+</html>

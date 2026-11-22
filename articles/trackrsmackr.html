@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>How to Block Trackers Without a Cloud Service — ThinkWell Labs</title>
+<meta name="description" content="Most privacy tools phone home to protect you from phoning home. They sync your rules to a server, report what they blocked, and ask you to trust a company with the very data you were trying to keep.">
+<meta name="author" content="Briar Morgan Greenway">
+<meta name="theme-color" content="#070a0e">
+<link rel="canonical" href="https://twl.today/articles/trackrsmackr.html">
+<link rel="icon" type="image/jpeg" href="../assets/twl-logo-mark.jpeg">
+<meta property="og:title" content="How to Block Trackers Without a Cloud Service">
+<meta property="og:description" content="Most privacy tools phone home to protect you from phoning home. They sync your rules to a server, report what they blocked, and ask you to trust a company with the very data you were trying to keep.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://twl.today/articles/trackrsmackr.html">
+<meta property="og:image" content="https://twl.today/assets/twl-logo.jpeg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How to Block Trackers Without a Cloud Service", "description": "Most privacy tools phone home to protect you from phoning home. They sync your rules to a server, report what they blocked, and ask you to trust a company with the very data you were trying to keep.", "url": "https://twl.today/articles/trackrsmackr.html", "author": {"@type": "Person", "name": "Briar Morgan Greenway"}, "publisher": {"@type": "Organization", "name": "ThinkWell Labs", "url": "https://twl.today/"}, "datePublished": "2026-11-21"}</script>
+<link rel="stylesheet" href="../assets/chrome.css">
+<style>
+:root {
+  --bg:           #070a0e;
+  --bg-rise:      #0c1118;
+  --bg-deep:      #04060a;
+  --ink:          #e7eaee;
+  --ink-soft:     #aab2bd;
+  --ink-faint:    #6f7783;
+  --rule:         #1a212d;
+  --rule-soft:    #121821;
+  --upstream:     #d6a45c;
+  --architecture: #74d4ee;
+  --downstream:   #b3a1ec;
+  --ok:           #7fcf8a;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: "Iowan Old Style", "Charter", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --pad: clamp(20px, 4vw, 56px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.65; }
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1000px 800px at 18% 8%,  rgba(214,164,92,0.06), transparent 60%),
+    radial-gradient(900px 700px at 82% 28%,  rgba(116,212,238,0.06), transparent 60%),
+    radial-gradient(900px 800px at 50% 92%,  rgba(179,161,236,0.05), transparent 65%),
+    linear-gradient(180deg, #06090d 0%, #04070b 100%);
+}
+main, header, nav, footer { position: relative; z-index: 1; }
+.status {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center;
+  padding: 10px var(--pad);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  background: color-mix(in oklab, var(--bg-deep) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.status .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ok); margin-right:6px; vertical-align:1px; box-shadow:0 0 8px color-mix(in oklab, var(--ok) 60%, transparent); }
+.status .v { color: var(--ink-soft); }
+.status .sep { color: var(--rule); }
+.status a { color: var(--ink-faint); text-decoration: none; border: none; }
+.status a:hover { color: var(--ink); }
+.shell { max-width: 760px; margin: 0 auto; padding: clamp(50px, 8vw, 100px) var(--pad); }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 22px; }
+.eyebrow a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid transparent; }
+.eyebrow a:hover { color: var(--ink); border-color: var(--ink-faint); }
+h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 5vw, 52px); line-height: 1.05; letter-spacing: -0.018em; margin: 0 0 12px; color: var(--ink); }
+.meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.18; letter-spacing: -0.01em; margin: 36px 0 12px; color: var(--ink); }
+p { color: var(--ink-soft); margin: 0 0 16px; font-size: 16px; }
+a { color: var(--architecture); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--architecture) 35%, transparent); }
+a:hover { color: #b6e9f7; }
+
+.prose h2 { margin-top: 40px; }
+.prose ul, .prose ol { color: var(--ink-soft); margin: 0 0 18px; padding-left: 22px; }
+.prose li { margin: 0 0 8px; }
+.prose strong { color: var(--ink); font-weight: 600; }
+.related { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.related h2 { margin-top: 0; }
+.related ul, .index-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.related li, .index-list li { color: var(--ink-soft); }
+.index-list li { padding: 14px 0; border-bottom: 1px solid var(--rule-soft); }
+.index-list .q { display: block; font-size: 14px; color: var(--ink-faint); margin-top: 4px; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-rise); padding: 1px 5px; border-radius: 3px; color: var(--ink); overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+
+<a class="tw-skip" href="#main">Skip to content</a>
+
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a class="tw-brand" href="../" aria-label="ThinkWell Labs home">
+      <img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34">
+      <span>ThinkWell <b>Labs</b></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="../#work">Work</a>
+      <a href="../papers.html">Research</a>
+      <a href="../#briar">Briar</a>
+      <a href="./">Articles</a>
+      <a href="../program.html" class="tw-hide-sm">Program</a>
+      <a href="../#contact" class="tw-nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="shell">
+<div class="eyebrow"><a href="../">twl.today</a> · <a href="./">articles</a></div>
+<h1>How to Block Trackers Without a Cloud Service</h1>
+<div class="meta">Briar Morgan Greenway · ThinkWell Labs</div>
+
+<div class="prose">
+<p>Most privacy tools phone home to protect you from phoning home. They sync your rules to a server, report what they blocked, and ask you to trust a company with the very data you were trying to keep. TrackRSmackR doesn't. It's the cookie bouncer, and everything it does happens on your machine.</p>
+
+<h2>Intercept, contain, decay</h2>
+
+<p>TrackRSmackR catches cookies before they land and sorts them into an encrypted Cookie Jar with two sections: a Persistent Vault for cookies you keep contained, and an Ephemeral Quarantine for the suspicious ones. Then Timed Decay deletes them on a timer: 3 minutes, 5 minutes, or a duration you set.</p>
+
+<h2>Your rules</h2>
+
+<ul>
+<li><strong>Policy Engine:</strong> Strict, Balanced or Permissive.</li>
+<li><strong>Per-domain rules:</strong> loosen the sites that need it, tighten the ones that don't.</li>
+<li><strong>Anti-fingerprinting:</strong> a uniform persona mode, entropy normalization and a fingerprint-script blocklist, so your browser stops standing out.</li>
+</ul>
+
+<h2>See what it did</h2>
+
+<p>A live audit log shows every action and why: blocked, quarantined, decay pending, decay executed. An Intelligence Snapshot sums up your threat posture and flags fingerprinting pressure.</p>
+
+<h2>What it doesn't do</h2>
+
+<p>No servers. No cloud sync. No telemetry. No account. No subscription. Your vault is encrypted with AES-GCM and never leaves your browser. These are design claims, stated as built, not the results of a third-party audit.</p>
+
+<p>TrackRSmackR is a free Manifest V3 extension on the Chrome Web Store.</p>
+</div>
+
+<div class="related">
+<h2>Links</h2>
+<ul>
+<li><a href="https://cookiebouncer.app" rel="noopener">TrackRSmackR</a> · cookiebouncer.app</li>
+<li>Related: <a href="acepaste.html">How to Find and Remove Invisible Unicode in Pasted Text</a></li>
+<li><a href="./">All articles</a> · <a href="../">twl.today</a></li>
+</ul>
+</div>
+</div>
+</main>
+
+<footer class="tw-foot">
+  <div class="tw-wrap tw-foot-grid">
+    <div>
+      <a class="tw-brand" href="../"><img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+      <p>Independent research and development laboratory. Run by one person.<br>Briar Morgan Greenway, founder &amp; director.</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="https://crushhh.ing" rel="noopener">Crushhh</a></li>
+        <li><a href="https://plus1.my" rel="noopener">plus1</a></li>
+        <li><a href="https://toroid.fyi" rel="noopener">Toroid</a></li>
+        <li><a href="https://datacenters.rooted.wang" rel="noopener">DataCenterDumps</a></li>
+        <li><a href="https://lucidlux.fyi" rel="noopener">Lucid Lux</a></li>
+        <li><a href="https://arttra.art" rel="noopener">Arttra</a></li>
+        <li><a href="https://errorfect.com" rel="noopener">Errorfect</a></li>
+        <li><a href="https://acepaste.xyz" rel="noopener">AcePaste Cleaner Pro</a></li>
+        <li><a href="https://acepaste.xyz/ingress/" rel="noopener">AcePaste Ingress</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 aria-hidden="true">&nbsp;</h4>
+      <ul>
+        <li><a href="https://cookiebouncer.app" rel="noopener">TrackRSmackR</a></li>
+        <li><a href="https://sorted.quest" rel="noopener">Polyhedral Minds</a></li>
+        <li><a href="https://volavue.fyi" rel="noopener">VolaVue</a></li>
+        <li><a href="https://gizmorx.com" rel="noopener">GizmoRx</a></li>
+        <li><a href="https://psifiles.fyi" rel="noopener">PsiFiles</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Lab</h4>
+      <ul>
+        <li><a href="../program.html">Program statement</a></li>
+        <li><a href="../papers.html">All papers</a></li>
+        <li><a href="./">Articles</a></li>
+        <li><a href="../ocs.html">OCS framework</a></li>
+        <li><a href="../privacy.html">Privacy</a></li>
+        <li><a href="../terms.html">Terms</a></li>
+        <li><a href="../ai.html">AI use</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw-wrap tw-foot-base">
+    <span>© 2026 ThinkWell Labs · Papers CC BY-NC-ND 4.0, cite when used</span>
+    <span>No trackers · no analytics · no cookies</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>A Personality Test That Isn't a Type — ThinkWell Labs</title>
+<meta name="description" content="Personality types sort you into a box and hand you a label. That&#x27;s convenient, and it&#x27;s wrong in the same way every time: cognition is continuous, and a type throws the continuity away.">
+<meta name="author" content="Briar Morgan Greenway">
+<meta name="theme-color" content="#070a0e">
+<link rel="canonical" href="https://twl.today/articles/polyhedral-minds.html">
+<link rel="icon" type="image/jpeg" href="../assets/twl-logo-mark.jpeg">
+<meta property="og:title" content="A Personality Test That Isn&#x27;t a Type">
+<meta property="og:description" content="Personality types sort you into a box and hand you a label. That&#x27;s convenient, and it&#x27;s wrong in the same way every time: cognition is continuous, and a type throws the continuity away.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://twl.today/articles/polyhedral-minds.html">
+<meta property="og:image" content="https://twl.today/assets/twl-logo.jpeg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "A Personality Test That Isn't a Type", "description": "Personality types sort you into a box and hand you a label. That's convenient, and it's wrong in the same way every time: cognition is continuous, and a type throws the continuity away.", "url": "https://twl.today/articles/polyhedral-minds.html", "author": {"@type": "Person", "name": "Briar Morgan Greenway"}, "publisher": {"@type": "Organization", "name": "ThinkWell Labs", "url": "https://twl.today/"}, "datePublished": "2026-11-21"}</script>
+<link rel="stylesheet" href="../assets/chrome.css">
+<style>
+:root {
+  --bg:           #070a0e;
+  --bg-rise:      #0c1118;
+  --bg-deep:      #04060a;
+  --ink:          #e7eaee;
+  --ink-soft:     #aab2bd;
+  --ink-faint:    #6f7783;
+  --rule:         #1a212d;
+  --rule-soft:    #121821;
+  --upstream:     #d6a45c;
+  --architecture: #74d4ee;
+  --downstream:   #b3a1ec;
+  --ok:           #7fcf8a;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: "Iowan Old Style", "Charter", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --pad: clamp(20px, 4vw, 56px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.65; }
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1000px 800px at 18% 8%,  rgba(214,164,92,0.06), transparent 60%),
+    radial-gradient(900px 700px at 82% 28%,  rgba(116,212,238,0.06), transparent 60%),
+    radial-gradient(900px 800px at 50% 92%,  rgba(179,161,236,0.05), transparent 65%),
+    linear-gradient(180deg, #06090d 0%, #04070b 100%);
+}
+main, header, nav, footer { position: relative; z-index: 1; }
+.status {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center;
+  padding: 10px var(--pad);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  background: color-mix(in oklab, var(--bg-deep) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.status .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ok); margin-right:6px; vertical-align:1px; box-shadow:0 0 8px color-mix(in oklab, var(--ok) 60%, transparent); }
+.status .v { color: var(--ink-soft); }
+.status .sep { color: var(--rule); }
+.status a { color: var(--ink-faint); text-decoration: none; border: none; }
+.status a:hover { color: var(--ink); }
+.shell { max-width: 760px; margin: 0 auto; padding: clamp(50px, 8vw, 100px) var(--pad); }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 22px; }
+.eyebrow a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid transparent; }
+.eyebrow a:hover { color: var(--ink); border-color: var(--ink-faint); }
+h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 5vw, 52px); line-height: 1.05; letter-spacing: -0.018em; margin: 0 0 12px; color: var(--ink); }
+.meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.18; letter-spacing: -0.01em; margin: 36px 0 12px; color: var(--ink); }
+p { color: var(--ink-soft); margin: 0 0 16px; font-size: 16px; }
+a { color: var(--architecture); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--architecture) 35%, transparent); }
+a:hover { color: #b6e9f7; }
+
+.prose h2 { margin-top: 40px; }
+.prose ul, .prose ol { color: var(--ink-soft); margin: 0 0 18px; padding-left: 22px; }
+.prose li { margin: 0 0 8px; }
+.prose strong { color: var(--ink); font-weight: 600; }
+.related { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.related h2 { margin-top: 0; }
+.related ul, .index-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.related li, .index-list li { color: var(--ink-soft); }
+.index-list li { padding: 14px 0; border-bottom: 1px solid var(--rule-soft); }
+.index-list .q { display: block; font-size: 14px; color: var(--ink-faint); margin-top: 4px; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-rise); padding: 1px 5px; border-radius: 3px; color: var(--ink); overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+
+<a class="tw-skip" href="#main">Skip to content</a>
+
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a class="tw-brand" href="../" aria-label="ThinkWell Labs home">
+      <img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34">
+      <span>ThinkWell <b>Labs</b></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="../#work">Work</a>
+      <a href="../papers.html">Research</a>
+      <a href="../#briar">Briar</a>
+      <a href="./">Articles</a>
+      <a href="../program.html" class="tw-hide-sm">Program</a>
+      <a href="../#contact" class="tw-nav-cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="shell">
+<div class="eyebrow"><a href="../">twl.today</a> · <a href="./">articles</a></div>
+<h1>A Personality Test That Isn't a Type</h1>
+<div class="meta">Briar Morgan Greenway · ThinkWell Labs</div>
+
+<div class="prose">
+<p>Personality types sort you into a box and hand you a label. That's convenient, and it's wrong in the same way every time: cognition is continuous, and a type throws the continuity away.</p>
+
+<p>Polyhedral Minds keeps it. At sorted.quest, the instrument renders how your cognition is organized as a measured shape, your myndspecie. A measurement, not a personality quiz.</p>
+
+<h2>How it works</h2>
+
+<ol>
+<li>Confirm you're 27 or older and accept the terms.</li>
+<li>Enter a first name. It seeds your geometry; it isn't stored with your answers unless you make an account.</li>
+<li>Answer in segments: single and multiple choice, ranking, confidence ratings, and checks on whether an answer feels settled or off.</li>
+<li>Say whether your state shifted while answering, and where most: thinking, feeling, doing or certainty.</li>
+<li>See your myndspecie, then read your Cognitive Orientation Report at brief, standard or deep depth.</li>
+</ol>
+
+<p>You can do it in one sitting or spread it across three to five days, with progress saved.</p>
+
+<h2>Why 27</h2>
+
+<p>Before 27, results may reflect a stage of development rather than a stable trait. The age gate is there to keep the measurement honest.</p>
+
+<h2>What you do with it</h2>
+
+<p>The report describes; it doesn't prescribe, and it says nothing about what job you should have. It's a shared object for individuals, for coaches working with clients, for educators, and, by opt-in, for teams mapping how their members think together. The Arc shows a constellation of other people's shapes, with pods and complements you can choose to connect with.</p>
+
+<h2>Your data</h2>
+
+<p>Without an account, nothing is sent to a server. With one, an anonymized profile, your geometry and your report are stored. Nothing is sold, shared or used for advertising. There are no ad trackers, pixels or retargeting. You can export or delete your data at any time.</p>
+
+<h2>What it isn't</h2>
+
+<p>It isn't medical, psychological or diagnostic advice. If you're in distress, talk to a qualified professional or a crisis line.</p>
+
+<p>The instrument is still being refined, and every participant helps sharpen the model. The full report is free if you leave feedback.</p>
+</div>
+
+<div class="related">
+<h2>Links</h2>
+<ul>
+<li><a href="https://sorted.quest" rel="noopener">Polyhedral Minds</a> · sorted.quest</li>
+<li>Related: <a href="volavue.html">How to Review a Big Decision Before You Make It</a></li>
+<li><a href="./">All articles</a> · <a href="../">twl.today</a></li>
+</ul>
+</div>
+</div>
+</main>
+
+<footer class="tw-foot">
+  <div class="tw-wrap tw-foot-grid">
+    <div>
+      <a class="tw-brand" href="../"><img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+      <p>Independent research and development laboratory. Run by one person.<br>Briar Morgan Greenway, founder &amp; director.</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="https://crushhh.ing" rel="noopener">Crushhh</a></li>
+        <li><a href="https://plus1.my" rel="noopener">plus1</a></li>
+        <li><a href="https://toroid.fyi" rel="noopener">Toroid</a></li>
+        <li><a href="https://datacenters.rooted.wang" rel="noopener">DataCenterDumps</a></li>
+        <li><a href="https://lucidlux.fyi" rel="noopener">Lucid Lux</a></li>
+        <li><a href="https://arttra.art" rel="noopener">Arttra</a></li>
+        <li><a href="https://errorfect.com" rel="noopener">Errorfect</a></li>
+        <li><a href="https://acepaste.xyz" rel="noopener">AcePaste Cleaner Pro</a></li>
+        <li><a href="https://acepaste.xyz/ingress/" rel="noopener">AcePaste Ingress</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 aria-hidden="true">&nbsp;</h4>
+      <ul>
+        <li><a href="https://cookiebouncer.app" rel="noopener">TrackRSmackR</a></li>
+        <li><a href="https://sorted.quest" rel="noopener">Polyhedral Minds</a></li>
+        <li><a href="https://volavue.fyi" rel="noopener">VolaVue</a></li>
+        <li><a href="https://gizmorx.com" rel="noopener">GizmoRx</a></li>
+        <li><a href="https://psifiles.fyi" rel="noopener">PsiFiles</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Lab</h4>
+      <ul>
+        <li><a href="../program.html">Program statement</a></li>
+        <li><a href="../papers.html">All papers</a></li>
+        <li><a href="./">Articles</a></li>
+        <li><a href="../ocs.html">OCS framework</a></li>
+        <li><a href="../privacy.html">Privacy</a></li>
+        <li><a href="../terms.html">Terms</a></li>
+        <li><a href="../ai.html">AI use</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw-wrap tw-foot-base">
+    <span>© 2026 ThinkWell Labs · Papers CC BY-NC-ND 4.0, cite when used</span>
+    <span>No trackers · no analytics · no cookies</span>
+  </div>
+</footer>
+
+</body>
+</html>
