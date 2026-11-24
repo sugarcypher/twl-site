@@ -26,6 +26,19 @@
 .tw-announce .go { font: 600 13px/1 var(--mono, ui-monospace, Menlo, monospace); text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }
 .tw-announce:hover .go { text-decoration-thickness: 2px; }
 .tw-announce:focus-visible { outline: 3px solid var(--ink, #0b0d10); outline-offset: -3px; }
+
+/* field notes signup */
+.list-signup { position: relative; background: #0b0d10; color: #fff; padding: 26px; border-top: 4px solid #ffd23f; margin-top: 44px; max-width: 760px; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.list-signup .ls-h { display: block; font-weight: 700; font-size: 20px; line-height: 1.25; color: #fff; margin: 0 0 8px; }
+.list-signup .ls-sub { font-size: 15px; line-height: 1.55; color: #c4cad3; margin: 0 0 16px; }
+.list-signup .ls-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.list-signup input[type=email] { flex: 1 1 220px; min-width: 0; height: 48px; padding: 0 14px; background: #fff; border: 0; border-radius: 0; font: 16px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; color: #0b0d10; }
+.list-signup button { height: 48px; padding: 0 18px; background: #ffd23f; border: 0; border-radius: 0; font: 700 14px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; color: #0b0d10; }
+.list-signup button:hover { background: #fff; }
+.list-signup .ls-fine { font-size: 13px; line-height: 1.5; color: #9aa2ad; margin: 12px 0 0; }
+.list-signup .ls-fine a { color: #9aa2ad; text-decoration: underline; border: 0; }
+.list-signup .ls-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.list-signup :focus-visible { outline: 3px solid #ffd23f; outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -387,6 +400,15 @@
 
 
     </div>
+<!-- list:start -->
+<form class="list-signup" id="field-notes" action="https://twl-list.13531nxt.workers.dev/subscribe" method="post">
+  <label class="ls-h" for="ls-email">Get the field notes</label>
+  <p class="ls-sub">One short email a week or less from ThinkWell Labs: how institutions and information systems shape what we think, and the tools to see it. Plus a free one-page guide to start.</p>
+  <div class="ls-row"><input id="ls-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email"><button type="submit">Send me the guide</button></div>
+  <div class="ls-hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+  <p class="ls-fine">No spam. One click to unsubscribe. Your email is used only for this list. <a href="privacy.html#list">Privacy</a></p>
+</form>
+<!-- list:end -->
   </div>
 </section>
 
@@ -631,12 +653,12 @@
       <p>Briar reads everything that arrives. Research collaborations, consulting and product work, press, and sponsorship of the program are all welcome.</p>
       <a class="btn btn-dark btn-lg" href="mailto:b@twl.today">b@twl.today</a>
     </div>
-    <form class="subscribe" action="https://buttondown.com/api/emails/embed-subscribe/next" method="post" target="_blank">
-      <label for="sub-email"><b>Occasional updates</b> — new papers and tools. Low volume, no spam.</label>
-      <div class="sub-row">
-        <input id="sub-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
-        <button type="submit">Subscribe</button>
-      </div>
+    <form class="list-signup" action="https://twl-list.13531nxt.workers.dev/subscribe" method="post" style="margin-top:0">
+      <label class="ls-h" for="ls-email-2">Get the field notes</label>
+      <p class="ls-sub">One short email a week or less: new papers, tools and field notes. Plus a free one-page guide to start.</p>
+      <div class="ls-row"><input id="ls-email-2" type="email" name="email" placeholder="you@example.com" required autocomplete="email"><button type="submit">Send me the guide</button></div>
+      <div class="ls-hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p class="ls-fine">No spam. One click to unsubscribe. Your email is used only for this list. <a href="privacy.html#list">Privacy</a></p>
     </form>
   </div>
 </section>
