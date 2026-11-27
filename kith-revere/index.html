@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kith &amp; Revere Audit — know what's on your Mac, and who controls it</title>
+<meta name="description" content="A forensic-grade security audit for your Mac. 85 checks for hidden device management, monitoring, startup software, privacy permissions and exposed secrets, explained in plain language. Offline. One-time $49.">
+<meta name="theme-color" content="#061a1f">
+<link rel="canonical" href="https://twl.today/kith-revere/">
+<link rel="icon" type="image/jpeg" href="../assets/twl-logo-mark.jpeg">
+<meta property="og:title" content="Kith & Revere Audit — know what's on your Mac, and who controls it">
+<meta property="og:description" content="85 forensic checks, explained in plain language. Offline, no account, no telemetry. One-time $49.">
+<meta property="og:type" content="product">
+<meta property="og:url" content="https://twl.today/kith-revere/">
+<link rel="stylesheet" href="../assets/chrome.css">
+<style>
+:root {
+  --night: #061a1f;
+  --night-2: #0a252c;
+  --teal: #0d99a3;
+  --cyan: #2bd4d1;
+  --paper: #f6f5f0;
+  --ink: #0b0d10;
+  --ink-soft: #3a3f47;
+  --mute: #9fb3b8;
+  --rule: #d9d8d0;
+  --amber: #ffb547;
+  --yellow: #ffd23f;
+  --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --serif: "Iowan Old Style", Charter, Georgia, "Times New Roman", serif;
+  --pad: clamp(18px, 4vw, 48px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--pad); }
+.mono { font-family: var(--mono); }
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+
+/* Hero */
+.hero { background: radial-gradient(1200px 600px at 80% -10%, rgba(43,212,209,.22), transparent 60%), radial-gradient(900px 500px at -10% 110%, rgba(13,153,163,.25), transparent 60%), var(--night); color: #e9f3f4; padding: clamp(64px, 10vw, 120px) 0 clamp(56px, 8vw, 96px); overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero .eyebrow { color: var(--cyan); margin-bottom: 22px; }
+.hero h1 { font: 400 clamp(40px, 6.4vw, 78px)/1.02 var(--serif); letter-spacing: -.02em; margin: 0 0 22px; text-wrap: balance; }
+.hero h1 em { font-style: italic; color: var(--cyan); }
+.hero .lede { font-size: clamp(18px, 2vw, 21px); color: #c3d5d8; max-width: 38em; margin: 0 0 32px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 10px; font: 600 16px/1 var(--sans); text-decoration: none; padding: 16px 24px; border-radius: 999px; border: 0; cursor: pointer; transition: transform .15s, background .15s, color .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn-buy { background: var(--yellow); color: var(--ink); box-shadow: 0 10px 30px rgba(255,210,63,.25); }
+.btn-buy:hover { background: #ffe27a; }
+.btn-ghost { background: transparent; color: #e9f3f4; border: 1px solid rgba(233,243,244,.35); }
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+.fine { font-size: 13.5px; color: var(--mute); margin-top: 16px; }
+.fine a { color: var(--mute); }
+
+/* Illustrative scorecard */
+.card { background: linear-gradient(180deg, #0f2f37, #0a2229); border: 1px solid rgba(43,212,209,.22); border-radius: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.45); padding: 22px; font-size: 14.5px; }
+.card-top { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.shield { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,181,71,.15); color: var(--amber); font-size: 22px; }
+.card-top b { display: block; font-size: 17px; color: #fff; }
+.card-top span { color: var(--mute); font-size: 13px; }
+.rows { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+.rows li { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: center; padding: 11px 12px; border-radius: 10px; background: rgba(255,255,255,.035); color: #dbe8ea; }
+.rows .d { width: 10px; height: 10px; border-radius: 50%; }
+.d.warn { background: var(--amber); box-shadow: 0 0 10px rgba(255,181,71,.6); }
+.d.pass { background: #63d58a; }
+.d.info { background: var(--cyan); }
+.rows small { color: var(--mute); font: 12px var(--mono); }
+.card-note { margin-top: 12px; font: 11.5px var(--mono); color: #6f8c92; letter-spacing: .04em; }
+
+/* Sections */
+section { padding: clamp(64px, 9vw, 112px) 0; }
+.section-head { max-width: 760px; margin-bottom: clamp(32px, 5vw, 56px); }
+.section-head .eyebrow { color: var(--teal); margin-bottom: 16px; }
+h2 { font: 400 clamp(30px, 4.2vw, 50px)/1.08 var(--serif); letter-spacing: -.015em; margin: 0 0 16px; text-wrap: balance; }
+.section-head p { color: var(--ink-soft); font-size: 19px; margin: 0; }
+
+.questions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 900px) { .questions { grid-template-columns: 1fr; } }
+.q { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 26px; }
+.q h3 { font: 600 20px/1.25 var(--sans); margin: 0 0 10px; }
+.q p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 16px; overflow: hidden; }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+.cell { background: #fff; padding: 24px; }
+.cell .k { font: 600 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.cell h3 { font: 600 18px/1.3 var(--sans); margin: 0 0 8px; }
+.cell p { margin: 0; font-size: 15px; color: var(--ink-soft); }
+
+.dark { background: var(--night); color: #e3eef0; }
+.dark .section-head .eyebrow { color: var(--cyan); }
+.dark .section-head p { color: #b4c8cc; }
+.pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+@media (max-width: 800px) { .pillars { grid-template-columns: 1fr; } }
+.pillar { border: 1px solid rgba(43,212,209,.2); border-radius: 16px; padding: 28px; background: rgba(255,255,255,.025); }
+.pillar h3 { font: 400 26px/1.2 var(--serif); margin: 0 0 10px; color: #fff; }
+.pillar p { margin: 0; color: #b4c8cc; font-size: 16px; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: s; }
+@media (max-width: 900px) { .steps { grid-template-columns: 1fr; } }
+.step { position: relative; padding: 28px 26px 26px; border-top: 3px solid var(--ink); background: #fff; border-radius: 0 0 16px 16px; }
+.step::before { counter-increment: s; content: "0" counter(s); font: 600 13px var(--mono); color: var(--teal); letter-spacing: .1em; display: block; margin-bottom: 14px; }
+.step h3 { font: 600 20px/1.3 var(--sans); margin: 0 0 8px; }
+.step p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+
+.who { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 40px; list-style: none; padding: 0; margin: 0; }
+@media (max-width: 760px) { .who { grid-template-columns: 1fr; } }
+.who li { padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.who b { display: block; font-size: 18px; margin-bottom: 4px; }
+.who span { color: var(--ink-soft); font-size: 16px; }
+
+.price { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+@media (max-width: 860px) { .price { grid-template-columns: 1fr; } }
+.price-card { background: var(--night); color: #e9f3f4; border-radius: 22px; padding: clamp(28px, 4vw, 44px); box-shadow: 0 30px 70px rgba(6,26,31,.25); }
+.price-card .amt { font: 400 76px/1 var(--serif); letter-spacing: -.03em; color: #fff; }
+.price-card .amt small { font: 500 16px var(--sans); color: var(--mute); letter-spacing: 0; margin-left: 8px; }
+.price-card ul { list-style: none; padding: 0; margin: 24px 0 28px; display: grid; gap: 10px; }
+.price-card li { padding-left: 28px; position: relative; color: #cfe0e3; }
+.price-card li::before { content: "✓"; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
+.price-card .fine { color: #8aa5ab; }
+
+.faq { max-width: 860px; }
+.faq details { border-bottom: 1px solid var(--rule); padding: 20px 0; }
+.faq summary { cursor: pointer; font: 600 19px/1.35 var(--sans); list-style: none; display: flex; justify-content: space-between; gap: 20px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 400 26px/1 var(--sans); color: var(--teal); }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { margin: 12px 0 0; color: var(--ink-soft); }
+
+.closer { background: var(--yellow); text-align: center; }
+.closer h2 { margin-bottom: 14px; }
+.closer p { max-width: 640px; margin: 0 auto 28px; color: #2c2a1f; font-size: 19px; }
+.closer .btn-buy { background: var(--ink); color: #fff; box-shadow: none; }
+.closer .btn-buy:hover { background: #222; }
+.closer .fine { color: #4a4630; }
+.closer .fine a { color: #4a4630; }
+
+.legal-strip { background: #efeee7; border-top: 1px solid var(--rule); padding: 28px 0; font-size: 13.5px; color: #5a5f66; }
+.legal-strip p { margin: 0 0 8px; max-width: 980px; }
+.legal-strip a { color: #3a3f47; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<a class="tw-skip" href="#main">Skip to content</a>
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a class="tw-brand" href="../" aria-label="ThinkWell Labs home"><img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+    <nav aria-label="Primary">
+      <a href="#what">What it checks</a>
+      <a href="#how" class="tw-hide-sm">How it works</a>
+      <a href="#faq" class="tw-hide-sm">Questions</a>
+      <a href="#buy" class="tw-nav-cta" data-buy>Buy — $49</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Kith &amp; Revere Audit · for Mac</div>
+      <h1>Know what's on your Mac. <em>And who else has a say.</em></h1>
+      <p class="lede">Kith &amp; Revere inspects your Mac the way a forensic examiner would: who manages it, what starts with it, what can watch through it, what secrets it leaves lying around, and what changed since you last looked. Then it tells you, in plain language, what each finding means and what to do about it.</p>
+      <div class="cta-row">
+        <a class="btn btn-buy" href="#buy" data-buy>Get Kith &amp; Revere — $49</a>
+        <a class="btn btn-ghost" href="#what">See the 85 checks</a>
+      </div>
+      <p class="fine">One-time purchase · macOS 14 Sonoma or later · Apple silicon and Intel</p>
+    </div>
+    <div>
+      <div class="card" role="img" aria-label="Illustration of a Kith and Revere audit scorecard">
+        <div class="card-top">
+          <div class="shield" aria-hidden="true">!</div>
+          <div><b>3 items need attention</b><span>71 passed · 11 for review</span></div>
+        </div>
+        <ul class="rows">
+          <li><span class="d warn"></span><span>Device management</span><small>enrolled</small></li>
+          <li><span class="d warn"></span><span>App privacy permissions</span><small>screen recording</small></li>
+          <li><span class="d warn"></span><span>Plain-text secrets</span><small>2 files</small></li>
+          <li><span class="d info"></span><span>Login &amp; background items</span><small>confirm</small></li>
+          <li><span class="d pass"></span><span>FileVault</span><small>on</small></li>
+          <li><span class="d pass"></span><span>System Integrity Protection</span><small>on</small></li>
+        </ul>
+        <div class="card-note">ILLUSTRATION · YOUR RESULTS WILL DIFFER</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The questions antivirus doesn't answer</div>
+      <h2>Malware scanners look for known bad files. Most of what can quietly control a Mac isn't a file at all.</h2>
+      <p>It's a configuration profile, a management enrollment, a trusted certificate, a proxy, a privacy permission, a launch job, a remote-access tool someone installed and forgot. Kith &amp; Revere looks at all of it.</p>
+    </div>
+    <div class="questions">
+      <div class="q"><h3>Is someone else managing this Mac?</h3><p>Device management enrollment, supervision, configuration profiles, managed preferences and the restrictions they carry. Essential if you bought your Mac used, or left a job that once owned it.</p></div>
+      <div class="q"><h3>Can anything watch or listen?</h3><p>Every app allowed to use your camera, microphone, screen recording, accessibility, input monitoring or Full Disk Access, plus remote-access tools, sharing services and listening network services.</p></div>
+      <div class="q"><h3>What starts without asking?</h3><p>Launch agents and daemons, login and background items, privileged helpers, system extensions, cron jobs, login hooks, shell startup files and the retired startup tricks malware still uses.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="what" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">85 checks · 26 areas</div>
+      <h2>Everything an examiner would want to see.</h2>
+      <p>Each check opens into three pages: what was found, why it matters (and how it can be abused), and the solutions, including fixes you can apply.</p>
+    </div>
+    <div class="grid">
+      <div class="cell"><div class="k">Control</div><h3>Device management</h3><p>Enrollment, supervision, profiles, managed preferences, certificate trust and network interception.</p></div>
+      <div class="cell"><div class="k">Watching</div><h3>Privacy permissions</h3><p>Camera, microphone, screen, input, files and automation grants, and whether you or macOS granted each one.</p></div>
+      <div class="cell"><div class="k">Persistence</div><h3>Startup software</h3><p>Every way code can start with your Mac, with anything not provably Apple's listed for you to confirm.</p></div>
+      <div class="cell"><div class="k">Access</div><h3>Remote access</h3><p>Remote Login, Remote Management, screen sharing, and dozens of remote-control tools by name.</p></div>
+      <div class="cell"><div class="k">Posture</div><h3>Core protections</h3><p>FileVault, System Integrity Protection, Gatekeeper, firewall, Lockdown Mode, boot security, updates, screen lock.</p></div>
+      <div class="cell"><div class="k">Exposure</div><h3>Secrets &amp; keys</h3><p>Plain-text tokens and passwords, SSH keys, secrets committed to Git, tracked .env files. Only the file and line are reported, never the secret.</p></div>
+      <div class="cell"><div class="k">Integrity</div><h3>Apps &amp; code</h3><p>Code signatures and notarization of every app, setuid programs, world-writable paths, dangerous code patterns.</p></div>
+      <div class="cell"><div class="k">Beyond the Mac</div><h3>Browsers &amp; devices</h3><p>Browser extensions and what they can reach, paired iPhones and iPads, Wi-Fi networks that auto-join, backups.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why it's different</div>
+      <h2>Built like evidence, not like an alarm.</h2>
+      <p>Security apps earn trust by scaring people. Kith &amp; Revere earns it by showing its work.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><h3>Evidence first</h3><p>Every forensic finding cites the exact artifact it came from and lists the harmless explanations alongside the worrying one. Nothing is hidden just because it has an Apple-sounding name, and nothing is flagged on a name alone.</p></div>
+      <div class="pillar"><h3>Entirely offline</h3><p>No account, no cloud, no analytics, no telemetry. Your results never leave your Mac. The only optional network feature is a file lookup on VirusTotal, using your own key, when you ask for it.</p></div>
+      <div class="pillar"><h3>Fixes you can read</h3><p>Every fix shows its exact commands before it runs, is re-checked against your Mac at the last moment, and tells you how to undo it. Nothing changes until you've confirmed a backup from the last 24 hours.</p></div>
+      <div class="pillar"><h3>Tamper-evident records</h3><p>Saved audits can be sealed with AES-256 encryption and digitally signed; every fix is written to a hash-chained log. If anything is altered later, you can tell.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>About a minute to see. As long as you like to understand.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Run the audit</h3><p>The audit is read-only. Give it your administrator password for the complete picture, or skip that and still get most of the checks.</p></div>
+      <div class="step"><h3>Read the scorecard</h3><p>Findings sorted into needs attention, passed and for review. Confirm the items you recognise once; from then on, Kith &amp; Revere flags anything new or missing.</p></div>
+      <div class="step"><h3>Act deliberately</h3><p>Open Solutions, read the commands, back up, apply. Or apply every low-risk, reversible hardening fix at once with Fix All Safe.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Who it's for</div>
+      <h2>For anyone who wants to be sure.</h2>
+    </div>
+    <ul class="who">
+      <li><b>You bought, inherited or were handed a Mac.</b><span>Find leftover management, profiles, accounts and remote access before you trust it with your life.</span></li>
+      <li><b>You think you might be monitored.</b><span>A calm, methodical record of what can see, hear and control this Mac, which you can seal, sign and keep.</span></li>
+      <li><b>You run a small team or consult.</b><span>Every check is mapped to National Institute of Standards and Technology SP 800-53 controls and the macOS Security Compliance Project, with a compliance score and exports to PDF, HTML, CSV and JSON.</span></li>
+      <li><b>You write code.</b><span>Secrets in repositories, SSH key hygiene, npm and Homebrew supply chain, world-writable project files, PATH hijacking.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="buy" style="background:#fff;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)">
+  <div class="wrap price">
+    <div>
+      <div class="eyebrow" style="color:var(--teal);margin-bottom:16px">Pricing</div>
+      <h2>One price. No subscription.</h2>
+      <p style="color:var(--ink-soft);font-size:19px">Pay once, keep it. No account, no renewal, nothing to cancel.</p>
+      <p style="color:var(--ink-soft)">Also included: weekly background audits, a menu-bar status icon, "what changed since last audit," Check a File, a share-safe redacted report, and settings an organisation can enforce through its device-management profile.</p>
+    </div>
+    <div class="price-card">
+      <div class="eyebrow" style="color:var(--cyan);margin-bottom:14px">Kith &amp; Revere Audit</div>
+      <div class="amt">$49<small>one-time · per Mac</small></div>
+      <ul>
+        <li>85 checks across 26 areas, plus the forensic engine</li>
+        <li>Plain-language guides and fixes for every finding</li>
+        <li>Compliance mapping and exports</li>
+        <li>Sealed, signed reports and a tamper-evident fix log</li>
+        <li>One year of updates</li>
+      </ul>
+      <a class="btn btn-buy" href="#buy" data-buy style="width:100%;justify-content:center">Buy now — $49</a>
+      <p class="fine">Payment handled by Stripe, the merchant of record, which also handles sales tax. All sales are final. By buying you agree to the <a href="terms.html">Terms of Service and Release of Liability</a>. Requires macOS 14 Sonoma or later.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap faq">
+    <div class="section-head">
+      <div class="eyebrow">Questions</div>
+      <h2>Before you buy.</h2>
+    </div>
+    <details><summary>Will running the audit change anything on my Mac?</summary><p>No. The audit only reads settings, files and system records, and writes its report to your Mac. Changes happen only when you choose a fix, read its commands, sign the Release, confirm a recent backup and press Run.</p></details>
+    <details><summary>Does it send my data anywhere?</summary><p>No. There is no account and no telemetry. Results stay on your Mac. If you choose to look a file up on VirusTotal, only that file's fingerprint (its hash) is sent, with your own VirusTotal key.</p></details>
+    <details><summary>Why does it ask for my administrator password?</summary><p>Some settings, such as the firewall, the FileVault recovery key and system-wide startup jobs, are only readable by an administrator. The password goes directly to macOS's own sudo; Kith &amp; Revere never stores it. You can decline and still run most checks.</p></details>
+    <details><summary>Can the fixes break my Mac?</summary><p>They can. This audit tool gives you access to components that, if altered, may make your machine malfunction. That's why every fix shows its exact commands and how to undo it, is re-checked right before it runs, and is blocked until there's a backup from the last 24 hours. Make sure you know what you're changing before you apply any fixes.</p></details>
+    <details><summary>Does this replace my antivirus?</summary><p>No, and nothing finds every threat. Kith &amp; Revere covers what antivirus usually doesn't: who controls the Mac, what it trusts, what starts with it and what can see through it. A clean result is not a guarantee that a Mac is secure; it's a careful record of what was checked.</p></details>
+    <details><summary>Will it flag my company's management software?</summary><p>Yes, if it's there, and it tells you who it belongs to when the evidence shows that. On a work Mac that's expected; confirm it once and you'll only hear about it again if it changes. Use it only on Macs you own or are authorised to audit.</p></details>
+    <details><summary>Can I get a refund?</summary><p>All sales are final, except where the law requires otherwise. Everything it checks is listed on this page, and it needs macOS 14 Sonoma or later; if you have a question before buying, email <a href="mailto:b@twl.today">b@twl.today</a>.</p></details>
+  </div>
+</section>
+
+<section class="closer">
+  <div class="wrap">
+    <h2>Know your own. Keep watch over it.</h2>
+    <p>"Kith" is what's known and familiar; "revere" comes from a root meaning to watch out for. That's the whole idea.</p>
+    <a class="btn btn-buy" href="#buy" data-buy>Get Kith &amp; Revere — $49</a>
+    <p class="fine">One-time · all sales final · <a href="terms.html">Terms &amp; Release</a></p>
+  </div>
+</section>
+
+<div class="legal-strip">
+  <div class="wrap">
+    <p>Kith &amp; Revere Audit is provided under its <a href="terms.html">Terms of Service and End User License Agreement and Release of Liability</a>, which include a disclaimer of warranties, a limitation of liability, an assumption of risk and a binding individual arbitration agreement with a class action waiver (you may opt out within 30 days). No security tool detects every threat; results may include false positives and false negatives and are not legal, compliance or professional advice. Use it only on computers you own or are authorised to audit.</p>
+    <p>Mac, macOS, FileVault, Gatekeeper and Apple silicon are trademarks of Apple Inc. Kith &amp; Revere Audit is not affiliated with or endorsed by Apple Inc. or VirusTotal.</p>
+  </div>
+</div>
+
+</main>
+
+<footer class="tw-foot">
+  <div class="tw-wrap tw-foot-grid">
+    <div>
+      <a class="tw-brand" href="../"><img src="../assets/twl-logo-mark.jpeg" alt="" width="34" height="34"><span>ThinkWell <b>Labs</b></span></a>
+      <p>Kith &amp; Revere Audit is made by ThinkWell Labs LLC, an independent research and development laboratory.</p>
+    </div>
+    <div>
+      <h4>Kith &amp; Revere</h4>
+      <ul>
+        <li><a href="#what">What it checks</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#buy" data-buy>Buy</a></li>
+        <li><a href="#faq">Questions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="terms.html">Terms &amp; Release</a></li>
+        <li><a href="terms.html#refunds">Refunds</a></li>
+        <li><a href="terms.html#privacy">Product privacy</a></li>
+        <li><a href="../ai.html">AI use</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li><a href="mailto:b@twl.today?subject=Kith%20%26%20Revere%20support">b@twl.today</a></li>
+        <li><a href="../">ThinkWell Labs</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tw-wrap tw-foot-base">
+    <span>© 2026 ThinkWell Labs LLC</span>
+    <span>No trackers · no analytics · no cookies</span>
+  </div>
+</footer>
+
+<script>
+// One place to switch on sales: paste the Stripe payment link here.
+// While it's empty, every buy button becomes a "tell me at launch" email.
+var CHECKOUT_URL = "";
+(function () {
+  var links = document.querySelectorAll("[data-buy]");
+  for (var i = 0; i < links.length; i++) {
+    var a = links[i];
+    if (CHECKOUT_URL) {
+      a.href = CHECKOUT_URL;
+      a.rel = "noopener";
+    } else if (a.classList.contains("btn") || a.classList.contains("tw-nav-cta")) {
+      a.href = "mailto:b@twl.today?subject=Tell%20me%20when%20Kith%20%26%20Revere%20launches";
+      a.textContent = a.classList.contains("tw-nav-cta") ? "Get notified" : "Tell me at launch — $49";
+    }
+  }
+})();
+</script>
+</body>
+</html>
