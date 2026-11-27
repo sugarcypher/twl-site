@@ -15,7 +15,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://twl.today/articles/acepaste-ingress.html">
 <meta property="og:image" content="https://twl.today/assets/twl-logo.jpeg">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Prompt Injection From Web Pages: A Gate Before Your Agent", "description": "If your AI agent reads the web, any page can talk to it. The page you see and the page your agent reads aren't always the same: text pushed off screen, colored to match the background, tucked into attributes and comments, or written in invisible characters.", "url": "https://twl.today/articles/acepaste-ingress.html", "author": {"@type": "Person", "name": "Briar Morgan Greenway"}, "publisher": {"@type": "Organization", "name": "ThinkWell Labs", "url": "https://twl.today/"}, "datePublished": "2026-11-21"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Prompt Injection From Web Pages: A Gate Before Your Agent", "description": "If your AI agent reads the web, any page can talk to it. The page you see and the page your agent reads aren't always the same: text pushed off screen, colored to match the background, tucked into attributes and comments, or written in invisible characters.", "url": "https://twl.today/articles/acepaste-ingress.html", "author": {"@type": "Person", "name": "Briar Morgan Greenway"}, "publisher": {"@type": "Organization", "name": "ThinkWell Labs", "url": "https://twl.today/"}, "datePublished": "2026-11-21", "dateModified": "2026-11-27"}</script>
 <link rel="stylesheet" href="../assets/chrome.css">
 <style>
 :root {
@@ -157,6 +157,19 @@ code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-rise); p
 <p>Every verdict gets a receipt, clean or refused, hash-chained and signed, and you can verify them offline. Every refusal is logged with where the finding was, what the hidden payload said once decoded, and which hosts were contacted. Each finding is labeled as an inference or hypothesis, with a confidence band and a possible harmless explanation.</p>
 
 <p>After your agent reads outside content, side-effecting tool calls need your approval, one call at a time, through a channel the model can't control. Secrets and keys are redacted from what's delivered.</p>
+
+<h2>Beyond the gate (0.10.0)</h2>
+
+<p>Web pages aren't the only thing an agent trusts. Version 0.10.0 adds checks for the rest:</p>
+
+<ul>
+<li><code>ingress mcpscan</code> reads the tool descriptions of your MCP servers for hidden instructions (tool poisoning) and warns when a server's tools change after you pinned them (a rug pull).</li>
+<li><code>ingress show &lt;url|file&gt;</code> writes one static HTML report of what a person sees beside what your agent receives, with hidden text highlighted.</li>
+<li><code>ingress reposcan</code> and a GitHub Action check AGENTS.md, CLAUDE.md, .cursorrules, READMEs, MCP configs, package scripts and code for hidden instructions and Trojan Source Unicode, write SARIF and fail the pull request.</li>
+<li><code>ingress outcheck</code> catches agent replies that leak data through image and link URLs, alongside egress checks on tool calls.</li>
+<li><code>ingress pkgcheck</code> checks npm and PyPI packages before install for names that don't exist (made up by an AI), look-alikes, brand-new packages with install scripts and hostile READMEs.</li>
+<li><code>ingress filescan</code> and <code>ingress corpusscan</code> find hidden text in PDF, Word, Excel and PowerPoint files and image metadata, and check a RAG folder, moving poisoned files aside.</li>
+</ul>
 
 <h2>Install</h2>
 

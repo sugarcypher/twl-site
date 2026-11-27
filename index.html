@@ -64,10 +64,10 @@
 
 <main id="main">
 
-<a class="tw-announce" href="https://acepaste.xyz/ingress/" rel="noopener" aria-label="AcePaste Ingress is live, up and running. Read more at acepaste.xyz/ingress">
+<a class="tw-announce" href="https://acepaste.xyz/ingress/" rel="noopener" aria-label="AcePaste Ingress 0.10.0 is live. Read more at acepaste.xyz/ingress">
   <div class="wrap">
     <span class="tag">Live</span>
-    <span><b>AcePaste Ingress is live, up and running:</b> a security gate between the web and your AI that refuses hidden instructions. Free on npm.</span>
+    <span><b>AcePaste Ingress 0.10.0 is live:</b> a security gate between the web and your AI that refuses hidden instructions, now with scanners for MCP servers, repos, packages and files. Free on npm.</span>
     <span class="go">acepaste.xyz/ingress ↗</span>
   </div>
 </a>
@@ -140,7 +140,8 @@
         <div class="body">
           <p class="tag"><span class="badge">Live</span> AI security · 3 npm packages</p>
           <h3>AcePaste Ingress</h3>
-          <p>Stands at the door between the web and your AI. Every page is checked before the AI reads it, for hidden text, invisible characters, look-alike letters and content shown only to AI. Anything poisoned is refused, logged and given a signed receipt.</p>
+          <p>Stands at the door between the web and your AI. Every page is checked before the AI reads it, for hidden text, invisible characters, look-alike letters and content shown only to AI. Anything poisoned is refused, logged and given a signed receipt. Version 0.10.0 also checks what else your AI trusts.</p>
+          <p class="pkgs">New in 0.10.0: <code>mcpscan</code> (poisoned MCP tools and rug pulls), <code>show</code> (what you see beside what your AI receives), <code>reposcan</code> and a GitHub Action (hidden instructions and Trojan Source in repos), <code>outcheck</code> (data leaking through links and images), <code>pkgcheck</code> (made-up and look-alike packages) and <code>filescan</code> / <code>corpusscan</code> (hidden text in documents and RAG folders).</p>
           <p class="pkgs">On npm as <code>@acepaste/ingress</code> (the engine), <code>ingress-http</code> (an HTTP service you host) and <code>ingress-mcp</code> (an MCP server).</p>
           <span class="url">acepaste.xyz/ingress ↗</span>
         </div>
